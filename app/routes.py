@@ -8,7 +8,7 @@ def homepage():
 
 @app.route('/users')
 def getUsers():
-    return db.session.scalars(db.select(User)).all()
+    return [user.username for user in db.session.scalars(db.select(User)).all()]
 
 @app.route('/addUser')
 def addUser():
