@@ -1,4 +1,4 @@
-from Flask import request
+from flask import request
 from app import app, db
 from app.models import User
 
