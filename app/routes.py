@@ -11,6 +11,6 @@ data_store = [
         ]
 
 @app.route('/api/whatever')
-def homepage():
+def whatever():
     return data_store
 
