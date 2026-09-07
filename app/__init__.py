@@ -7,8 +7,6 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config["DEBUG"] = True
-
 app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DB_URI")
 app.config["JWT_SECRET_KEY"] = getenv("JWT_KEY")
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
