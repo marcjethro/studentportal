@@ -31,7 +31,7 @@ def login():
 @jwt_required()
 def getUserDetails():
     identity = get_jwt_identity()
-    user_id = identity.user_id
+    user_id = identity
     user = db.session.get(User, user_id)
     return jsonify({
         username: user.username,
