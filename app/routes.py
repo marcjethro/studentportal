@@ -1,4 +1,5 @@
 from flask_jwt_extended import get_jwt_identity, jwt_required, create_access_token
+from flask import jsonify, request
 
 from app import app, db
 from app.models import User
