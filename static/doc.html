@@ -1,0 +1,30 @@
+<h1 id="-restful-json-api-endpoints-"><strong>RESTful JSON API endpoints</strong></h1>
+<h2 id="-authentication-flow-"><strong>Authentication Flow:</strong></h2>
+<ol>
+<li><p>Send a POST fetch request to /api/login to get a JSON Web Token (JWT)</p>
+</li>
+<li><p>Store the token in the browser cookies</p>
+</li>
+<li><p>Attach it to the Authorization: Bearer <token> header for all subsequent requests.</p>
+</li>
+</ol>
+<h2 id="-post-api-login-"><strong>POST /api/login</strong></h2>
+<p><strong>example input:</strong></p>
+<pre><code class="lang-json">{
+  <span class="hljs-attr">"username"</span>: <span class="hljs-string">"StudentUser"</span>,
+  <span class="hljs-attr">"password"</span>: <span class="hljs-string">"studentPassword"</span>
+}
+</code></pre>
+<p><strong>example output:</strong></p>
+<pre><code class="lang-json">{
+  <span class="hljs-attr">"token"</span>: <span class="hljs-string">"eyJhbGciOiJIUzI1Ni..."</span>
+}
+</code></pre>
+<h2 id="-get-api-getuserdetails-"><strong>GET /api/getUserDetails</strong></h2>
+<p><strong>example output:</strong></p>
+<pre><code class="lang-json">{
+  <span class="hljs-attr">"email"</span>: <span class="hljs-string">"student@school.com"</span>,
+  <span class="hljs-attr">"role"</span>: <span class="hljs-string">"Student"</span>,
+  <span class="hljs-attr">"username"</span>: <span class="hljs-string">"StudentUser"</span>
+}
+</code></pre>

@@ -1,5 +1,5 @@
 from flask_jwt_extended import get_jwt_identity, jwt_required, create_access_token
-from flask import jsonify, request
+from flask import jsonify, request, send_from_directory
 
 from app import app, db
 from app.models import User
@@ -7,7 +7,7 @@ from app.models import User
 
 @app.route('/')
 def homepage():
-    return "Hello, This is Section 2's Student Portal!"
+    return send_from_directory("../static", "doc.html")
 
 @app.route("/api/login", methods=["POST"])
 def login():
@@ -24,8 +24,8 @@ def login():
     if not user or not user.check_password(password):
         return jsonify({"msg": "Bad username or password"}), 401
 
-    access_token = create_access_token(identity=user.user_id)
-    return jsonify(access_token=access_token), 200
+    token = create_access_token(identity=user.user_id)
+    return jsonify(token=token), 200
 
 @app.route("/api/getUserDetails", methods=["GET"])
 @jwt_required()
@@ -34,8 +34,8 @@ def getUserDetails():
     user_id = identity
     user = db.session.get(User, user_id)
     return jsonify({
-        username: user.username,
-        email: user.email,
-        role: user.role
+        "username": user.username,
+        "email": user.email,
+        "role": user.role.role_name
         }), 200
 
