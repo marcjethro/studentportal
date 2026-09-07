@@ -4,6 +4,7 @@ from flask import jsonify, request
 from app import app, db
 from app.models import User
 
+
 @app.route('/')
 def homepage():
     return "Hello, This is Section 2's Student Portal!"
