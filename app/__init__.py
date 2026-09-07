@@ -1,14 +1,18 @@
+from os import getenv
+from datetime import timedelta
+
 from flask import Flask
+from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
-from os import getenv
-
-db_uri = getenv("DB_URI")
 
 app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DB_URI")
+app.config["JWT_SECRET_KEY"] = getenv("JWT_KEY")
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
 CORS(app, resources={r"/*": {"origins": "*"}})
-app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
 
+jwt = JWTManager(app)
 db = SQLAlchemy(app)
 
 from app import routes

@@ -1,5 +1,6 @@
 Flask
 Flask-SQLAlchemy
 flask-cors
+flask-jwt-extended
 psycopg2-binary
 Gunicorn

@@ -1,4 +1,5 @@
-from flask import request
+from flask_jwt_extended import get_jwt_identity, jwt_required, create_access_token
+
 from app import app, db
 from app.models import User
 
@@ -6,21 +7,33 @@ from app.models import User
 def homepage():
     return "Hello, This is Section 2's Student Portal!"
 
-@app.route('/users')
-def getUsers():
-    return [user.username for user in db.session.scalars(db.select(User)).all()]
+@app.route("/api/login", methods=["POST"])
+def login():
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
 
-@app.route('/addUser')
-def addUser():
-    username = request.args.get("username", default="", type=str)
-    if username:
-        try:
-            new_user = User(username=username)
-            db.session.add(new_user)
-            db.session.commit()
-            return f"Successfully Added User: {username}!"
-        except Exception as e:
-            db.session.rollback()
-            return str(e)
-    else:
-        return "No username provided!"
+    username = request.json.get("username", None)
+    password = request.json.get("password", None)
+
+    if not username or not password:
+        return jsonify({"msg": "Missing username or password"}), 400
+
+    user = User.query.filter_by(username=username).first()
+    if not user or not user.check_password(password):
+        return jsonify({"msg": "Bad username or password"}), 401
+
+    access_token = create_access_token(identity=user.user_id)
+    return jsonify(access_token=access_token), 200
+
+@app.route("/api/getUserDetails", methods=["GET"])
+@jwt_required()
+def getUserDetails():
+    identity = get_jwt_identity()
+    user_id = identity.user_id
+    user = db.session.get(User, user_id)
+    return jsonify({
+        username: user.username,
+        email: user.email,
+        role: user.role
+        }), 200
+
