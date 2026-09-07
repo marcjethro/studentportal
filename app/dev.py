@@ -1,3 +1,6 @@
+from os import getenv
+
+from werkzeug.security import check_password_hash
 from flask_jwt_extended import get_jwt_identity, jwt_required, create_access_token
 from flask import jsonify, request
 from sqlalchemy import text
@@ -36,9 +39,19 @@ def reset_database():
         return True
 
 
-@app.route("/dev/resetdb")
+@app.route("/dev/resetdb", methods=["POST"])
 def resetDB():
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
+
+    password = request.json.get("password", None)
+    if not password:
+        return jsonify({"msg": "Missing password"}), 400
+
+    if not check_password_hash(getenv("DEV_SECRET", password)):
+        return jsonify({"msg": "Wrong password"}), 401
+
     if reset_database():
-        return "Database reset successful!", 200
+        return jsonify({"msg": "Database reset successful!"}), 200
     else:
-        return "Failed to reset database...", 200
+        return jsonify({"msg": "Failed to reset database..."}), 200
