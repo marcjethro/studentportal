@@ -3,3 +3,4 @@ __pycache__/
 *.pyc
 seed.py
 instance/
+dev.html
