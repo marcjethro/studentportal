@@ -1,30 +1,319 @@
-<h1 id="-restful-json-api-endpoints-"><strong>RESTful JSON API endpoints</strong></h1>
-<h2 id="-authentication-flow-"><strong>Authentication Flow:</strong></h2>
-<ol>
-<li><p>Send a POST fetch request to /api/login to get a JSON Web Token (JWT)</p>
-</li>
-<li><p>Store the token in the browser cookies</p>
-</li>
-<li><p>Attach it to the Authorization: Bearer <token> header for all subsequent requests.</p>
-</li>
-</ol>
-<h2 id="-post-api-login-"><strong>POST /api/login</strong></h2>
-<p><strong>example input:</strong></p>
-<pre><code class="lang-json">{
-  <span class="hljs-attr">"username"</span>: <span class="hljs-string">"StudentUser"</span>,
-  <span class="hljs-attr">"password"</span>: <span class="hljs-string">"studentPassword"</span>
-}
-</code></pre>
-<p><strong>example output:</strong></p>
-<pre><code class="lang-json">{
-  <span class="hljs-attr">"token"</span>: <span class="hljs-string">"eyJhbGciOiJIUzI1Ni..."</span>
-}
-</code></pre>
-<h2 id="-get-api-getuserdetails-"><strong>GET /api/getUserDetails</strong></h2>
-<p><strong>example output:</strong></p>
-<pre><code class="lang-json">{
-  <span class="hljs-attr">"email"</span>: <span class="hljs-string">"student@school.com"</span>,
-  <span class="hljs-attr">"role"</span>: <span class="hljs-string">"Student"</span>,
-  <span class="hljs-attr">"username"</span>: <span class="hljs-string">"StudentUser"</span>
-}
-</code></pre>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Documentation</title>
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+      --post-badge: #10b981;
+      --get-badge: #3b82f6;
+      --code-bg: #090d16;
+      --border-color: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 2rem 1rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 900px;
+      width: 100%;
+    }
+
+    header {
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1.5rem;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    section {
+      margin-bottom: 2.5rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Auth Steps Styling */
+    .auth-steps {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem 1.5rem 1.5rem 2.5rem;
+    }
+
+    .auth-steps li {
+      margin-bottom: 0.75rem;
+      color: var(--text-main);
+    }
+
+    .auth-steps li:last-child {
+      margin-bottom: 0;
+    }
+
+    .auth-steps code {
+      background-color: var(--code-bg);
+      color: var(--accent);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9em;
+    }
+
+    /* Endpoint Card Styling */
+    .endpoint-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+
+    .endpoint-header {
+      padding: 1rem 1.5rem;
+      background-color: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .method {
+      font-weight: bold;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    .method.post {
+      background-color: var(--post-badge);
+    }
+
+    .method.get {
+      background-color: var(--get-badge);
+    }
+
+    .path {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .auth-required {
+      margin-left: auto;
+      font-size: 0.8rem;
+      background-color: #334155;
+      color: #e2e8f0;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      border: 1px solid #475569;
+    }
+
+    .endpoint-body {
+      padding: 1.5rem;
+    }
+
+    .endpoint-desc {
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .code-block-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-top: 1rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .code-container {
+      position: relative;
+    }
+
+    pre {
+      background-color: var(--code-bg);
+      padding: 1rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      border: 1px solid var(--border-color);
+    }
+
+    code {
+      font-family: "Courier New", Courier, monospace;
+      color: #e2e8f0;
+      font-size: 0.9rem;
+    }
+
+    /* JSON Syntax Colors */
+    .json-key { color: #7dd3fc; }
+    .json-string { color: #6ee7b7; }
+
+    /* Copy Button */
+    .copy-btn {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background-color: var(--border-color);
+      color: var(--text-muted);
+      border: none;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover {
+      background-color: var(--accent);
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Backend Documentation</h1>
+      <p class="subtitle">RESTful JSON API Specification</p>
+    </header>
+
+    <!-- Authentication Flow Section -->
+    <section id="authentication">
+      <h2>Authentication Flow</h2>
+      <ol class="auth-steps">
+        <li>
+          Send a <code>POST</code> request containing credentials to <code>/api/login</code> to retrieve a JSON Web Token (JWT).
+        </li>
+        <li>
+          Store the returned JWT in the browser cookies.
+        </li>
+        <li>
+          Attach the token to the HTTP Request Header as <code>Authorization: Bearer &lt;token&gt;</code> for all protected endpoints.
+        </li>
+      </ol>
+    </section>
+
+    <!-- API Endpoints Section -->
+    <section id="endpoints">
+      <h2>Endpoints</h2>
+
+      <!-- POST /api/login -->
+      <article class="endpoint-card">
+        <div class="endpoint-header">
+          <span class="method post">POST</span>
+          <span class="path">/api/login</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-desc">Authenticates user credentials and yields a bearer JWT token upon successful validation.</p>
+
+          <div class="code-block-title">Request Body (JSON)</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>{
+  <span class="json-key">"username"</span>: <span class="json-string">"studentUser"</span>,
+  <span class="json-key">"password"</span>: <span class="json-string">"studentPassword"</span>
+}</code></pre>
+          </div>
+
+          <div class="code-block-title">Response (200 OK)</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>{
+  <span class="json-key">"token"</span>: <span class="json-string">"eyJhbGciOiJIUzI1Ni..."</span>
+}</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- GET /api/getUserDetails -->
+      <article class="endpoint-card">
+        <div class="endpoint-header">
+          <span class="method get">GET</span>
+          <span class="path">/api/getUserDetails</span>
+          <span class="auth-required">🔒 Auth Required</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-desc">Retrieves detailed information about the currently authenticated user based on the provided JWT.</p>
+
+          <div class="code-block-title">Required Headers</div>
+          <div class="code-container">
+            <pre><code>Authorization: Bearer &lt;token&gt;</code></pre>
+          </div>
+
+          <div class="code-block-title">Response (200 OK)</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>{
+  <span class="json-key">"email"</span>: <span class="json-string">"student@school.com"</span>,
+  <span class="json-key">"role"</span>: <span class="json-string">"Student"</span>,
+  <span class="json-key">"username"</span>: <span class="json-string">"studentUser"</span>
+}</code></pre>
+          </div>
+        </div>
+      </article>
+
+    </section>
+  </div>
+
+  <script>
+    function copyCode(button) {
+      const codeBlock = button.nextElementSibling.querySelector('code');
+      const textToCopy = codeBlock.innerText;
+
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        const originalText = button.innerText;
+        button.innerText = 'Copied!';
+        button.style.backgroundColor = '#10b981';
+        button.style.color = '#ffffff';
+
+        setTimeout(() => {
+          button.innerText = originalText;
+          button.style.backgroundColor = '';
+          button.style.color = '';
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
