@@ -11,6 +11,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DB_URI")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["JWT_SECRET_KEY"] = getenv("JWT_KEY")
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+app.config["JWT_VERIFY_SUB"] = False
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 jwt = JWTManager(app)
