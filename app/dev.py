@@ -48,7 +48,7 @@ def resetDB():
     if not password:
         return jsonify({"msg": "Missing password"}), 400
 
-    if not check_password_hash(getenv("DEV_SECRET", password)):
+    if not check_password_hash(getenv("DEV_SECRET"), password):
         return jsonify({"msg": "Wrong password"}), 401
 
     if reset_database():
