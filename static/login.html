@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #111827;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background: #1f2937;
+            padding: 30px;
+            width: 350px;
+            border-radius: 10px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        #message {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        #userDetails {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: #374151;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+
+        <h2>Student Login</h2>
+
+        <form id="loginForm">
+
+            <input type="text" id="username" placeholder="Username" required>
+
+            <input type="password" id="password" placeholder="Password" required>
+
+            <button type="submit">
+                Login
+            </button>
+
+        </form>
+
+        <p id="message"></p>
+
+        <!-- User information -->
+        <div id="userDetails">
+            <h3>User Details</h3>
+
+            <p>
+                <strong>Username:</strong>
+                <span id="displayUsername"></span>
+            </p>
+
+            <p>
+                <strong>Email:</strong>
+                <span id="displayEmail"></span>
+            </p>
+
+            <p>
+                <strong>Role:</strong>
+                <span id="displayRole"></span>
+            </p>
+        </div>
+
+    </div>
+
+
+    <script>
+
+        // CHANGE THIS TO YOUR BACKEND URL
+        const API_URL = "https://studentportal-8ct3.onrender.com/";
+
+
+        // LOGIN
+        document.getElementById("loginForm").addEventListener("submit", async function (event) {
+
+            event.preventDefault();
+
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            const message = document.getElementById("message");
+
+            try {
+
+                const response = await fetch(`https://studentportal-8ct3.onrender.com/api/login`, {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+
+                });
+
+                const data = await response.json();
+
+
+                // Login failed
+                if (!response.ok) {
+
+                    message.textContent = "Invalid username or password.";
+                    message.style.color = "red";
+
+                    return;
+                }
+
+
+                // Save JWT token
+                localStorage.setItem("token", data.token);
+
+                message.textContent = "Login successful!";
+                message.style.color = "lightgreen";
+
+
+                // Get user details
+                getUserDetails();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                message.textContent = "Cannot connect to the server.";
+                message.style.color = "red";
+
+            }
+
+        });
+
+
+
+        // GET USER DETAILS
+        async function getUserDetails() {
+
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+                return;
+            }
+
+            try {
+
+                const response = await fetch(
+                    `https://studentportal-8ct3.onrender.com/api/getUserDetails`,
+                    {
+                        method: "GET",
+
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    }
+                );
+
+
+                if (!response.ok) {
+
+                    document.getElementById("message").textContent =
+                        "Session expired. Please login again.";
+
+                    localStorage.removeItem("token");
+
+                    return;
+                }
+
+
+                const user = await response.json();
+
+
+                // Display user information
+                document.getElementById("displayUsername").textContent =
+                    user.username;
+
+                document.getElementById("displayEmail").textContent =
+                    user.email;
+
+                document.getElementById("displayRole").textContent =
+                    user.role;
+
+
+                document.getElementById("userDetails").style.display = "block";
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                document.getElementById("message").textContent =
+                    "Failed to get user details.";
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>
