@@ -11,9 +11,13 @@
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --accent: #38bdf8;
-      --accent-hover: #0284c7;
+      
+      /* Method Colors */
       --post-badge: #10b981;
       --get-badge: #3b82f6;
+      --patch-badge: #f59e0b;
+      --delete-badge: #ef4444;
+      
       --code-bg: #090d16;
       --border-color: #334155;
     }
@@ -65,9 +69,8 @@
       font-size: 1.5rem;
       margin-bottom: 1rem;
       color: var(--accent);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.5rem;
     }
 
     /* Auth Steps Styling */
@@ -87,7 +90,7 @@
       margin-bottom: 0;
     }
 
-    .auth-steps code {
+    code {
       background-color: var(--code-bg);
       color: var(--accent);
       padding: 0.2rem 0.4rem;
@@ -122,30 +125,46 @@
       font-size: 0.85rem;
       text-transform: uppercase;
       color: #fff;
+      min-width: 65px;
+      text-align: center;
     }
 
-    .method.post {
-      background-color: var(--post-badge);
-    }
-
-    .method.get {
-      background-color: var(--get-badge);
-    }
+    .method.post { background-color: var(--post-badge); }
+    .method.get { background-color: var(--get-badge); }
+    .method.patch { background-color: var(--patch-badge); }
+    .method.delete { background-color: var(--delete-badge); }
 
     .path {
       font-family: "Courier New", Courier, monospace;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 600;
     }
 
-    .auth-required {
+    /* Badges */
+    .auth-badge {
       margin-left: auto;
       font-size: 0.8rem;
-      background-color: #334155;
-      color: #e2e8f0;
-      padding: 0.2rem 0.5rem;
+      padding: 0.2rem 0.6rem;
       border-radius: 4px;
-      border: 1px solid #475569;
+      border: 1px solid;
+    }
+
+    .auth-badge.none {
+      background-color: #1e293b;
+      color: #94a3b8;
+      border-color: #475569;
+    }
+
+    .auth-badge.any {
+      background-color: #1e1b4b;
+      color: #a5b4fc;
+      border-color: #4338ca;
+    }
+
+    .auth-badge.edp {
+      background-color: #312e81;
+      color: #c7d2fe;
+      border-color: #6366f1;
     }
 
     .endpoint-body {
@@ -179,8 +198,9 @@
       border: 1px solid var(--border-color);
     }
 
-    code {
-      font-family: "Courier New", Courier, monospace;
+    pre code {
+      background-color: transparent;
+      padding: 0;
       color: #e2e8f0;
       font-size: 0.9rem;
     }
@@ -188,6 +208,8 @@
     /* JSON Syntax Colors */
     .json-key { color: #7dd3fc; }
     .json-string { color: #6ee7b7; }
+    .json-number { color: #fde047; }
+    .json-boolean { color: #f472b6; }
 
     /* Copy Button */
     .copy-btn {
@@ -214,67 +236,42 @@
 
   <div class="container">
     <header>
-      <h1>Backend Documentation</h1>
-      <p class="subtitle">RESTful JSON API Specification</p>
+      <h1>REST API Documentation</h1>
+      <p class="subtitle">v1.0.0 &bull; User & Access Management Specification</p>
     </header>
 
-    <!-- Authentication Flow Section -->
+    <!-- Authentication Overview -->
     <section id="authentication">
       <h2>Authentication Flow</h2>
       <ol class="auth-steps">
         <li>
-          Send a <code>POST</code> request containing credentials to <code>/api/login</code> to retrieve a JSON Web Token (JWT).
+          Send a <code>POST</code> request with credentials to <code>/api/auth/login</code> to receive a JSON Web Token (JWT).
         </li>
         <li>
-          Store the returned JWT in the browser cookies.
+          Store the token securely in browser cookies.
         </li>
         <li>
-          Attach the token to the HTTP Request Header as <code>Authorization: Bearer &lt;token&gt;</code> for all protected endpoints.
+          Include the token in the HTTP Authorization header for protected requests:<br>
+          <code>Authorization: Bearer &lt;token&gt;</code>
         </li>
       </ol>
     </section>
 
-    <!-- API Endpoints Section -->
-    <section id="endpoints">
-      <h2>Endpoints</h2>
-
-      <!-- GET /api/getUserDetails -->
-      <article class="endpoint-card">
-        <div class="endpoint-header">
-          <span class="method get">GET</span>
-          <span class="path">/api/getUserDetails</span>
-          <span class="auth-required">🔒 Auth Required</span>
-        </div>
-        <div class="endpoint-body">
-          <p class="endpoint-desc">Retrieves detailed information about the currently authenticated user based on the provided JWT.</p>
-
-          <div class="code-block-title">Required Headers</div>
-          <div class="code-container">
-            <pre><code>Authorization: Bearer &lt;token&gt;</code></pre>
-          </div>
-
-          <div class="code-block-title">Response (200 OK)</div>
-          <div class="code-container">
-            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-            <pre><code>{
-  <span class="json-key">"email"</span>: <span class="json-string">"student@school.com"</span>,
-  <span class="json-key">"role"</span>: <span class="json-string">"Student"</span>,
-  <span class="json-key">"username"</span>: <span class="json-string">"studentUser"</span>
-}</code></pre>
-          </div>
-        </div>
-      </article>
+    <!-- Public / General Endpoints -->
+    <section id="general-endpoints">
+      <h2>Authentication & User Details</h2>
 
       <!-- POST /api/auth/login -->
       <article class="endpoint-card">
         <div class="endpoint-header">
           <span class="method post">POST</span>
           <span class="path">/api/auth/login</span>
+          <span class="auth-badge none">No Auth</span>
         </div>
         <div class="endpoint-body">
-          <p class="endpoint-desc">Authenticates user credentials and yields a bearer JWT token upon successful validation.</p>
-
-          <div class="code-block-title">Request Body (JSON)</div>
+          <p class="endpoint-desc">Authenticates user credentials and returns an access token.</p>
+          
+          <div class="code-block-title">Request Body</div>
           <div class="code-container">
             <button class="copy-btn" onclick="copyCode(this)">Copy</button>
             <pre><code>{
@@ -287,7 +284,199 @@
           <div class="code-container">
             <button class="copy-btn" onclick="copyCode(this)">Copy</button>
             <pre><code>{
+  <span class="json-key">"role"</span>: <span class="json-string">"student"</span>
   <span class="json-key">"token"</span>: <span class="json-string">"eyJhbGciOiJIUzI1Ni..."</span>
+}</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- GET /api/getUserDetails -->
+      <article class="endpoint-card">
+        <div class="endpoint-header">
+          <span class="method get">GET</span>
+          <span class="path">/api/getUserDetails</span>
+          <span class="auth-badge any">🔒 Any Role</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-desc">Fetches profile details for the currently authenticated user.</p>
+
+          <div class="code-block-title">Required Headers</div>
+          <div class="code-container">
+            <pre><code>Authorization: Bearer &lt;token&gt;</code></pre>
+          </div>
+
+          <div class="code-block-title">Response (200 OK)</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>{
+  <span class="json-key">"email"</span>: <span class="json-string">"student@school.com"</span>,
+  <span class="json-key">"role"</span>: <span class="json-string">"student"</span>,
+  <span class="json-key">"username"</span>: <span class="json-string">"studentUser"</span>
+}</code></pre>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- Administrative Endpoints -->
+    <section id="admin-endpoints">
+      <h2>Administrative Endpoints (Role: EDP)</h2>
+
+      <!-- GET /api/auth/roles -->
+      <article class="endpoint-card">
+        <div class="endpoint-header">
+          <span class="method get">GET</span>
+          <span class="path">/api/auth/roles</span>
+          <span class="auth-badge edp">🔒 Role: edp</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-desc">Retrieves a list of all available system roles.</p>
+
+          <div class="code-block-title">Response (200 OK)</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>[
+  { <span class="json-key">"role_id"</span>: <span class="json-number">1</span>, <span class="json-key">"name"</span>: <span class="json-string">"student"</span> },
+  { <span class="json-key">"role_id"</span>: <span class="json-number">2</span>, <span class="json-key">"name"</span>: <span class="json-string">"teacher"</span> },
+  { <span class="json-key">"role_id"</span>: <span class="json-number">3</span>, <span class="json-key">"name"</span>: <span class="json-string">"edp"</span> },
+  { <span class="json-key">"role_id"</span>: <span class="json-number">4</span>, <span class="json-key">"name"</span>: <span class="json-string">"accounting"</span> },
+  { <span class="json-key">"role_id"</span>: <span class="json-number">5</span>, <span class="json-key">"name"</span>: <span class="json-string">"registrar"</span> }
+]</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- GET /api/auth/users -->
+      <article class="endpoint-card">
+        <div class="endpoint-header">
+          <span class="method get">GET</span>
+          <span class="path">/api/auth/users</span>
+          <span class="auth-badge edp">🔒 Role: edp</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-desc">Fetches a list of all registered users in the system.</p>
+
+          <div class="code-block-title">Response (200 OK)</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>[
+  {
+    <span class="json-key">"user_id"</span>: <span class="json-number">1</span>,
+    <span class="json-key">"username"</span>: <span class="json-string">"studentUser"</span>,
+    <span class="json-key">"email"</span>: <span class="json-string">"student@school.com"</span>,
+    <span class="json-key">"role"</span>: <span class="json-string">"student"</span>
+  },
+  {
+    <span class="json-key">"user_id"</span>: <span class="json-number">2</span>,
+    <span class="json-key">"username"</span>: <span class="json-string">"teacherUser"</span>,
+    <span class="json-key">"email"</span>: <span class="json-string">"teacher@school.com"</span>,
+    <span class="json-key">"role"</span>: <span class="json-string">"teacher"</span>
+  }, ...
+]</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- POST /api/auth/users -->
+      <article class="endpoint-card">
+        <div class="endpoint-header">
+          <span class="method post">POST</span>
+          <span class="path">/api/auth/users</span>
+          <span class="auth-badge edp">🔒 Role: edp</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-desc">Creates a new user record in the database.</p>
+
+          <div class="code-block-title">Request Body</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>{
+  <span class="json-key">"username"</span>: <span class="json-string">"NewUser"</span>,
+  <span class="json-key">"email"</span>: <span class="json-string">"newuser@school.com"</span>,
+  <span class="json-key">"password"</span>: <span class="json-string">"securePassword123"</span>,
+  <span class="json-key">"role_id"</span>: <span class="json-string">"1"</span>
+}</code></pre>
+          </div>
+
+          <div class="code-block-title">Response (201 Created)</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>{
+  <span class="json-key">"user_id"</span>: <span class="json-number">7</span>,
+  <span class="json-key">"msg"</span>: <span class="json-string">"User created successfully"</span>
+}</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- GET /api/auth/users/<int:user_id> -->
+      <article class="endpoint-card">
+        <div class="endpoint-header">
+          <span class="method get">GET</span>
+          <span class="path">/api/auth/users/&lt;int:user_id&gt;</span>
+          <span class="auth-badge edp">🔒 Role: edp</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-desc">Retrieves detailed information for a specific user ID.</p>
+
+          <div class="code-block-title">Response (200 OK)</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>{
+  <span class="json-key">"user_id"</span>: <span class="json-number">1</span>,
+  <span class="json-key">"username"</span>: <span class="json-string">"studentUser"</span>,
+  <span class="json-key">"email"</span>: <span class="json-string">"student@school.com"</span>,
+  <span class="json-key">"role"</span>: <span class="json-string">"student"</span>
+}</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- PATCH /api/auth/users/<int:user_id> -->
+      <article class="endpoint-card">
+        <div class="endpoint-header">
+          <span class="method patch">PATCH</span>
+          <span class="path">/api/auth/users/&lt;int:user_id&gt;</span>
+          <span class="auth-badge edp">🔒 Role: edp</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-desc">Partially updates username, email, or password for a specific user ID.</p>
+
+          <div class="code-block-title">Request Body (Partial Update)</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>{
+  <span class="json-key">"password"</span>: <span class="json-string">"updatedPassword"</span>
+  <span class="json-key">"email"</span>: <span class="json-string">"updated_student@school.com"</span>,
+}</code></pre>
+          </div>
+
+          <div class="code-block-title">Response (200 OK)</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>{
+  <span class="json-key">"msg"</span>: <span class="json-string">"User updated successfully"</span>
+}</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- DELETE /api/auth/users/<int:user_id> -->
+      <article class="endpoint-card">
+        <div class="endpoint-header">
+          <span class="method delete">DELETE</span>
+          <span class="path">/api/auth/users/&lt;int:user_id&gt;</span>
+          <span class="auth-badge edp">🔒 Role: edp</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-desc">Permanently removes a user account by ID.</p>
+
+          <div class="code-block-title">Response (200 OK)</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>{
+  <span class="json-key">"msg"</span>: <span class="json-string">"User deleted successfully"</span>
 }</code></pre>
           </div>
         </div>

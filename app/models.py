@@ -8,11 +8,17 @@ class UserRole(db.Model):
 
     users = db.relationship("User", back_populates="role")
 
+    def asdict(self):
+        res = dict()
+        res["role_id"] = self.role_id
+        res["name"] = self.role_name
+        return res
+
 class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     role_id = db.Column(db.Integer, db.ForeignKey("user_role.role_id"), nullable=False)
     username = db.Column(db.String(80), unique=True, nullable=False)
-    email = db.Column(db.String(254), unique=True, nullable=False)
+    email = db.Column(db.String(254), nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
 
     role = db.relationship("UserRole", back_populates="users", lazy="joined")

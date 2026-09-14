@@ -1,9 +1,15 @@
+import re
+
+from werkzeug.security import generate_password_hash
 from flask_jwt_extended import get_jwt_identity, jwt_required, create_access_token
 from flask import jsonify, request, send_from_directory
 
 from app import app, db
-from app.models import User
+from app.models import User, UserRole
 from app.utils import role_required
+
+
+EMAIL_REGEX = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
 
 
 @app.route('/')
@@ -21,6 +27,7 @@ def getUserDetails():
         "email": user.email,
         "role": user.role.role_name
         }), 200
+
 
 @app.route("/api/auth/login", methods=["POST"])
 def login():
@@ -40,11 +47,103 @@ def login():
     identity = {"user_id": user.user_id, "role": user.role.role_name}
 
     token = create_access_token(identity=identity)
-    return jsonify(token=token), 200
+    return jsonify(token=token, role=user.role.role_name), 200
 
-@app.route("/api/auth/users", methods=["GET"])
+
+@app.route("/api/auth/roles")
 @role_required("edp")
-def usersCRUD():
-    identity = get_jwt_identity()
-    users = db.session.scalars(db.select(User)).all()
-    return jsonify([user.asdict() for user in users]), 200
+def handle_roles():
+    roles = db.session.scalars(db.select(UserRole)).all()
+    return jsonify([role.asdict() for role in roles]), 200
+
+
+@app.route("/api/auth/users", methods=["GET", "POST"])
+@role_required("edp")
+def handle_users():
+    if request.method == "GET":
+        users = db.session.scalars(db.select(User)).all()
+        return jsonify([user.asdict() for user in users]), 200
+
+    elif request.method == "POST":
+        if not request.is_json:
+            return jsonify({"msg": "Missing JSON in request"}), 400
+
+        username = request.json.get("username", None)
+        if not username:
+            return jsonify({"msg": "Missing username"}), 400
+
+        user = db.session.query(User).filter_by(username=username).first()
+        if user:
+            return jsonify({"msg": "Username already exists!"}), 409
+
+        password = request.json.get("password", None)
+        if not password:
+            return jsonify({"msg": "Missing password"}), 400
+
+        email = request.json.get("email", None)
+        if not email:
+            return jsonify({"msg": "Missing email"}), 400
+
+        if not re.match(EMAIL_REGEX, email):
+            return jsonify({"error": "Invalid email format"}), 400
+
+        role_id = request.json.get("role_id", None)
+        if not role_id:
+            return jsonify({"msg": "Missing role id"}), 400
+
+        role = db.session.query(UserRole).filter_by(role_id=role_id).first()
+        if role is None:
+            return jsonify({"msg": "Invalid role id"}), 400
+
+        new_user = User(role_id, username, email, password)
+        db.session.add(new_user)
+        db.session.commit()
+        return jsonify({"user_id": new_user.user_id, "msg": "User created successfully"}), 200
+
+
+@app.route("/api/auth/users/<int:user_id>", methods=["GET", "PATCH", "DELETE"])
+@role_required("edp")
+def handle_user(user_id):
+    user = User.query.get_or_404(user_id)
+
+    if request.method == "GET":
+        return jsonify(user.asdict()), 200
+
+    elif request.method == "PATCH":
+        if not request.is_json:
+            return jsonify({"msg": "Missing JSON in request"}), 400
+
+        username = request.json.get("username", None)
+        password = request.json.get("password", None)
+        email = request.json.get("email", None)
+
+        if username and user.username != username:
+            otherUser = db.session.query(User).filter_by(username=username).first()
+            if otherUser:
+                return jsonify({"msg": "Username already exists!"}), 409
+            user.username = username
+
+        if email:
+            if not re.match(EMAIL_REGEX, email):
+                return jsonify({"error": "Invalid email format"}), 400
+            user.email = email
+
+        if password:
+            user.password_hash = generate_password_hash(password)
+
+        db.session.commit()
+        return jsonify({"msg": "User updated successfully"}), 200
+
+    elif request.method == "DELETE":
+        try:
+            db.session.delete(user)
+            db.session.commit()
+            return jsonify({"msg": "User deleted successfully"}), 200
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({"error": "Could not delete item", "details": str(e)}), 500
+
+
+
+
+
