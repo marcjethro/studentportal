@@ -25,3 +25,11 @@ class User(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def asdict(self):
+        res = dict()
+        res["user_id"] = self.user_id
+        res["role"] = self.role.role_name
+        res["username"] = self.username
+        res["email"] = self.email
+        return res

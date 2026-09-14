@@ -46,4 +46,5 @@ def login():
 @role_required("EDP")
 def usersCRUD():
     identity = get_jwt_identity()
-    return jsonify(db.session.scalars(db.select(User)).all()), 200
+    users = db.session.scalars(db.select(User)).all()
+    return jsonify([user.asdict() for user in users]), 200
