@@ -3,11 +3,24 @@ from flask import jsonify, request, send_from_directory
 
 from app import app, db
 from app.models import User
+from app.utils import role_required
 
 
 @app.route('/')
 def homepage():
     return send_from_directory("../static", "doc.html")
+
+@app.route("/api/getUserDetails", methods=["GET"])
+@jwt_required()
+def getUserDetails():
+    identity = get_jwt_identity()
+    user_id = identity["user_id"]
+    user = db.session.get(User, user_id)
+    return jsonify({
+        "username": user.username,
+        "email": user.email,
+        "role": user.role.role_name
+        }), 200
 
 @app.route("/api/auth/login", methods=["POST"])
 def login():
@@ -24,18 +37,13 @@ def login():
     if not user or not user.check_password(password):
         return jsonify({"msg": "Bad username or password"}), 401
 
-    token = create_access_token(identity=user.user_id)
+    identity = {"user_id": user.user_id, "role": user.role.role_name}
+
+    token = create_access_token(identity=identity)
     return jsonify(token=token), 200
 
-@app.route("/api/getUserDetails", methods=["GET"])
-@jwt_required()
+@app.route("/api/auth/users", methods=["GET"])
+@role_required("EDP")
 def getUserDetails():
     identity = get_jwt_identity()
-    user_id = identity
-    user = db.session.get(User, user_id)
-    return jsonify({
-        "username": user.username,
-        "email": user.email,
-        "role": user.role.role_name
-        }), 200
-
+    return jsonify(db.session.scalars(db.select(User)).all()), 200
