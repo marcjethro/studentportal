@@ -9,7 +9,7 @@ from app.models import User
 def homepage():
     return send_from_directory("../static", "doc.html")
 
-@app.route("/api/login", methods=["POST"])
+@app.route("/api/auth/login", methods=["POST"])
 def login():
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400
