@@ -23,15 +23,14 @@ def reset_database():
         print("Creating new table schemas...")
         db.create_all()
         print("Adding default rows...")
-        role_names = ["Admin", "Student", "Teacher", "EDP", "Accounting", "Registrar"]
+        role_names = ["Student", "Teacher", "EDP", "Accounting", "Registrar"]
         roles = [UserRole(role_name=x) for x in role_names]
         db.session.add_all(roles)
-        users = [[1, "adminUser", "admin@school.com", "adminPassword"],
-                 [2, "studentUser", "student@school.com", "studentPassword"],
-                 [3, "teacherUser", "teacher@school.com", "teacherPassword"],
-                 [4, "edpUser", "edp@school.com", "edpPassword"],
-                 [5, "accountingUser", "accounting@school.com", "accountingPassword"],
-                 [6, "registrarUser", "registrar@school.com", "registrarPassword"]]
+        users = [[1, "studentUser", "student@school.com", "studentPassword"],
+                 [2, "teacherUser", "teacher@school.com", "teacherPassword"],
+                 [3, "edpUser", "edp@school.com", "edpPassword"],
+                 [4, "accountingUser", "accounting@school.com", "accountingPassword"],
+                 [5, "registrarUser", "registrar@school.com", "registrarPassword"]]
         for u in users:
             db.session.add(User(u[0], u[1], u[2], u[3]))
         db.session.commit()

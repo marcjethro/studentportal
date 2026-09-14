@@ -1,17 +1,13 @@
 from flask_jwt_extended import get_jwt_identity, jwt_required, create_access_token
-from flask import jsonify, request, send_from_directory, redirect, url_for
+from flask import jsonify, request, send_from_directory
 
 from app import app, db
 from app.models import User
 
 
-@app.route("/")
+@app.route('/')
 def homepage():
-    return redirect(url_for("login_page"))
-
-@app.route("/login", methods=["GET"])
-def login_page():
-    return send_from_directory("../static", "login.html")
+    return send_from_directory("../static", "doc.html")
 
 @app.route("/api/login", methods=["POST"])
 def login():
@@ -42,8 +38,4 @@ def getUserDetails():
         "email": user.email,
         "role": user.role.role_name
         }), 200
-
-@app.route('/api/doc')
-def documentation():
-    return send_from_directory("../static", "doc.html")
 

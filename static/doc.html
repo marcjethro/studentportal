@@ -238,34 +238,6 @@
     <section id="endpoints">
       <h2>Endpoints</h2>
 
-      <!-- POST /api/login -->
-      <article class="endpoint-card">
-        <div class="endpoint-header">
-          <span class="method post">POST</span>
-          <span class="path">/api/login</span>
-        </div>
-        <div class="endpoint-body">
-          <p class="endpoint-desc">Authenticates user credentials and yields a bearer JWT token upon successful validation.</p>
-
-          <div class="code-block-title">Request Body (JSON)</div>
-          <div class="code-container">
-            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-            <pre><code>{
-  <span class="json-key">"username"</span>: <span class="json-string">"studentUser"</span>,
-  <span class="json-key">"password"</span>: <span class="json-string">"studentPassword"</span>
-}</code></pre>
-          </div>
-
-          <div class="code-block-title">Response (200 OK)</div>
-          <div class="code-container">
-            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-            <pre><code>{
-  <span class="json-key">"token"</span>: <span class="json-string">"eyJhbGciOiJIUzI1Ni..."</span>
-}</code></pre>
-          </div>
-        </div>
-      </article>
-
       <!-- GET /api/getUserDetails -->
       <article class="endpoint-card">
         <div class="endpoint-header">
@@ -288,6 +260,34 @@
   <span class="json-key">"email"</span>: <span class="json-string">"student@school.com"</span>,
   <span class="json-key">"role"</span>: <span class="json-string">"Student"</span>,
   <span class="json-key">"username"</span>: <span class="json-string">"studentUser"</span>
+}</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- POST /api/auth/login -->
+      <article class="endpoint-card">
+        <div class="endpoint-header">
+          <span class="method post">POST</span>
+          <span class="path">/api/auth/login</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-desc">Authenticates user credentials and yields a bearer JWT token upon successful validation.</p>
+
+          <div class="code-block-title">Request Body (JSON)</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>{
+  <span class="json-key">"username"</span>: <span class="json-string">"studentUser"</span>,
+  <span class="json-key">"password"</span>: <span class="json-string">"studentPassword"</span>
+}</code></pre>
+          </div>
+
+          <div class="code-block-title">Response (200 OK)</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>{
+  <span class="json-key">"token"</span>: <span class="json-string">"eyJhbGciOiJIUzI1Ni..."</span>
 }</code></pre>
           </div>
         </div>
