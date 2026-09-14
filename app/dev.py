@@ -23,7 +23,7 @@ def reset_database():
         print("Creating new table schemas...")
         db.create_all()
         print("Adding default rows...")
-        role_names = ["Student", "Teacher", "EDP", "Accounting", "Registrar"]
+        role_names = ["student", "teacher", "edp", "accounting", "registrar"]
         roles = [UserRole(role_name=x) for x in role_names]
         db.session.add_all(roles)
         users = [[1, "studentUser", "student@school.com", "studentPassword"],

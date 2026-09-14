@@ -43,7 +43,7 @@ def login():
     return jsonify(token=token), 200
 
 @app.route("/api/auth/users", methods=["GET"])
-@role_required("EDP")
+@role_required("edp")
 def usersCRUD():
     identity = get_jwt_identity()
     users = db.session.scalars(db.select(User)).all()
