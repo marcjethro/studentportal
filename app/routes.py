@@ -44,6 +44,6 @@ def login():
 
 @app.route("/api/auth/users", methods=["GET"])
 @role_required("EDP")
-def getUserDetails():
+def usersCRUD():
     identity = get_jwt_identity()
     return jsonify(db.session.scalars(db.select(User)).all()), 200
