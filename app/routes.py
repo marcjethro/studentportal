@@ -1,10 +1,14 @@
 import re
+import string
+import secrets
 
 from werkzeug.security import generate_password_hash
-from flask_jwt_extended import get_jwt_identity, jwt_required, create_access_token
 from flask import jsonify, request, send_from_directory
+from flask_mail import Message
+from flask_jwt_extended import get_jwt_identity, jwt_required, create_access_token, decode_token
+from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 
-from app import app, db
+from app import app, db, mail, BACKEND_URL
 from app.models import User, UserRole
 from app.utils import role_required
 
@@ -171,3 +175,66 @@ def handle_change_password():
 
     return jsonify({"msg": "Password updated successfully"}), 200
 
+
+@app.route("/api/auth/forget-password", methods=["POST"])
+def handle_forget_password():
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
+
+    username = request.json.get("username", None)
+
+    if username is None:
+        return jsonify({"msg": "Missing username"}), 400
+
+    user = User.query.filter_by(username=username).first()
+    if not user:
+        return jsonify({"msg": "Username does not exist"}), 401
+
+    token = create_access_token(identity=user.user_id)
+    reset_link = f"{BACKEND_URL}/reset-password?token={token}"
+
+    msg = Message(subject="Student Portal Password Reset", recipients=[user.email])
+    msg.body = f"Username: {user.username}\nPassword Reset Link: {reset_link}"
+    msg.html = f"""
+    <html>
+        <body>
+            <p>Please click the button below to reset the password for {user.username}</p>
+            <p>
+                <a href="{reset_link}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+                    RESET PASSWORD
+                </a>
+            </p>
+            <br>
+            <p>If the button doesn't work, use this link: <a href="{reset_link}">{reset_link}</a></p>
+        </body>
+    </html>
+    """
+    try:
+        mail.send(msg)
+        return jsonify({"msg": "Password reset link sent to your email"}), 200
+    except Exception as e:
+        return jsonify({"msg": "Email failed to send"}), 424
+
+
+@app.route("/reset-password", methods=["GET"])
+def handle_reset_password():
+    token = request.args.get("token")
+    try:
+        decoded_token = decode_token(token)
+        user_id = decoded_token["sub"]
+    except ExpiredSignatureError:
+        return jsonify({"msg": "Token is expired"}), 401
+    except InvalidTokenError:
+        return jsonify({"msg": "Invalid Token"}), 401
+    except KeyError:
+        return jsonify({"msg": "Invalid contains no identity"}), 401
+
+    user = User.query.get_or_404(user_id)
+
+    alphabet = string.ascii_letters + string.digits
+    new_password = ''.join(secrets.choice(alphabet) for i in range(8))
+
+    user.password_hash = generate_password_hash(new_password)
+    db.session.commit()
+
+    return f"You're New Password is: {new_password}", 200
