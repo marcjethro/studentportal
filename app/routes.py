@@ -190,8 +190,12 @@ def handle_forget_password():
     if not user:
         return jsonify({"msg": "Username does not exist"}), 401
 
+    print("here1")
+
     token = create_access_token(identity=user.user_id)
     reset_link = f"{BACKEND_URL}/reset-password?token={token}"
+
+    print(reset_link)
 
     msg = Message(subject="Student Portal Password Reset", recipients=[user.email])
     msg.body = f"Username: {user.username}\nPassword Reset Link: {reset_link}"
@@ -209,10 +213,15 @@ def handle_forget_password():
         </body>
     </html>
     """
+
+    print("here3")
+
     try:
+        print("before send")
         mail.send(msg)
         return jsonify({"msg": "Password reset link sent to your email"}), 200
     except Exception as e:
+        print("here4")
         return jsonify({"msg": "Email failed to send"}), 424
 
 
