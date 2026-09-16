@@ -317,6 +317,36 @@
           </div>
         </div>
       </article>
+
+      <!-- GET /api/auth/change-password -->
+      <article class="endpoint-card">
+        <div class="endpoint-header">
+          <span class="method post">POST</span>
+          <span class="path">/api/auth/change-password</span>
+          <span class="auth-badge any">🔒 Any Role</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-desc">Changes authenticated user's password.</p>
+
+          <div class="code-block-title">Request Body</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>{
+  <span class="json-key">"old_password"</span>: <span class="json-string">"studentPassword"</span>,
+  <span class="json-key">"new_password"</span>: <span class="json-string">"newStudentPassword"</span>
+}</code></pre>
+          </div>
+
+          <div class="code-block-title">Response (200 OK)</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>{
+  <span class="json-key">"msg"</span>: <span class="json-string">"Password changed successfully"</span>
+}</code></pre>
+          </div>
+        </div>
+      </article>
+
     </section>
 
     <!-- Administrative Endpoints -->

@@ -144,6 +144,30 @@ def handle_user(user_id):
             return jsonify({"error": "Could not delete item", "details": str(e)}), 500
 
 
+@app.route("/api/auth/change-password", methods=["POST"])
+@jwt_required()
+def handle_change_password():
+    identity = get_jwt_identity()
+    user_id = identity["user_id"]
+    user = db.session.get(User, user_id)
 
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
 
+    old_password = request.json.get("old_password", None)
+    new_password = request.json.get("new_password", None)
+
+    if old_password is None:
+        return jsonify({"msg": "Missing old_password"}), 400
+
+    if new_password is None:
+        return jsonify({"msg": "Missing new_password"}), 400
+
+    if not user.check_password(old_password):
+        return jsonify({"msg": "Wrong old_password"}), 401
+
+    user.password_hash = generate_password_hash(new_password)
+    db.session.commit()
+
+    return jsonify({"msg": "Password updated successfully"}), 200
 
