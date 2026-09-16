@@ -4,4 +4,6 @@ flask-cors
 flask-jwt-extended
 psycopg2-binary
 Gunicorn
-flask-mail
+google-api-python-client
+google-auth-oauthlib
+google-auth-httplib2

@@ -4,3 +4,4 @@ __pycache__/
 seed.py
 instance/
 dev.html
+credentials.json

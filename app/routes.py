@@ -4,13 +4,12 @@ import secrets
 
 from werkzeug.security import generate_password_hash
 from flask import jsonify, request, send_from_directory
-from flask_mail import Message
 from flask_jwt_extended import get_jwt_identity, jwt_required, create_access_token, decode_token
 from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 
-from app import app, db, mail, BACKEND_URL
+from app import app, db, BACKEND_URL
 from app.models import User, UserRole
-from app.utils import role_required
+from app.utils import role_required, send_email
 
 
 EMAIL_REGEX = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
@@ -190,16 +189,11 @@ def handle_forget_password():
     if not user:
         return jsonify({"msg": "Username does not exist"}), 401
 
-    print("here1")
-
     token = create_access_token(identity=user.user_id)
     reset_link = f"{BACKEND_URL}/reset-password?token={token}"
 
-    print(reset_link)
-
-    msg = Message(subject="Student Portal Password Reset", recipients=[user.email])
-    msg.body = f"Username: {user.username}\nPassword Reset Link: {reset_link}"
-    msg.html = f"""
+    text_content = f"Username: {user.username}\nPassword Reset Link: {reset_link}"
+    html_content = f"""
     <html>
         <body>
             <p>Please click the button below to reset the password for {user.username}</p>
@@ -214,14 +208,11 @@ def handle_forget_password():
     </html>
     """
 
-    print("here3")
-
     try:
-        print("before send")
-        mail.send(msg)
+        send_email("Password Reset", user.email, text_content, html_content)
         return jsonify({"msg": "Password reset link sent to your email"}), 200
     except Exception as e:
-        print("here4")
+        print(str(e))
         return jsonify({"msg": "Email failed to send"}), 424
 
 
@@ -246,4 +237,4 @@ def handle_reset_password():
     user.password_hash = generate_password_hash(new_password)
     db.session.commit()
 
-    return f"You're New Password is: {new_password}", 200
+    return f"Your New Password is: {new_password}", 200
