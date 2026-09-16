@@ -3,7 +3,7 @@ import string
 import secrets
 
 from werkzeug.security import generate_password_hash
-from flask import jsonify, request, send_from_directory
+from flask import jsonify, request, send_from_directory, render_template
 from flask_jwt_extended import get_jwt_identity, jwt_required, create_access_token, decode_token
 from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 
@@ -210,7 +210,7 @@ def handle_forget_password():
 
     try:
         send_email("Password Reset", user.email, text_content, html_content)
-        return jsonify({"msg": "Password reset link sent to your email"}), 200
+        return jsonify({"msg": "Password reset link sent to user's email"}), 200
     except Exception as e:
         print(str(e))
         return jsonify({"msg": "Email failed to send"}), 424
@@ -237,4 +237,4 @@ def handle_reset_password():
     user.password_hash = generate_password_hash(new_password)
     db.session.commit()
 
-    return f"Your New Password is: {new_password}", 200
+    return render_template("reset.html", password=new_password), 200
