@@ -105,7 +105,7 @@ def handle_users():
 
 
 @app.route("/api/auth/users/<int:user_id>", methods=["GET", "PATCH", "DELETE"])
-@role_required("edp")
+@role_required("admin")
 def handle_user(user_id):
     user = User.query.get_or_404(user_id)
 
