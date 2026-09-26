@@ -30,7 +30,7 @@ def reset_database():
                  [2, "teacherUser", "teacher@school.com", "teacherPassword"],
                  [3, "edpUser", "edp@school.com", "edpPassword"],
                  [4, "accountingUser", "accounting@school.com", "accountingPassword"],
-                 [5, "registrarUser", "registrar@school.com", "registrarPassword"]],
+                 [5, "registrarUser", "registrar@school.com", "registrarPassword"],
                  [6, "adminUser", "admin@school.com", "adminPassword"]]
         for u in users:
             db.session.add(User(u[0], u[1], u[2], u[3]))
