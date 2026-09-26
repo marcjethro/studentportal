@@ -54,14 +54,14 @@ def login():
 
 
 @app.route("/api/auth/roles")
-@role_required("edp")
+@role_required("admin")
 def handle_roles():
     roles = db.session.scalars(db.select(UserRole)).all()
     return jsonify([role.asdict() for role in roles]), 200
 
 
 @app.route("/api/auth/users", methods=["GET", "POST"])
-@role_required("edp")
+@role_required("admin")
 def handle_users():
     if request.method == "GET":
         users = db.session.scalars(db.select(User)).all()
