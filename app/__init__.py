@@ -6,7 +6,6 @@ from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
-
 app = Flask(__name__)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DB_URI")
@@ -23,5 +22,9 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 jwt = JWTManager(app)
 db = SQLAlchemy(app)
 
-from app import routes
 from app import dev
+from app.routes.auth import auth_bp
+from app.routes.main import main_bp
+
+app.register_blueprint(main_bp)
+app.register_blueprint(auth_bp, url_prefix="/api/auth")

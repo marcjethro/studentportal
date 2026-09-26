@@ -1,38 +1,20 @@
 import re
-import string
-import secrets
 
+from flask import Blueprint
 from werkzeug.security import generate_password_hash
-from flask import jsonify, request, send_from_directory, render_template
-from flask_jwt_extended import get_jwt_identity, jwt_required, create_access_token, decode_token
-from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
+from flask import jsonify, request
+from flask_jwt_extended import get_jwt_identity, jwt_required, create_access_token
 
-from app import app, db, BACKEND_URL
+from app import db, BACKEND_URL
 from app.models import User, UserRole
 from app.utils import role_required, send_email
 
 
+auth_bp = Blueprint("auth", __name__)
+
 EMAIL_REGEX = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
 
-
-@app.route('/')
-def homepage():
-    return send_from_directory("../static", "doc.html")
-
-@app.route("/api/getUserDetails", methods=["GET"])
-@jwt_required()
-def getUserDetails():
-    identity = get_jwt_identity()
-    user_id = identity["user_id"]
-    user = db.session.get(User, user_id)
-    return jsonify({
-        "username": user.username,
-        "email": user.email,
-        "role": user.role.role_name
-        }), 200
-
-
-@app.route("/api/auth/login", methods=["POST"])
+@auth_bp.route("/login", methods=["POST"])
 def login():
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400
@@ -52,15 +34,14 @@ def login():
     token = create_access_token(identity=identity)
     return jsonify(token=token, role=user.role.role_name), 200
 
-
-@app.route("/api/auth/roles")
+@auth_bp.route("/roles")
 @role_required("admin")
 def handle_roles():
     roles = db.session.scalars(db.select(UserRole)).all()
     return jsonify([role.asdict() for role in roles]), 200
 
 
-@app.route("/api/auth/users", methods=["GET", "POST"])
+@auth_bp.route("/users", methods=["GET", "POST"])
 @role_required("admin")
 def handle_users():
     if request.method == "GET":
@@ -103,8 +84,7 @@ def handle_users():
         db.session.commit()
         return jsonify({"user_id": new_user.user_id, "msg": "User created successfully"}), 200
 
-
-@app.route("/api/auth/users/<int:user_id>", methods=["GET", "PATCH", "DELETE"])
+@auth_bp.route("/users/<int:user_id>", methods=["GET", "PATCH", "DELETE"])
 @role_required("admin")
 def handle_user(user_id):
     user = User.query.get_or_404(user_id)
@@ -146,8 +126,7 @@ def handle_user(user_id):
             db.session.rollback()
             return jsonify({"error": "Could not delete item", "details": str(e)}), 500
 
-
-@app.route("/api/auth/change-password", methods=["POST"])
+@auth_bp.route("/change-password", methods=["POST"])
 @jwt_required()
 def handle_change_password():
     identity = get_jwt_identity()
@@ -175,7 +154,7 @@ def handle_change_password():
     return jsonify({"msg": "Password updated successfully"}), 200
 
 
-@app.route("/api/auth/forget-password", methods=["POST"])
+@auth_bp.route("/forget-password", methods=["POST"])
 def handle_forget_password():
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400
@@ -215,26 +194,3 @@ def handle_forget_password():
         print(str(e))
         return jsonify({"msg": "Email failed to send"}), 424
 
-
-@app.route("/reset-password", methods=["GET"])
-def handle_reset_password():
-    token = request.args.get("token")
-    try:
-        decoded_token = decode_token(token)
-        user_id = decoded_token["sub"]
-    except ExpiredSignatureError:
-        return jsonify({"msg": "Token is expired"}), 401
-    except InvalidTokenError:
-        return jsonify({"msg": "Invalid Token"}), 401
-    except KeyError:
-        return jsonify({"msg": "Invalid contains no identity"}), 401
-
-    user = User.query.get_or_404(user_id)
-
-    alphabet = string.ascii_letters + string.digits
-    new_password = ''.join(secrets.choice(alphabet) for i in range(8))
-
-    user.password_hash = generate_password_hash(new_password)
-    db.session.commit()
-
-    return render_template("reset.html", password=new_password), 200
