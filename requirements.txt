@@ -2,7 +2,6 @@ Flask
 Flask-SQLAlchemy
 flask-cors
 flask-jwt-extended
-psycopg2-binary
 psycopg[binary]
 Gunicorn
 google-api-python-client
