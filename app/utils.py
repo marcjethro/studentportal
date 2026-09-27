@@ -44,6 +44,7 @@ def get_gmail_service():
         client_id=getenv("GMAIL_CLIENT_ID"),
         client_secret=getenv("GMAIL_CLIENT_SECRET")
     )
+
     if not creds.valid:
         creds.refresh(Request())
 
