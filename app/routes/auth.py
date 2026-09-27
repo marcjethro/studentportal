@@ -191,6 +191,6 @@ def handle_forget_password():
         send_email("Password Reset", user.email, text_content, html_content)
         return jsonify({"msg": "Password reset link sent to user's email"}), 200
     except Exception as e:
-        print(str(e))
+        return str(e)
         return jsonify({"msg": "Email failed to send"}), 424
 
