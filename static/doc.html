@@ -167,6 +167,18 @@
       border-color: #6366f1;
     }
 
+    .auth-badge.admin {
+      background-color: #064e3b;
+      color: #6ee7b7;
+      border-color: #059669;
+    }
+
+    .auth-badge.staff {
+      background-color: #4c1d95;
+      color: #ddd6fe;
+      border-color: #7c3aed;
+    }
+
     .endpoint-body {
       padding: 1.5rem;
     }
@@ -284,7 +296,7 @@
           <div class="code-container">
             <button class="copy-btn" onclick="copyCode(this)">Copy</button>
             <pre><code>{
-  <span class="json-key">"role"</span>: <span class="json-string">"student"</span>
+  <span class="json-key">"role"</span>: <span class="json-string">"student"</span>,
   <span class="json-key">"token"</span>: <span class="json-string">"eyJhbGciOiJIUzI1Ni..."</span>
 }</code></pre>
           </div>
@@ -305,7 +317,7 @@
           <div class="code-container">
             <button class="copy-btn" onclick="copyCode(this)">Copy</button>
             <pre><code>{
-  <span class="json-key">"username"</span>: <span class="json-string">"studentUser"</span>,
+  <span class="json-key">"username"</span>: <span class="json-string">"studentUser"</span>
 }</code></pre>
           </div>
 
@@ -346,7 +358,7 @@
         </div>
       </article>
 
-      <!-- GET /api/auth/change-password -->
+      <!-- POST /api/auth/change-password -->
       <article class="endpoint-card">
         <div class="endpoint-header">
           <span class="method post">POST</span>
@@ -379,14 +391,14 @@
 
     <!-- Administrative Endpoints -->
     <section id="admin-endpoints">
-      <h2>Administrative Endpoints (Role: EDP)</h2>
+      <h2>Administrative Endpoints (Role: Admin)</h2>
 
       <!-- GET /api/auth/roles -->
       <article class="endpoint-card">
         <div class="endpoint-header">
           <span class="method get">GET</span>
           <span class="path">/api/auth/roles</span>
-          <span class="auth-badge edp">🔒 Role: edp</span>
+          <span class="auth-badge admin">🔒 Role: admin</span>
         </div>
         <div class="endpoint-body">
           <p class="endpoint-desc">Retrieves a list of all available system roles.</p>
@@ -410,7 +422,7 @@
         <div class="endpoint-header">
           <span class="method get">GET</span>
           <span class="path">/api/auth/users</span>
-          <span class="auth-badge edp">🔒 Role: edp</span>
+          <span class="auth-badge admin">🔒 Role: admin</span>
         </div>
         <div class="endpoint-body">
           <p class="endpoint-desc">Fetches a list of all registered users in the system.</p>
@@ -430,7 +442,7 @@
     <span class="json-key">"username"</span>: <span class="json-string">"teacherUser"</span>,
     <span class="json-key">"email"</span>: <span class="json-string">"teacher@school.com"</span>,
     <span class="json-key">"role"</span>: <span class="json-string">"teacher"</span>
-  }, ...
+  }
 ]</code></pre>
           </div>
         </div>
@@ -441,7 +453,7 @@
         <div class="endpoint-header">
           <span class="method post">POST</span>
           <span class="path">/api/auth/users</span>
-          <span class="auth-badge edp">🔒 Role: edp</span>
+          <span class="auth-badge admin">🔒 Role: admin</span>
         </div>
         <div class="endpoint-body">
           <p class="endpoint-desc">Creates a new user record in the database.</p>
@@ -473,7 +485,7 @@
         <div class="endpoint-header">
           <span class="method get">GET</span>
           <span class="path">/api/auth/users/&lt;int:user_id&gt;</span>
-          <span class="auth-badge edp">🔒 Role: edp</span>
+          <span class="auth-badge admin">🔒 Role: admin</span>
         </div>
         <div class="endpoint-body">
           <p class="endpoint-desc">Retrieves detailed information for a specific user ID.</p>
@@ -496,7 +508,7 @@
         <div class="endpoint-header">
           <span class="method patch">PATCH</span>
           <span class="path">/api/auth/users/&lt;int:user_id&gt;</span>
-          <span class="auth-badge edp">🔒 Role: edp</span>
+          <span class="auth-badge admin">🔒 Role: admin</span>
         </div>
         <div class="endpoint-body">
           <p class="endpoint-desc">Partially updates username, email, or password for a specific user ID.</p>
@@ -505,8 +517,8 @@
           <div class="code-container">
             <button class="copy-btn" onclick="copyCode(this)">Copy</button>
             <pre><code>{
-  <span class="json-key">"password"</span>: <span class="json-string">"updatedPassword"</span>
-  <span class="json-key">"email"</span>: <span class="json-string">"updated_student@school.com"</span>,
+  <span class="json-key">"password"</span>: <span class="json-string">"updatedPassword"</span>,
+  <span class="json-key">"email"</span>: <span class="json-string">"updated_student@school.com"</span>
 }</code></pre>
           </div>
 
@@ -525,7 +537,7 @@
         <div class="endpoint-header">
           <span class="method delete">DELETE</span>
           <span class="path">/api/auth/users/&lt;int:user_id&gt;</span>
-          <span class="auth-badge edp">🔒 Role: edp</span>
+          <span class="auth-badge admin">🔒 Role: admin</span>
         </div>
         <div class="endpoint-body">
           <p class="endpoint-desc">Permanently removes a user account by ID.</p>
@@ -535,6 +547,223 @@
             <button class="copy-btn" onclick="copyCode(this)">Copy</button>
             <pre><code>{
   <span class="json-key">"msg"</span>: <span class="json-string">"User deleted successfully"</span>
+}</code></pre>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- Announcement Module -->
+    <section id="announcement-module">
+      <h2>Announcement Module</h2>
+
+      <!-- POST /api/announcements -->
+      <article class="endpoint-card">
+        <div class="endpoint-header">
+          <span class="method post">POST</span>
+          <span class="path">/api/announcements</span>
+          <span class="auth-badge admin">🔒 Role: admin</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-desc">Creates a new system-wide announcement.</p>
+
+          <div class="code-block-title">Request Body</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>{
+  <span class="json-key">"title"</span>: <span class="json-string">"Midterm Exam Schedule Announcement"</span>,
+  <span class="json-key">"body"</span>: <span class="json-string">"Midterm examinations will begin next Monday. Please review your schedules."</span>
+}</code></pre>
+          </div>
+
+          <div class="code-block-title">Response (201 Created)</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>{
+  <span class="json-key">"announcement_id"</span>: <span class="json-number">101</span>,
+  <span class="json-key">"msg"</span>: <span class="json-string">"Announcement posted successfully"</span>
+}</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- GET /api/announcements -->
+      <article class="endpoint-card">
+        <div class="endpoint-header">
+          <span class="method get">GET</span>
+          <span class="path">/api/announcements</span>
+          <span class="auth-badge any">🔒 Any Role</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-desc">Returns all announcements.</p>
+
+          <div class="code-block-title">Response (200 OK)</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>[
+  {
+    <span class="json-key">"announcement_id"</span>: <span class="json-number">101</span>,
+    <span class="json-key">"title"</span>: <span class="json-string">"Midterm Exam Schedule Announcement"</span>,
+    <span class="json-key">"body"</span>: <span class="json-string">"Midterm examinations will begin next Monday. Please review your schedules."</span>,
+    <span class="json-key">"created_at"</span>: <span class="json-string">"2026-09-28T07:00:00Z"</span>,
+    <span class="json-key">"author"</span>: <span class="json-string">"Admin User"</span>
+  }
+]</code></pre>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- Enrollment Module -->
+    <section id="enrollment-module">
+      <h2>Enrollment Module</h2>
+
+      <!-- GET /api/courses -->
+      <article class="endpoint-card">
+        <div class="endpoint-header">
+          <span class="method get">GET</span>
+          <span class="path">/api/courses</span>
+          <span class="auth-badge none">No Auth</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-desc">Returns course_id and course_name of all courses.</p>
+
+          <div class="code-block-title">Response (200 OK)</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>[
+  {
+    <span class="json-key">"course_id"</span>: <span class="json-number">1</span>,
+    <span class="json-key">"course_name"</span>: <span class="json-string">"BS Computer Science"</span>
+  },
+  {
+    <span class="json-key">"course_id"</span>: <span class="json-number">2</span>,
+    <span class="json-key">"course_name"</span>: <span class="json-string">"BS Information Technology"</span>
+  }
+]</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- POST /api/enrollments -->
+      <article class="endpoint-card">
+        <div class="endpoint-header">
+          <span class="method post">POST</span>
+          <span class="path">/api/enrollments</span>
+          <span class="auth-badge none">No Auth</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-desc">Submits a new enrollment application.</p>
+
+          <div class="code-block-title">Request Body</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>{
+  <span class="json-key">"first_name"</span>: <span class="json-string">"Juan"</span>,
+  <span class="json-key">"suffix"</span>: <span class="json-string">"Jr."</span>,
+  <span class="json-key">"middle_name"</span>: <span class="json-string">"Dela"</span>,
+  <span class="json-key">"last_name"</span>: <span class="json-string">"Cruz"</span>,
+  <span class="json-key">"birthdate"</span>: <span class="json-string">"05/15/04"</span>,
+  <span class="json-key">"phone number"</span>: <span class="json-string">"+639123456789"</span>,
+  <span class="json-key">"email"</span>: <span class="json-string">"juan.cruz@example.com"</span>,
+  <span class="json-key">"home_address"</span>: <span class="json-string">"123 Main St, Cebu City"</span>,
+  <span class="json-key">"course_id"</span>: <span class="json-number">1</span>,
+  <span class="json-key">"year_level"</span>: <span class="json-number">1</span>,
+  <span class="json-key">"semester"</span>: <span class="json-number">1</span>,
+  <span class="json-key">"preferred_schedule"</span>: <span class="json-string">"Morning"</span>,
+  <span class="json-key">"enrollment_type_id"</span>: <span class="json-number">2</span>
+}</code></pre>
+          </div>
+
+          <div class="code-block-title">Response (201 Created)</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>{
+  <span class="json-key">"enrollment_id"</span>: <span class="json-string">"t9g8KGMl"</span>,
+  <span class="json-key">"msg"</span>: <span class="json-string">"Enrollment created successfully! enrollment_id sent to email!"</span>
+}</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- GET /api/enrollments -->
+      <article class="endpoint-card">
+        <div class="endpoint-header">
+          <span class="method get">GET</span>
+          <span class="path">/api/enrollments</span>
+          <span class="auth-badge staff">🔒 Roles: registrar, edp, accounting</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-desc">Returns all enrollment rows for administrative review.</p>
+
+          <div class="code-block-title">Required Headers</div>
+          <div class="code-container">
+            <pre><code>Authorization: Bearer &lt;token&gt;</code></pre>
+          </div>
+
+          <div class="code-block-title">Response (200 OK)</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>[
+  {
+    <span class="json-key">"enrollment_id"</span>: <span class="json-string">"t9g8KGMl"</span>,
+    <span class="json-key">"enrollment_type"</span>: <span class="json-string">"New Student"</span>,
+    <span class="json-key">"student_info"</span>: {
+      <span class="json-key">"birthdate"</span>: <span class="json-string">"Sat, 07 Mar 2026 00:00:00 GMT"</span>,
+      <span class="json-key">"course"</span>: <span class="json-string">"Bachelor of Elementary Education"</span>,
+      <span class="json-key">"email"</span>: <span class="json-string">"email@gmail.com"</span>,
+      <span class="json-key">"first_name"</span>: <span class="json-string">"Tan"</span>,
+      <span class="json-key">"home_address"</span>: <span class="json-string">"Busay"</span>,
+      <span class="json-key">"last_name"</span>: <span class="json-string">"Cortes"</span>,
+      <span class="json-key">"middle_name"</span>: <span class="json-string">"Karlo"</span>,
+      <span class="json-key">"phone_number"</span>: <span class="json-string">"09164342883"</span>,
+      <span class="json-key">"preferred_schedule"</span>: <span class="json-string">"Morning"</span>,
+      <span class="json-key">"semester"</span>: <span class="json-string">"First Semester"</span>,
+      <span class="json-key">"student_info_id"</span>: <span class="json-number">2</span>,
+      <span class="json-key">"suffix"</span>: <span class="json-boolean">null</span>,
+      <span class="json-key">"year"</span>: <span class="json-string">"First Year"</span>
+    },
+    <span class="json-key">"status"</span>: <span class="json-string">"Pending"</span>
+  }
+]</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- GET /api/enrollments/<string:enrollment_id> -->
+      <article class="endpoint-card">
+        <div class="endpoint-header">
+          <span class="method get">GET</span>
+          <span class="path">/api/enrollments/&lt;string:enrollment_id&gt;</span>
+          <span class="auth-badge none">No Auth</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-desc">Allows applicants to track their enrollment status and view submission details.</p>
+
+          <div class="code-block-title">Response (200 OK)</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>{
+  <span class="json-key">"enrollment_id"</span>: <span class="json-string">"t9g8KGMl"</span>,
+  <span class="json-key">"enrollment_type"</span>: <span class="json-string">"New Student"</span>,
+  <span class="json-key">"student_info"</span>: {
+    <span class="json-key">"birthdate"</span>: <span class="json-string">"Sat, 07 Mar 2026 00:00:00 GMT"</span>,
+    <span class="json-key">"course"</span>: <span class="json-string">"Bachelor of Elementary Education"</span>,
+    <span class="json-key">"email"</span>: <span class="json-string">"email@gmail.com"</span>,
+    <span class="json-key">"first_name"</span>: <span class="json-string">"Tan"</span>,
+    <span class="json-key">"home_address"</span>: <span class="json-string">"Busay"</span>,
+    <span class="json-key">"last_name"</span>: <span class="json-string">"Cortes"</span>,
+    <span class="json-key">"middle_name"</span>: <span class="json-string">"Karlo"</span>,
+    <span class="json-key">"phone_number"</span>: <span class="json-string">"09164342883"</span>,
+    <span class="json-key">"preferred_schedule"</span>: <span class="json-string">"Morning"</span>,
+    <span class="json-key">"semester"</span>: <span class="json-string">"First Semester"</span>,
+    <span class="json-key">"student_info_id"</span>: <span class="json-number">2</span>,
+    <span class="json-key">"suffix"</span>: <span class="json-boolean">null</span>,
+    <span class="json-key">"year"</span>: <span class="json-string">"First Year"</span>
+  },
+  <span class="json-key">"status"</span>: <span class="json-string">"Pending"</span>
 }</code></pre>
           </div>
         </div>

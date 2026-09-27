@@ -6,7 +6,7 @@ from flask import jsonify, request
 from sqlalchemy import text
 
 from app import app, db
-from app.models import User, UserRole
+from app.models import User, UserRole, EnrollmentType, DocumentRequirement, Course
 
 def reset_database():
     with app.app_context():
@@ -34,6 +34,27 @@ def reset_database():
                  [6, "adminUser", "admin@school.com", "adminPassword"]]
         for u in users:
             db.session.add(User(u[0], u[1], u[2], u[3]))
+
+        enrollment_type_names = ["Old/Returnee Student", "New Student", "Transferee Student"]
+        enrollment_types = [EnrollmentType(enrollment_type_name=name) for name in enrollment_type_names]
+        db.session.add_all(enrollment_types)
+
+        document_requirement_names = ["Study Load", "Complete Clearance Form"]
+        document_requirements = [DocumentRequirement(enrollment_type_id=1, requirement_name=name) for name in document_requirement_names]
+        db.session.add_all(document_requirements)
+
+        document_requirement_names = ["Senior High School Grades", "Scholarship Documents", "Good Moral", "Diploma", "Form 137"]
+        document_requirements = [DocumentRequirement(enrollment_type_id=2, requirement_name=name) for name in document_requirement_names]
+        db.session.add_all(document_requirements)
+
+        document_requirement_names = ["Transcript of Records", "Scholarship Documents", "Good Moral", "Diploma", "Honorable Dismissal"]
+        document_requirements = [DocumentRequirement(enrollment_type_id=3, requirement_name=name) for name in document_requirement_names]
+        db.session.add_all(document_requirements)
+
+        course_names = ["Bachelor of Elementary Education", "Bachelor of Secondary Education", "BS in Information Technology", "BS in Tourism Management", "BS in Criminology"]
+        courses = [Course(course_name=name) for name in course_names]
+        db.session.add_all(courses)
+
         db.session.commit()
         print("Database ready!")
         return True

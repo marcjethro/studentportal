@@ -1,3 +1,6 @@
+import secrets
+import string
+
 import base64
 from os import getenv
 from email.message import EmailMessage
@@ -11,6 +14,10 @@ from functools import wraps
 from flask import jsonify
 from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
 
+
+def generate_random_id():
+    alphabet = string.ascii_letters + string.digits
+    return ''.join(secrets.choice(alphabet) for _ in range(8))
 
 def role_required(allowed_roles):
     """

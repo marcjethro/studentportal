@@ -26,7 +26,9 @@ from app import dev
 from app.routes.auth import auth_bp
 from app.routes.main import main_bp
 from app.routes.announcements import announcements_bp
+from app.routes.enrollment import enrollment_bp
 
 app.register_blueprint(main_bp)
 app.register_blueprint(announcements_bp, url_prefix="/api")
+app.register_blueprint(enrollment_bp, url_prefix="/api")
 app.register_blueprint(auth_bp, url_prefix="/api/auth")
