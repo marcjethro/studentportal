@@ -647,6 +647,43 @@
         </div>
       </article>
 
+      <!-- POST /api/requirements -->
+      <article class="endpoint-card">
+        <div class="endpoint-header">
+          <span class="method post">POST</span>
+          <span class="path">/api/requirements</span>
+          <span class="auth-badge none">No Auth</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-desc">Retrieves the list of required documents for a given enrollment type.</p>
+
+          <div class="code-block-title">Request Body</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>{
+  <span class="json-key">"enrollment_type_id"</span>: <span class="json-number">1</span>
+}</code></pre>
+          </div>
+
+          <div class="code-block-title">Response (200 OK)</div>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code>[
+  {
+    <span class="json-key">"enrollment_type"</span>: <span class="json-string">"Old/Returnee Student"</span>,
+    <span class="json-key">"requirement_id"</span>: <span class="json-number">1</span>,
+    <span class="json-key">"requirement_name"</span>: <span class="json-string">"Study Load"</span>
+  },
+  {
+    <span class="json-key">"enrollment_type"</span>: <span class="json-string">"Old/Returnee Student"</span>,
+    <span class="json-key">"requirement_id"</span>: <span class="json-number">2</span>,
+    <span class="json-key">"requirement_name"</span>: <span class="json-string">"Complete Clearance Form"</span>
+  }
+]</code></pre>
+          </div>
+        </div>
+      </article>
+
       <!-- POST /api/enrollments -->
       <article class="endpoint-card">
         <div class="endpoint-header">

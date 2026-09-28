@@ -92,6 +92,13 @@ class DocumentRequirement(db.Model):
     enrollment_type_id = db.Column(db.Integer, db.ForeignKey('enrollment_type.enrollment_type_id'), nullable=False)
     enrollment_type = db.relationship("EnrollmentType", back_populates="document_requirements", lazy="joined")
 
+    def asdict(self):
+        res = dict()
+        res["requirement_id"] = self.requirement_id
+        res["requirement_name"] = self.requirement_name
+        res["enrollment_type"] = self.enrollment_type.enrollment_type_name
+        return res
+
 class Announcement(db.Model):
     announcement_id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(150), nullable=False)

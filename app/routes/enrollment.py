@@ -5,11 +5,23 @@ from flask import jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required, create_access_token
 
 from app import db, BACKEND_URL
-from app.models import Enrollment, Course, StudentInfo, EnrollmentType
+from app.models import Enrollment, Course, StudentInfo, EnrollmentType, DocumentRequirement
 from app.utils import role_required, send_email
 
 
 enrollment_bp = Blueprint("enrollment", __name__)
+
+@enrollment_bp.route("/requirements", methods=["POST"])
+def handle_get_requirements():
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
+
+    enrollment_type_id = request.json.get("enrollment_type_id", None)
+    if not enrollment_type_id:
+        return jsonify({"msg": "Missing enrollment_type_id"}), 400
+
+    document_requirements = db.session.execute(db.select(DocumentRequirement).where(DocumentRequirement.enrollment_type_id == enrollment_type_id)).scalars().all()
+    return jsonify([requirement.asdict() for requirement in document_requirements]), 200
 
 @enrollment_bp.route("/courses", methods=["GET"])
 def handle_get_courses():
