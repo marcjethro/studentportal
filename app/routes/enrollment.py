@@ -94,12 +94,12 @@ def handle_submit_enrollment():
     if enrollment_type is None:
         return jsonify({"msg": "Invalid enrollment_type_id"}), 400
 
-    new_student_info = StudentInfo(first_name=first_name, suffix=suffix, middle_name=middle_name, last_name=last_name, birthdate=birthdate, phone_number=phone_number, email=email, home_address=home_address, course_id=course_id, year_level=year_level, semester=semester, preferred_schedule=preferred_schedule, status="Pending")
+    new_student_info = StudentInfo(first_name=first_name, suffix=suffix, middle_name=middle_name, last_name=last_name, birthdate=birthdate, phone_number=phone_number, email=email, home_address=home_address, course_id=course_id, year_level=year_level, semester=semester, preferred_schedule=preferred_schedule)
 
     db.session.add(new_student_info)
     db.session.commit()
 
-    new_enrollment = Enrollment(student_info_id=new_student_info.student_info_id, enrollment_type_id=enrollment_type_id)
+    new_enrollment = Enrollment(student_info_id=new_student_info.student_info_id, enrollment_type_id=enrollment_type_id, status="Pending")
 
     db.session.add(new_enrollment)
     db.session.commit()
