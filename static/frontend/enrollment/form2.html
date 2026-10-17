@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cebu Eastern College, Inc. - Enrollment Form 2</title>
+    <link rel="stylesheet" href="form2.css">
+</head>
+
+<body>
+
+    <div class="page">
+
+        <!-- Header -->
+        <header class="header">
+            <div class="school-brand">
+                <img src="../images/CEC_LOGO.png" alt="Cebu Eastern College Logo" class="logo">
+                <h1>Cebu Eastern College, Inc.</h1>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="content">
+            <h2>COLLEGE DEPARTMENT</h2>
+            <p class="subtitle" id="sub-title">ENROLLMENT FORM</p>
+
+            <!-- FINAL ENROLLMENT FORM -->
+            <form id="finalEnrollmentForm" class="enrollment-section">
+
+                <div class="section-title">
+                    Academic Enrollment
+                </div>
+
+                <div class="form-grid">
+
+                    <!-- Course -->
+                    <div class="form-group">
+                        <label for="course">Course / Program</label>
+                        <select id="course" name="course_id" required>
+                            <option value="" selected disabled>Loading courses...</option>
+                        </select>
+                    </div>
+
+                    <!-- Schedule -->
+                    <div class="form-group">
+                        <label for="schedule">Preferred Schedule</label>
+                        <select id="schedule" name="preferred_schedule" required>
+                            <option value="" selected disabled>Select Schedule</option>
+                            <option value="Morning">Morning</option>
+                            <option value="Afternoon">Afternoon</option>
+                            <option value="Evening">Evening</option>
+                        </select>
+                    </div>
+
+                    <!-- Year Level -->
+                    <div class="form-group">
+                        <label for="year">Year Level</label>
+                        <select id="year" name="year_level" required>
+                            <option value="" selected disabled>Select Year Level</option>
+                            <option value="1">1st Year</option>
+                            <option value="2">2nd Year</option>
+                            <option value="3">3rd Year</option>
+                            <option value="4">4th Year</option>
+                        </select>
+                    </div>
+
+                    <!-- Semester -->
+                    <div class="form-group">
+                        <label for="semester">Semester</label>
+                        <select id="semester" name="semester" required>
+                            <option value="" selected disabled>Select Semester</option>
+                            <option value="1">1st Semester</option>
+                            <option value="2">2nd Semester</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <!-- Documents -->
+                <div class="documents">
+                    <h3>Document Requirements:</h3>
+                    <ul id="requirements-list">
+                        <li>Loading requirements...</li>
+                    </ul>
+
+                    <p class="warning">
+                        Please submit these documents to the school after submitting the form.
+                    </p>
+                </div>
+
+                <!-- Final Submit Button -->
+                <button type="submit" class="submit-button" id="submitBtn">
+                    SUBMIT ENROLLMENT FORM
+                </button>
+
+            </form>
+
+        </main>
+
+    </div>
+
+    <!-- Single JavaScript entry point -->
+    <script src="enrollment.js"></script>
+
+</body>
+
+</html>

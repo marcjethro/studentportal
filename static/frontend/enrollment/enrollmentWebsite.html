@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cebu Eastern College, Inc.</title>
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <!-- Separate CSS -->
+    <link rel="stylesheet" href="enrollmentWebsite.css" />
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="school-logo">
+        <img src="../images/CEC_LOGO.png" alt="Cebu Eastern College Logo" />
+      </div>
+
+      <h1>Cebu Eastern College, Inc.</h1>
+      <a href="#" class="back-button" id="loginButton">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Login
+      </a>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <h2>COLLEGE DEPARTMENT</h2>
+
+      <!-- Student Type Buttons -->
+      <div class="student-options">
+        <div class="student-card old-student" id="old-student-div">
+          <span>OLD/ RETURNEE<br />STUDENT</span>
+        </div>
+
+        <div class="student-card new-student" id="new-student-div">
+          <a href="form1.html">
+            <span>NEW STUDENT</span>
+          </a>
+        </div>
+
+        <div class="student-card transferee" id="transferee-div">
+          <span>TRANSFEREE<br />STUDENT</span>
+        </div>
+      </div>
+
+      <!-- Track Enrollment -->
+      <div class="tracking">
+        <p>Already submitted an enrollment form? Track your progress here.</p>
+
+        <div class="track-area">
+          <input type="text" id="trackingNumber" />
+
+          <button onclick="trackApplication()">Track</button>
+        </div>
+      </div>
+    </main>
+
+    <script src="enrollment.js"></script>
+  </body>
+</html>

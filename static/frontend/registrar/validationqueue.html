@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CEC - Validation Queue</title>
+
+    <link rel="stylesheet" href="validationqueue.css">
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    
+  </head>
+
+  <body>
+    <!-- ==================== NAVBAR ==================== -->
+    <nav>
+      <div class="nav-left">
+        <img src="../images/CEC_LOGO.png" alt="CEC Logo" />
+        <h1>CEC - Registrar</h1>
+      </div>
+
+      <div class="nav-right">
+        <div class="notif-btn">
+          <i class="fa-solid fa-bell"></i>
+          10
+          <span class="dot"></span>
+        </div>
+
+        <div class="avatar-wrapper">
+          <div class="avatar" id="avatarBtn">
+            <i class="fa-solid fa-user"></i>
+          </div>
+
+          <div class="avatar-dropdown" id="avatarDropdown">
+            <p class="dropdown-name" id="officerName">&nbsp;</p>
+            <p class="dropdown-role" id="officerRole">Registrar</p>
+            <button id="changePasswordBtn" class="dropdown-secondary-btn">Change Password</button>
+            <button id="logoutBtn">Logout</button>
+            
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ==================== PAGE BODY ==================== -->
+    <div class="page-body">
+      <!-- ==================== SIDEBAR ==================== -->
+      <aside class="sidebar">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Search" />
+        </div>
+
+        <a class="nav-item" href="registrar.html">
+          <i class="fa-solid fa-house"></i>
+          Dashboard
+        </a>
+
+        <a class="nav-item active" href="validationqueue.html">
+          <i class="fa-solid fa-circle-check"></i>
+          Validation Queue
+        </a>
+
+        <a class="nav-item" href="processing.html">
+          <i class="fa-solid fa-file-lines"></i>
+          Processing
+        </a>
+
+        <a class="nav-item" href="studentrecords.html">
+          <i class="fa-solid fa-graduation-cap"></i>
+          Student Records
+        </a>
+      </aside>
+
+      <!-- ==================== MAIN ==================== -->
+      <main>
+        <p id="message"></p>
+
+        <!-- Content placeholder — sections not built yet -->
+        <div class="content-placeholder"></div>
+      </main>
+    </div>
+    
+  <script src="validationqueue.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CEC - Schedule &amp; Section Builder</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --brand: #0b3a9e;
+        --navy: navy;
+        --lavender: #e3e6f5;
+      }
+
+      * {
+        font-family: "Poppins", sans-serif;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: #eef0fa;
+        color: #111;
+        min-height: 100vh;
+      }
+
+      /* =========================================================
+         NAVBAR
+         ========================================================= */
+
+      nav {
+        position: sticky;
+        top: 0;
+
+        width: 100%;
+        height: 90px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        background-color: white;
+        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+
+        padding: 0 30px;
+        z-index: 20;
+      }
+
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      nav img {
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+      }
+
+      nav h1 {
+        margin: 0;
+
+        color: var(--navy);
+
+        font-size: clamp(20px, 2.4vw, 32px);
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+
+      .notif-btn {
+        position: relative;
+
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        padding: 8px 16px;
+
+        border: 1px solid var(--navy);
+        border-radius: 25px;
+
+        color: var(--navy);
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .notif-btn .dot {
+        position: absolute;
+        top: -3px;
+        right: -3px;
+
+        width: 9px;
+        height: 9px;
+
+        background-color: #dc2626;
+        border-radius: 50%;
+      }
+
+      .avatar-wrapper {
+        position: relative;
+      }
+
+      .avatar {
+        width: 48px;
+        height: 48px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background-color: var(--navy);
+        color: white;
+
+        border-radius: 50%;
+        font-size: 20px;
+
+        cursor: pointer;
+      }
+
+      .avatar-dropdown {
+        display: none;
+
+        position: absolute;
+        top: calc(100% + 12px);
+        right: 0;
+
+        width: 200px;
+
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
+
+        padding: 16px;
+        z-index: 30;
+      }
+
+      .avatar-dropdown.open {
+        display: block;
+      }
+
+      .avatar-dropdown .dropdown-name {
+        margin: 0;
+        font-weight: 700;
+        font-size: 14px;
+      }
+
+      .avatar-dropdown .dropdown-role {
+        margin: 2px 0 12px;
+        font-size: 12px;
+        color: gray;
+        text-transform: uppercase;
+      }
+
+      .avatar-dropdown button {
+        display: block;
+        width: 100%;
+
+        padding: 8px 0;
+        margin: 0 0 8px;
+
+        border: none;
+        border-radius: 20px;
+
+        font-weight: 600;
+        font-size: 13px;
+        line-height: 1.4;
+
+        cursor: pointer;
+      }
+
+      .avatar-dropdown button:last-child {
+        margin-bottom: 0;
+      }
+
+      #changePasswordBtn {
+        background-color: var(--navy);
+        color: white;
+      }
+
+      #changePasswordBtn:hover {
+        background-color: #1d4ed8;
+      }
+
+      #logoutBtn {
+        background-color: #dc2626;
+        color: white;
+      }
+
+      #logoutBtn:hover {
+        background-color: #b91c1c;
+      }
+
+      /* =========================================================
+         PAGE BODY
+         ========================================================= */
+
+      .page-body {
+        display: flex;
+
+        min-height: calc(100vh - 90px);
+
+        background: radial-gradient(
+            circle at 60% 15%,
+            rgba(255, 255, 255, 0.25),
+            rgba(173, 202, 235, 0.15) 40%,
+            rgba(120, 160, 210, 0.15) 70%
+          ),
+          url("../images/CEC_BG.jpg");
+
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      /* =========================================================
+         SIDEBAR
+         ========================================================= */
+
+      .sidebar {
+        width: 300px;
+        flex-shrink: 0;
+
+        background-color: var(--lavender);
+
+        padding: 24px 18px;
+
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .search-box {
+        position: relative;
+        margin-bottom: 10px;
+      }
+
+      .search-box i {
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--navy);
+      }
+
+      .search-box input {
+        width: 100%;
+
+        padding: 14px 16px 14px 44px;
+
+        border: 1px solid var(--brand);
+        border-radius: 30px;
+
+        font-size: 14px;
+        outline: none;
+        background-color: white;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        padding: 16px 20px;
+
+        border-radius: 30px;
+
+        background-color: white;
+        color: var(--navy);
+
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 1.25;
+
+        text-decoration: none;
+
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.12);
+      }
+
+      .nav-item i {
+        width: 22px;
+        flex-shrink: 0;
+        text-align: center;
+      }
+
+      .nav-item.active {
+        background-color: var(--brand);
+        color: white;
+      }
+
+      .nav-item:hover:not(.active) {
+        background-color: #f1f2fb;
+      }
+
+      /* =========================================================
+         MAIN
+         ========================================================= */
+
+      main {
+        flex: 1;
+        min-width: 0;
+
+        padding: 32px 40px 60px;
+      }
+
+      #message {
+        color: #b91c1c;
+        font-size: 14px;
+        min-height: 18px;
+        margin: 0 0 8px;
+      }
+
+      .content-header {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 18px;
+
+        margin-bottom: 24px;
+      }
+
+      .content-header h2 {
+        margin: 0;
+
+        color: var(--navy);
+
+        font-size: clamp(24px, 3vw, 34px);
+        font-weight: 800;
+      }
+
+      .filter-btn {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        padding: 10px 22px;
+
+        background-color: white;
+
+        border: 1px solid var(--brand);
+        border-radius: 25px;
+
+        font-weight: 600;
+        font-size: 14px;
+
+        cursor: pointer;
+      }
+
+      /* STAT CARDS */
+
+      .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 22px;
+
+        margin-bottom: 26px;
+      }
+
+      .stat-card {
+        background-color: var(--brand);
+        color: white;
+
+        border-radius: 14px;
+
+        padding: 26px 18px;
+
+        text-align: center;
+
+        box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.2);
+      }
+
+      .stat-number {
+        font-size: 48px;
+        font-weight: 800;
+        line-height: 1;
+
+        margin-bottom: 10px;
+      }
+
+      .stat-label {
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1.3;
+      }
+
+      /* NEEDS ATTENTION */
+
+      .attention-panel {
+        background-color: var(--brand);
+
+        border-radius: 14px;
+
+        padding: 24px;
+
+        box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.2);
+      }
+
+      .attention-panel h3 {
+        margin: 0 0 18px 8px;
+
+        color: white;
+
+        font-size: 26px;
+        font-weight: 800;
+      }
+
+      .attention-list {
+        background-color: white;
+        border-radius: 12px;
+      }
+
+      .attention-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 14px;
+
+        padding: 26px 28px;
+      }
+
+      .attention-row + .attention-row {
+        border-top: 2px solid #111;
+      }
+
+      .attention-text {
+        font-size: 19px;
+        font-weight: 700;
+        color: #111;
+      }
+
+      .pill {
+        padding: 9px 26px;
+
+        border-radius: 999px;
+
+        color: #111;
+
+        font-size: 15px;
+        font-weight: 600;
+
+        white-space: nowrap;
+      }
+
+      .pill.conflict {
+        background-color: #f01c1c;
+      }
+
+      .pill.unassigned {
+        background-color: #f5f500;
+      }
+
+      .pill.ready {
+        background-color: #ffa500;
+      }
+
+      /* =========================================================
+         RESPONSIVE
+         ========================================================= */
+
+      @media (max-width: 1100px) {
+        .stat-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .page-body {
+          flex-direction: column;
+        }
+
+        .sidebar {
+          width: 100%;
+        }
+
+        main {
+          padding: 24px 18px 40px;
+        }
+
+        .stat-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .attention-text {
+          font-size: 16px;
+        }
+      }
+
+      /* Content placeholder: sections not built yet */
+
+      .content-placeholder {
+        min-height: 480px;
+
+        background-color: #d9d9d9;
+
+        border-radius: 12px;
+      }
+
+      /* Data panel + table */
+
+      .data-panel {
+        background-color: white;
+
+        border-radius: 12px;
+
+        padding: 24px;
+
+        box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.15);
+      }
+
+      .data-panel h3 {
+        margin: 0 0 4px;
+        color: var(--navy);
+        font-size: 20px;
+        font-weight: 800;
+      }
+
+      .data-note {
+        margin: 0 0 16px;
+        color: #555;
+        font-size: 13px;
+      }
+
+      .data-status {
+        margin: 0 0 12px;
+        color: #333;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .table-scroll {
+        overflow-x: auto;
+      }
+
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .data-table thead th {
+        background-color: var(--lavender);
+        padding: 12px 16px;
+        text-align: left;
+        font-size: 13px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .data-table tbody td {
+        padding: 12px 16px;
+        font-size: 14px;
+        border-top: 1px solid #eee;
+      }
+
+      .data-table td.num {
+        font-weight: 700;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ==================== NAVBAR ==================== -->
+    <nav>
+      <div class="nav-left">
+        <img src="../images/CEC_LOGO.png" alt="CEC Logo" />
+        <h1>CEC - EDP Portal</h1>
+      </div>
+
+      <div class="nav-right">
+        <div class="notif-btn">
+          <i class="fa-solid fa-bell"></i>
+          10
+          <span class="dot"></span>
+        </div>
+
+        <div class="avatar-wrapper">
+          <div class="avatar" id="avatarBtn">
+            <i class="fa-solid fa-user"></i>
+          </div>
+
+          <div class="avatar-dropdown" id="avatarDropdown">
+            <p class="dropdown-name" id="officerName">&nbsp;</p>
+            <p class="dropdown-role" id="officerRole">EDP</p>
+            <button id="changePasswordBtn">Change Password</button>
+            <button id="logoutBtn">Logout</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ==================== PAGE BODY ==================== -->
+    <div class="page-body">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Search" />
+        </div>
+
+        <a class="nav-item" href="edp.html">
+          <i class="fa-solid fa-house"></i>
+          Dashboard
+        </a>
+
+        <a class="nav-item active" href="schedulebuilder.html">
+          <i class="fa-solid fa-calendar-days"></i>
+          Schedule &amp; Section Builder
+        </a>
+
+        <a class="nav-item" href="masterdata.html">
+          <i class="fa-solid fa-database"></i>
+          Master Data
+        </a>
+
+        <a class="nav-item" href="recordreleasequeue.html">
+          <i class="fa-solid fa-clipboard-list"></i>
+          Record Release Queue
+        </a>
+      </aside>
+
+      <!-- MAIN -->
+      <main>
+        <p id="message"></p>
+
+        <div class="content-header">
+          <h2>Schedule &amp; Section Builder</h2>
+        </div>
+
+        <div class="data-panel">
+          <h3>Enrollment demand</h3>
+          <p class="data-note">
+            Submitted applications grouped by course, year, semester and preferred
+            schedule. Sections and rooms are not available from the backend yet.
+          </p>
+          <p class="data-status" id="tableStatus">Loading applications...</p>
+
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Course</th>
+                  <th>Year Level</th>
+                  <th>Semester</th>
+                  <th>Preferred Schedule</th>
+                  <th>Applicants</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+      const API_URL = "https://studentportal-8ct3.onrender.com";
+
+      const message = document.getElementById("message");
+
+      function getToken() {
+        return localStorage.getItem("token");
+      }
+
+      function authHeaders() {
+        return {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`,
+        };
+      }
+
+      function goToLogin(delay) {
+        setTimeout(() => {
+          window.location.href = "../index.html";
+        }, delay);
+      }
+
+      function requireAuth() {
+        if (!getToken()) {
+          message.textContent = "You must be logged in. Redirecting...";
+          goToLogin(1500);
+          return false;
+        }
+
+        return true;
+      }
+
+      function handleAuthFailure() {
+        message.textContent = "Session expired. Please login again.";
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        goToLogin(1500);
+      }
+
+      /* ---------------------------------------------------------
+         OFFICER INFO + ROLE CHECK
+
+         The role check here is only a convenience so other roles
+         don't land on this page. Real access control has to be
+         enforced by the backend on every endpoint.
+         --------------------------------------------------------- */
+
+      async function loadOfficerDetails() {
+        try {
+          const response = await fetch(`${API_URL}/api/getUserDetails`, {
+            method: "GET",
+            headers: authHeaders(),
+          });
+
+          if (response.status === 401) {
+            handleAuthFailure();
+            return;
+          }
+
+          if (!response.ok) return;
+
+          const officer = await response.json();
+
+          if ((officer.role || "").toLowerCase() !== "edp") {
+            message.textContent = "Access denied. Redirecting...";
+            goToLogin(1500);
+            return;
+          }
+
+          document.getElementById("officerName").textContent =
+            officer.username || "EDP Officer";
+
+          document.getElementById("officerRole").textContent =
+            officer.role || "EDP";
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      /* ---------------------------------------------------------
+         AVATAR DROPDOWN
+         --------------------------------------------------------- */
+
+      const avatarBtn = document.getElementById("avatarBtn");
+      const avatarDropdown = document.getElementById("avatarDropdown");
+
+      avatarBtn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        avatarDropdown.classList.toggle("open");
+      });
+
+      document.addEventListener("click", (event) => {
+        if (!avatarDropdown.contains(event.target) && event.target !== avatarBtn) {
+          avatarDropdown.classList.remove("open");
+        }
+      });
+
+      document.getElementById("changePasswordBtn").addEventListener("click", () => {
+        window.location.href = "../changepass/changepassword.html";
+      });
+
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        window.location.href = "../index.html";
+      });
+
+      function escapeHtml(value) {
+        const div = document.createElement("div");
+        div.textContent = value == null ? "" : String(value);
+        return div.innerHTML;
+      }
+
+      /* ---------------------------------------------------------
+         ENROLLMENT DEMAND  (GET /api/enrollments)
+         Allowed roles per the docs: registrar, edp, accounting
+         --------------------------------------------------------- */
+
+      const YEAR_ORDER = ["First Year", "Second Year", "Third Year", "Fourth Year"];
+
+      function yearRank(year) {
+        const index = YEAR_ORDER.indexOf(year);
+        return index === -1 ? 99 : index;
+      }
+
+      async function loadDemand() {
+        const status = document.getElementById("tableStatus");
+        const body = document.getElementById("tableBody");
+
+        try {
+          const response = await fetch(`${API_URL}/api/enrollments`, {
+            method: "GET",
+            headers: authHeaders(),
+          });
+
+          if (response.status === 401) {
+            handleAuthFailure();
+            return;
+          }
+
+          if (response.status === 403) {
+            status.textContent = "Your account is not allowed to view enrollments.";
+            return;
+          }
+
+          if (!response.ok) {
+            status.textContent = "Could not load applications.";
+            return;
+          }
+
+          const enrollments = await response.json();
+
+          if (enrollments.length === 0) {
+            status.textContent = "No enrollment applications yet.";
+            return;
+          }
+
+          const groups = {};
+
+          enrollments.forEach((enrollment) => {
+            const info = enrollment.student_info || {};
+            const key = [info.course, info.year, info.semester, info.preferred_schedule].join("|");
+
+            if (!groups[key]) {
+              groups[key] = {
+                course: info.course,
+                year: info.year,
+                semester: info.semester,
+                schedule: info.preferred_schedule,
+                count: 0,
+              };
+            }
+
+            groups[key].count += 1;
+          });
+
+          const rows = Object.values(groups).sort(
+            (a, b) =>
+              (a.course || "").localeCompare(b.course || "") ||
+              yearRank(a.year) - yearRank(b.year) ||
+              (a.semester || "").localeCompare(b.semester || "") ||
+              (a.schedule || "").localeCompare(b.schedule || "")
+          );
+
+          status.textContent = `${enrollments.length} applications in ${rows.length} groups`;
+
+          body.innerHTML = rows
+            .map(
+              (row) => `
+                <tr>
+                  <td>${escapeHtml(row.course)}</td>
+                  <td>${escapeHtml(row.year)}</td>
+                  <td>${escapeHtml(row.semester)}</td>
+                  <td>${escapeHtml(row.schedule)}</td>
+                  <td class="num">${row.count}</td>
+                </tr>`
+            )
+            .join("");
+        } catch (error) {
+          console.error(error);
+          status.textContent = "Could not reach the server.";
+        }
+      }
+
+      /* ---------------------------------------------------------
+         INIT
+         --------------------------------------------------------- */
+
+      if (requireAuth()) {
+        loadOfficerDetails();
+        loadDemand();
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="index.css" />
+
+    <title>Student Login</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <!-- ==================== NAVBAR ==================== -->
+    <nav>
+      <img src="/images/CEC_LOGO.png" alt="CEC Logo" />
+
+      <h1>Cebu Eastern College, Inc.</h1>
+    </nav>
+
+    <!-- ==================== MAIN ==================== -->
+    <main>
+      <!-- ==================== BLUE PART ==================== -->
+      <div class="bluepart">
+        <h1>
+          <span class="text1">WELCOME TO</span><br />
+          CEC SCHOOL PORTAL
+        </h1>
+      </div>
+
+      <!-- ==================== WHITE / LOGIN PART ==================== -->
+      <div class="whitepart">
+        <!-- Lavender Decoration -->
+        <div class="lavenderpart"></div>
+
+        <!-- ==================== LOGIN CONTAINER ==================== -->
+        <div class="login-container">
+          <h2>PORTAL</h2>
+
+          <p class="portal-description">
+            Student/ Faculty Member/ Admin Officer
+          </p>
+
+          <form id="loginForm">
+            <!-- Username -->
+            <label for="username">Username</label>
+
+            <div class="input-group">
+              <i class="fa-solid fa-user icon-left"></i>
+
+              <input
+                type="text"
+                id="username"
+                placeholder=" Username"
+                required
+              />
+            </div>
+
+            <!-- Password -->
+            <label for="password">Password</label>
+
+            <div class="input-group">
+              <i class="fa-solid fa-lock icon-left"></i>
+
+              <input
+                type="password"
+                id="password"
+                placeholder=" Password"
+                required
+              />
+
+              <i class="fa-solid fa-eye icon-right" id="togglePassword"></i>
+            </div>
+
+            <!-- Forgot Password -->
+            <p class="forgot">
+              <a href="../forgotpassword/forgotpassword.html">Forgot Password</a>
+            </p>
+
+            <!-- Information -->
+            <p class="description1">
+              Old Students, New Students, and Transferees only
+            </p>
+
+            <p class="description2">
+              Don't have a PORTAL account yet? Click
+              <a href="../enrollment/enrollmentWebsite.html">Here</a>
+              to enroll now!
+            </p>
+
+            <!-- Login -->
+            <button type="submit">LOGIN</button>
+
+            <p id="message"></p>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <!-- ==================== MESSAGE ==================== -->
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script src="scroll-fix.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>

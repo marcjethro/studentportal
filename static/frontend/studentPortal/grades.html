@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CEC - Student Grades</title>
+
+    <link rel="stylesheet" href="grades.css">
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+  </head>
+
+  <body>
+    <!-- ==================== NAVBAR ==================== -->
+    <nav>
+      <div class="nav-left">
+        <img src="../images/CEC_LOGO.png" alt="CEC Logo" />
+        <h1>CEC - Student Portal</h1>
+      </div>
+
+      <div class="nav-right">
+        <div class="notif-btn">
+          <i class="fa-solid fa-bell"></i>
+          10
+          <span class="dot"></span>
+        </div>
+
+        <div class="avatar-wrapper">
+          <div class="avatar" id="avatarBtn">
+            <i class="fa-solid fa-user"></i>
+          </div>
+
+          <div class="avatar-dropdown" id="avatarDropdown">
+            <p class="dropdown-name" id="userName">&nbsp;</p>
+            <p class="dropdown-role" id="userRole">Student</p>
+            <button id="changePasswordBtn">Change Password</button>
+            <button id="logoutBtn">Logout</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ==================== PAGE BODY ==================== -->
+    <div class="page-body">
+      <!-- ==================== SIDEBAR ==================== -->
+      <aside class="sidebar">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Search" />
+        </div>
+
+        <a class="nav-item" href="studentportal.html">
+          <i class="fa-solid fa-house"></i>
+          Dashboard
+        </a>
+
+        <!-- ACADEMICS + SUBMENU (Grades / Prospectus / Schedule) -->
+        <div class="nav-item-wrapper">
+          <button class="nav-item active" id="academicsBtn" type="button">
+            <i class="fa-solid fa-graduation-cap"></i>
+            Academics
+          </button>
+
+          <div class="academics-submenu open" id="academicsSubmenu">
+            <a href="grades.html" class="active">Grades</a>
+            <a href="prospectus.html">Prospectus</a>
+            <a href="schedule.html">Schedule</a>
+          </div>
+        </div>
+
+        <a class="nav-item" href="enrollment.html">
+          <i class="fa-solid fa-file-signature"></i>
+          Enrollment
+        </a>
+
+        <a class="nav-item" href="documentprocess.html">
+          <i class="fa-solid fa-file-lines"></i>
+          Document Process
+        </a>
+      </aside>
+
+      <!-- ==================== MAIN ==================== -->
+      <main>
+        <p id="message"></p>
+
+        <!-- PAGE HEADER -->
+        <div class="page-header">
+          <h2>Student Grades</h2>
+        </div>
+
+        <!-- FILTER ROW -->
+        <div class="filter-row">
+          <select class="filter-select" id="academicYearSelect">
+            <option value="" selected disabled>Select Academic Year</option>
+            <option value="2023-2024">2023 - 2024</option>
+            <option value="2024-2025">2024 - 2025</option>
+            <option value="2025-2026">2025 - 2026</option>
+          </select>
+
+          <select class="filter-select" id="semesterSelect">
+            <option value="" selected disabled>Select Semester</option>
+            <option value="1st Semester">1st Semester</option>
+            <option value="2nd Semester">2nd Semester</option>
+            <option value="Summer">Summer</option>
+          </select>
+
+          <button class="view-btn" id="viewGradesBtn" type="button">
+            View Grades
+          </button>
+        </div>
+
+        <!-- RESULTS PANEL — grades populate here once backend endpoint is wired -->
+        <div class="results-panel" id="resultsPanel">
+          <p class="placeholder-text" id="resultsPlaceholder">
+            Select an academic year and semester, then click "View Grades".
+          </p>
+
+          <table class="grades-table" id="gradesTable" style="display: none">
+            <thead>
+              <tr>
+                <th>Subject Code</th>
+                <th>Descriptive Title</th>
+                <th>Units</th>
+                <th>Grade</th>
+                <th>Remarks</th>
+              </tr>
+            </thead>
+            <tbody id="gradesTableBody"></tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script src="grades.js"></script>
+  </body>
+</html>

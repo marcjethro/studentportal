@@ -1,0 +1,854 @@
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
+   * {
+    font-family: Poppins, sans-serif;
+    box-sizing: border-box;
+  }
+  
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    background-color: white;
+    color: white;
+  
+    height: 100vh;
+  
+    overflow: hidden;
+  }
+  
+  
+  /* =========================================================
+     NAVBAR
+     ========================================================= */
+  
+  nav {
+    position: relative;
+  
+    width: 100%;
+    height: 100px;
+  
+    display: flex;
+    align-items: center;
+  
+    background-color: white;
+  
+    box-shadow: 0px 2px 3px 0px gray;
+  
+    z-index: 10;
+  }
+  
+  nav img {
+    width: auto;
+    height: 85px;
+  
+    margin-left: 5%;
+  }
+  
+  nav h1 {
+    margin-left: 2.5%;
+    margin-top: 0;
+    margin-bottom: 0;
+  
+    color: navy;
+  
+    font-family: Poppins, sans-serif;
+  
+    font-size: clamp(25px, 3vw, 48px);
+  
+    font-weight: 800;
+  }
+  
+  
+  /* =========================================================
+     MAIN
+     ========================================================= */
+  
+  main {
+    position: relative;
+  
+    width: 100%;
+    height: calc(100vh - 100px);
+  
+    display: flex;
+  
+    overflow: hidden;
+  }
+  
+  
+  /* =========================================================
+     BLUE PART
+     ========================================================= */
+  
+  .bluepart {
+    position: relative;
+  
+    width: 60%;
+    height: 100%;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    background-color: navy;
+  
+    border-radius: 0 60% 70% 0;
+  
+    
+  }
+  
+  .bluepart h1 {
+    width: 90%;
+  
+    margin-left: 20%;
+
+    margin-bottom: 15%;
+
+    text-align: left;
+  
+    font-family: Poppins, sans-serif;
+  
+    font-size: clamp(35px, 3vw, 75px);
+  
+    line-height: 1.05;
+  
+    font-weight: 800;
+  }
+  
+  .text1 {
+    color: #b8b5e8;
+  
+    -webkit-text-stroke: 1px white;
+  }
+  
+  
+  /* =========================================================
+     WHITE PART
+     ========================================================= */
+  
+     .whitepart {
+      position: relative;
+    
+      width: 45%;
+      height: 100%;
+    
+      display: flex;
+    
+      align-items: center;
+      justify-content: center;
+    
+      padding: 15px;
+    
+      box-sizing: border-box;
+    }
+  
+  
+  /* =========================================================
+     LAVENDER PART
+     ========================================================= */
+  
+     .lavenderpart {
+      position: absolute;
+    
+      right: 0;
+      bottom: -60px;
+    
+      width: clamp(700px, 80vw, 1550px);
+      height: clamp(180px, 30vh, 300px);
+    
+      background-color: #b8b5e8;
+    
+      border-top: 15px solid white;
+      border-left: 15px solid white;
+      border-bottom: 15px solid white;
+    
+      border-radius: 175px 0 0 115px;
+    
+      z-index: 0;
+    }
+  
+  
+  /* =========================================================
+     LOGIN CONTAINER
+     ========================================================= */
+  
+  /*
+     Container query:
+     Everything inside the login box can now use "cqw",
+     which means Container Query Width.
+  
+     1cqw = 1% of the login container's width.
+  */
+  
+  .login-container {
+    position: relative;
+  
+    /* Width changes with available height, but has limits */
+    width: clamp(230px, 44vh, 350px);
+  
+    /* Keep the same proportions as your original 350 x 400 box */
+    aspect-ratio: 350 / 400;
+  
+    /* Keep it above the lavender part */
+    z-index: 5;
+  
+    background-color: white;
+  
+    border-radius: 10px;
+  
+    box-shadow: 0px 2px 2px 2px gray;
+  
+    /* Responsive version of your 175px spacing */
+    margin-bottom: clamp(50px, 16vh, 175px);
+  
+    /* Makes cqw work */
+    container-type: inline-size;
+  
+    overflow: hidden;
+  }
+  
+  
+  /* =========================================================
+     LOGIN TITLE
+     ========================================================= */
+  
+  .login-container h2 {
+    margin-top: 7cqw;
+    margin-bottom: 3cqw;
+  
+    text-align: center;
+  
+    color: navy;
+  
+    font-family: sans-serif;
+  
+    font-size: 8cqw;
+  
+    font-weight: 700;
+  }
+  
+  
+  /* =========================================================
+     PORTAL DESCRIPTION
+     ========================================================= */
+  
+  .portal-description {
+    margin: 0 5cqw 5cqw;
+  
+    text-align: center;
+  
+    color: navy;
+  
+    font-family: sans-serif;
+  
+    font-size: 4.2cqw;
+  }
+  
+  
+  /* =========================================================
+     FORM
+     ========================================================= */
+  
+  .login-container form {
+    width: 100%;
+  }
+  
+  
+  /* =========================================================
+     LABEL
+     ========================================================= */
+  
+     label {
+      display: block;
+      width: 94%;
+      margin: 3cqw auto 0;
+      color: black;
+      font-size: 4cqw;
+      line-height: 1.2;
+    }
+  
+  
+  /* =========================================================
+     INPUT GROUP
+     ========================================================= */
+  
+     .input-group {
+      position: relative;
+      width: 100%;
+    
+      display: flex;
+      align-items: center;
+    }
+  
+  
+  /* =========================================================
+     INPUT
+     ========================================================= */
+  
+     .input-group input {
+      display: block;
+    
+      width: 94%;
+      margin: 2cqw auto;
+    
+      height: 12cqw;
+    
+      padding: 2cqw 10cqw 2cqw 10cqw;
+    
+      box-sizing: border-box;
+    
+      border: 1px solid black;
+      border-radius: 10cqw;
+    
+      background-color: white;
+      color: black;
+    
+      font-size: 3.5cqw;
+    
+      outline: none;
+    }
+  
+  input:focus {
+    border: 1px solid navy;
+  }
+  
+  
+  /* =========================================================
+     LEFT ICON
+     ========================================================= */
+  
+     .input-group .icon-left {
+      position: absolute;
+    
+      left: 6cqw;
+      top: 50%;
+    
+      transform: translateY(-50%);
+    
+      color: gray;
+      font-size: 3.5cqw;
+    
+      pointer-events: none;
+    
+      z-index: 2;
+    }
+  
+  
+  /* =========================================================
+     RIGHT ICON
+     ========================================================= */
+  
+  /* RIGHT / EYE ICON */
+.input-group .icon-right {
+  position: absolute;
+
+  right: 6cqw;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: gray;
+  font-size: 3.5cqw;
+
+  cursor: pointer;
+
+  z-index: 2;
+}
+  
+  
+  /* =========================================================
+     FORGOT PASSWORD
+     ========================================================= */
+  
+  .forgot {
+
+    width: 94%;
+
+    margin: 3cqw auto 0;
+  
+    text-align: right;
+  
+    color: navy;
+  
+    font-size: 3.8cqw;
+  
+    cursor: pointer;
+  }
+  
+  
+  /* =========================================================
+     DESCRIPTIONS
+     ========================================================= */
+  
+  .description1,
+  .description2 {
+    margin: 3cqw 0;
+  
+    text-align: center;
+  
+    color: black;
+  
+    font-family: sans-serif;
+  
+    line-height: 1.15;
+  }
+  
+  .description1 {
+    font-size: 3.5cqw;
+  
+    font-weight: 700;
+  }
+  
+  .description2 {
+    font-size: 3.3cqw;
+  }
+  
+  
+  /* =========================================================
+     LINK
+     ========================================================= */
+  
+  a {
+    color: blue;
+  }
+  
+  
+  /* =========================================================
+     LOGIN BUTTON
+     ========================================================= */
+  
+  button {
+    display: block;
+  
+    width: 32cqw;
+  
+    min-width: 70px;
+  
+    padding: 1cqw 2cqw;
+  
+    margin: 3cqw auto 0;
+  
+    background-color: navy;
+  
+    color: white;
+  
+    border: none;
+  
+    border-radius: 10cqw;
+  
+    cursor: pointer;
+  
+    font-size: 6cqw;
+  
+    line-height: 1;
+  
+    box-shadow: 0px 4px 0px 0px rgba(128, 128, 128, 0.4);
+  }
+  
+  button:hover {
+    background-color: #1d4ed8;
+  }
+  
+  
+  /* =========================================================
+     MESSAGE
+     ========================================================= */
+  
+  #message{
+    font-size: 2vh;
+    text-align: center;
+    margin: 1cqh;
+  }
+  
+  
+  /* =========================================================
+     USER DETAILS
+     ========================================================= */
+  
+  #userDetails {
+    display: none;
+  
+    margin-top: 20px;
+  
+    padding: 15px;
+  
+    background-color: #374151;
+  
+    border-radius: 5px;
+  }
+  
+  
+  /* =========================================================
+     SMALL DESKTOP / TABLET
+     ========================================================= */
+  
+  @media (max-width: 1100px) {
+  
+    nav {
+      height: 90px;
+    }
+  
+    nav img {
+      height: 70px;
+    }
+  
+    nav h1 {
+      font-size: clamp(22px, 3vw, 32px);
+    }
+  
+  
+    main {
+      height: calc(100vh - 90px);
+    }
+  
+  
+    .bluepart {
+      width: 52%;
+    }
+  
+    .whitepart {
+      width: 48%;
+      padding: 15px;
+    }
+  
+  
+    .bluepart h1 {
+      width: 90%;
+      font-size: clamp(30px, 3.8vw, 50px);
+    }
+  
+  
+    .login-container {
+      width: clamp(230px, 85%, 320px);
+  
+      margin-bottom: clamp(70px, 14vh, 150px);
+    }
+  
+  
+    .lavenderpart {
+      height: 30%;
+    }
+  }
+  
+  
+  /* =========================================================
+     MOBILE
+     ========================================================= */
+  
+  @media (max-width: 768px) {
+  
+    body {
+      height: auto;
+      
+      overflow-x: hidden;
+      overflow-y: hidden;
+    }
+  
+  
+    /* -------------------------
+       NAVBAR
+       ------------------------- */
+  
+    nav {
+      width: 100%;
+  
+      min-height: 70px;
+      height: auto;
+  
+      padding: 8px 15px;
+  
+      justify-content: center;
+    }
+  
+    nav img {
+      height: 55px;
+  
+      margin-left: 0;
+    }
+  
+    nav h1 {
+      margin-left: 10px;
+  
+      font-size: clamp(17px, 5vw, 26px);
+    }
+
+    .bluepart h1{
+      text-align: center;
+    }
+  
+  
+    /* -------------------------
+       MAIN
+       ------------------------- */
+  
+    main {
+      height: auto;
+      min-height: auto;
+  
+      flex-direction: column;
+  
+      overflow: visible;
+    }
+  
+  
+    /* -------------------------
+       BLUE
+       ------------------------- */
+  
+    .bluepart {
+      width: 100%;
+  
+      min-height: 230px;
+      height: auto;
+  
+      padding: 40px 20px;
+  
+      justify-content: center;
+  
+      text-align: center;
+  
+      border-radius: 0 0 40px 40px;
+    }
+  
+    .bluepart h1 {
+      width: 100%;
+  
+      margin: 0;
+  
+      font-size: clamp(28px, 7vw, 50px);
+    }
+  
+  
+    /* -------------------------
+       WHITE
+       ------------------------- */
+  
+    .whitepart {
+      width: 100%;
+      height: auto;
+  
+      min-height: auto;
+  
+      padding: 40px 15px;
+  
+      display: flex;
+  
+      align-items: center;
+      justify-content: center;
+    }
+  
+  
+    /* -------------------------
+       LAVENDER
+       ------------------------- */
+  
+    .lavenderpart {
+      display: none;
+    }
+  
+  
+    /* -------------------------
+       LOGIN
+       ------------------------- */
+  
+    .login-container {
+      width: 90%;
+      max-width: 400px;
+  
+      aspect-ratio: auto;
+  
+      min-height: auto;
+  
+      margin: 0 auto;
+  
+      padding: 20px;
+  
+      overflow: visible;
+    }
+  
+  
+    /* Reset container-based sizing on mobile */
+    .login-container h2 {
+      margin-top: 0;
+      margin-bottom: 12px;
+  
+      font-size: 24px;
+    }
+  
+    .portal-description {
+      margin-bottom: 15px;
+  
+      font-size: 14px;
+    }
+  
+    label {
+      margin-top: 10px;
+  
+      font-size: 14px;
+    }
+  
+    input {
+      height: 42px;
+  
+      padding: 10px 40px;
+  
+      margin: 6px 0;
+  
+      font-size: 14px;
+    }
+  
+    .input-group .icon-left,
+    .input-group .icon-right {
+      font-size: 14px;
+    }
+  
+    .input-group .icon-left {
+      left: 17px;
+    }
+  
+    .input-group .icon-right {
+      right: 17px;
+    }
+  
+    .forgot {
+      margin: 8px 0 0;
+  
+      font-size: 13px;
+    }
+  
+    .description1,
+    .description2 {
+      margin: 8px 0;
+  
+      font-size: 12px;
+    }
+  
+    button {
+      width: 50%;
+  
+      padding: 5px 10px;
+  
+      margin: 15px auto 0;
+  
+      font-size: 22px;
+    }
+  
+  
+    #userDetails {
+      width: 90%;
+  
+      max-width: 400px;
+  
+      margin: 0 auto 24px;
+    }
+  }
+  
+  
+  /* =========================================================
+     SMALL PHONES
+     ========================================================= */
+  
+  @media (max-width: 480px) {
+  
+    nav img {
+      height: 50px;
+    }
+  
+    nav h1 {
+      font-size: 18px;
+    }
+  
+  
+    .bluepart {
+      min-height: 210px;
+    }
+  
+    .bluepart h1 {
+      font-size: 7vw;
+    }
+  
+  
+    .login-container {
+      width: 92%;
+  
+      padding: 18px;
+    }
+  
+  
+    .login-container h2 {
+      font-size: 22px;
+    }
+  
+    .portal-description {
+      font-size: 13px;
+    }
+  
+    label {
+      font-size: 13px;
+    }
+  
+    input {
+      height: 40px;
+  
+      font-size: 13px;
+    }
+  
+    .forgot {
+      font-size: 12px;
+    }
+  
+    .description1,
+    .description2 {
+      font-size: 11px;
+    }
+  
+    button {
+      width: 60%;
+  
+      font-size: 20px;
+    }
+  }
+  
+  
+  /* =========================================================
+     VERY SMALL PHONES
+     ========================================================= */
+  
+  @media (max-width: 360px) {
+  
+    nav img {
+      height: 45px;
+    }
+  
+    nav h1 {
+      font-size: 16px;
+    }
+  
+  
+    .bluepart {
+      min-height: 190px;
+    }
+  
+    .bluepart h1 {
+      font-size: 7.5vw;
+    }
+  
+  
+    .login-container {
+      width: 94%;
+  
+      padding: 15px;
+    }
+  
+  
+    button {
+      width: 70%;
+  
+      font-size: 18px;
+    }
+  }

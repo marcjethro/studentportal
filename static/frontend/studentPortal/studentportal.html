@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CEC - Student Portal</title>
+
+    <link rel="stylesheet" href="studentportal.css">
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+  </head>
+
+  <body>
+    <nav>
+      <div class="nav-left">
+        <img src="../images/CEC_LOGO.png" alt="CEC Logo" />
+        <h1>CEC - Student Portal</h1>
+      </div>
+
+      <div class="nav-right">
+        <div class="notif-btn">
+          <i class="fa-solid fa-bell"></i>
+          10
+          <span class="dot"></span>
+        </div>
+
+        <div class="avatar-wrapper">
+          <div class="avatar" id="avatarBtn">
+            <i class="fa-solid fa-user"></i>
+          </div>
+
+          <div class="avatar-dropdown" id="avatarDropdown">
+            <p class="dropdown-name" id="userName">&nbsp;</p>
+            <p class="dropdown-role" id="userRole">Student</p>
+            <button id="changePasswordBtn">Change Password</button>
+            <button id="logoutBtn">Logout</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="page-body">
+      <aside class="sidebar">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Search" />
+        </div>
+
+        <a class="nav-item active" href="studentportal.html">
+          <i class="fa-solid fa-house"></i>
+          Dashboard
+        </a>
+
+        <div class="nav-item-wrapper">
+          <button class="nav-item" id="academicsBtn" type="button">
+            <i class="fa-solid fa-graduation-cap"></i>
+            Academics
+          </button>
+
+          <div class="academics-submenu" id="academicsSubmenu">
+            <a href="grades.html">Grades</a>
+            <a href="prospectus.html">Prospectus</a>
+            <a href="schedule.html">Schedule</a>
+          </div>
+        </div>
+
+        <a class="nav-item" href="enrollment.html">
+          <i class="fa-solid fa-file-signature"></i>
+          Enrollment
+        </a>
+
+        <a class="nav-item" href="documentprocess.html">
+          <i class="fa-solid fa-file-lines"></i>
+          Document Process
+        </a>
+      </aside>
+
+      <main>
+        <p id="message"></p>
+
+        <div class="welcome-header">
+          <h2 id="welcomeName">Welcome</h2>
+          <p>Program / Year not yet available from backend</p>
+        </div>
+
+        <!-- Announcements -->
+        <section class="student-announcements">
+          <div class="announcement-header">
+            <h2>
+              <i class="fa-solid fa-bullhorn"></i>
+              Announcements
+            </h2>
+          </div>
+
+          <div id="announcementsList" class="announcements-list">
+            <p class="loading-announcements">Loading announcements...</p>
+          </div>
+        </section>
+
+        <div class="stat-row">
+          <div class="stat-placeholder"></div>
+          <div class="stat-placeholder"></div>
+        </div>
+
+        <div class="content-placeholder"></div>
+        <div class="content-placeholder"></div>
+      </main>
+    </div>
+
+    <script src="studentportal.js"></script>
+  </body>
+</html>
