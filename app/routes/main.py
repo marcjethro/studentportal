@@ -16,7 +16,12 @@ main_bp = Blueprint("main", __name__)
 
 @main_bp.route('/')
 def homepage():
-    return send_from_directory("../static", "doc.html")
+    return send_from_directory("../static/frontend", "index.html")
+
+
+@main_bp.route('/<path:filename>')
+def frontend_static(filename):
+    return send_from_directory("../static/frontend", filename)
 
 @main_bp.route("/api/getUserDetails", methods=["GET"])
 @jwt_required()
