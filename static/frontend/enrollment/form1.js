@@ -1,4 +1,4 @@
-const API_URL = "https://studentportal-8ct3.onrender.com";
+const API_URL = "";
 
 
 // =========================================

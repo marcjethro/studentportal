@@ -47,7 +47,7 @@ document
 // ================= BACKEND API =================
 
 const API_URL =
-    "https://studentportal-8ct3.onrender.com";
+    "";
 
 
 // ================= ANNOUNCEMENTS BUTTON =================

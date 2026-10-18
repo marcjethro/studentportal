@@ -1,5 +1,5 @@
 
-   const API_URL = "https://studentportal-8ct3.onrender.com";
+   const API_URL = "";
 
    const message = document.getElementById("message");
    const usernameInput = document.getElementById("text");
