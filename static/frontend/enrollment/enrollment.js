@@ -186,12 +186,87 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadRequirements(enrollmentType.enrollment_type_id, reqList);
   }
 
-  // 4. Handle final enrollment submission (form2.html)
+  // 4. Handle final enrollment submission — show confirmation modal first
   const finalEnrollmentForm = document.getElementById("finalEnrollmentForm");
   if (finalEnrollmentForm) {
-    finalEnrollmentForm.addEventListener("submit", handleFormSubmission);
+    finalEnrollmentForm.addEventListener("submit", showConfirmModal);
+  }
+
+  // 5. Wire the modal confirm button to do the real submission
+  const confirmSubmitBtn = document.getElementById("confirmSubmitBtn");
+  if (confirmSubmitBtn) {
+    confirmSubmitBtn.addEventListener("click", handleFormSubmission);
   }
 });
+
+// =========================================
+// SHOW CONFIRMATION MODAL
+// =========================================
+function showConfirmModal(e) {
+  e.preventDefault();
+
+  const storedInformation = sessionStorage.getItem("studentInformation");
+  if (!storedInformation) {
+    alert("Student information missing. Returning to step 1.");
+    window.location.href = "enrollmentWebsite.html";
+    return;
+  }
+
+  const info = JSON.parse(storedInformation);
+
+  // --- Enrollee personal details ---
+  setText("confirmFirstName",  info.first_name  || "—");
+  setText("confirmMiddleName", info.middle_name || "—");
+  setText("confirmLastName",   info.last_name   || "—");
+  setText("confirmSuffix",     info.suffix      || "N/A");
+  setText("confirmBirthdate",  info.birthdate   || "—");
+  setText("confirmPhone",      info.phone_number || info.phone || "—");
+  setText("confirmAddress",    info.home_address || "—");
+  setText("confirmEmail",      info.email        || "—");
+
+  // --- Photo (if previously uploaded on form1) ---
+  const savedPhoto = sessionStorage.getItem("studentPhoto");
+  const photoImg   = document.getElementById("confirmPhoto");
+  const photoPlaceholder = document.getElementById("confirmPhotoPlaceholder");
+  if (savedPhoto && photoImg && photoPlaceholder) {
+    photoImg.src = savedPhoto;
+    photoImg.classList.remove("hidden");
+    photoPlaceholder.style.display = "none";
+  }
+
+  // --- Academic details from the form selects ---
+  const courseSelect   = document.getElementById("course");
+  const courseText     = courseSelect
+    ? courseSelect.options[courseSelect.selectedIndex]?.text || "—"
+    : "—";
+  setText("confirmCourse",    courseText);
+  setText("confirmSchedule",  getSelectText("schedule")  || "—");
+
+  const yearMap = { "1": "1st Year", "2": "2nd Year", "3": "3rd Year", "4": "4th Year" };
+  const semMap  = { "1": "1st Semester", "2": "2nd Semester" };
+  setText("confirmYear",     yearMap[document.getElementById("year")?.value]     || "—");
+  setText("confirmSemester", semMap[document.getElementById("semester")?.value]   || "—");
+
+  // --- Open modal ---
+  const modal = document.getElementById("confirmModal");
+  if (modal) {
+    modal.classList.add("active");
+    modal.setAttribute("aria-hidden", "false");
+  }
+}
+
+// Helper: set inner text safely
+function setText(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
+}
+
+// Helper: get displayed text of a <select>
+function getSelectText(id) {
+  const sel = document.getElementById(id);
+  if (!sel) return "";
+  return sel.options[sel.selectedIndex]?.text || "";
+}
 
 // Helper: Fetch Courses
 async function loadCourses(selectElem) {
@@ -242,10 +317,8 @@ async function loadRequirements(typeId, listElem) {
   }
 }
 
-// Helper: Submit Final Enrollment Form
-async function handleFormSubmission(e) {
-  e.preventDefault();
-
+// Helper: Submit Final Enrollment Form (called after modal confirmation)
+async function handleFormSubmission() {
   const storedInformation = sessionStorage.getItem("studentInformation");
   const storedEnrollmentType = sessionStorage.getItem("enrollmentType");
 
@@ -267,9 +340,11 @@ async function handleFormSubmission(e) {
     enrollment_type_id: enrollmentType.enrollment_type_id,
   };
 
-  const submitBtn = document.getElementById("submitBtn");
-  submitBtn.disabled = true;
-  submitBtn.textContent = "SUBMITTING...";
+  const confirmBtn = document.getElementById("confirmSubmitBtn");
+  if (confirmBtn) {
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = "SUBMITTING...";
+  }
 
   try {
     const response = await fetch(`${API_BASE_URL}/api/enrollments`, {
@@ -281,6 +356,12 @@ async function handleFormSubmission(e) {
     const result = await response.json();
 
     if (response.ok) {
+      // Close modal before showing success
+      const modal = document.getElementById("confirmModal");
+      if (modal) {
+        modal.classList.remove("active");
+        modal.setAttribute("aria-hidden", "true");
+      }
       alert(`Success! Tracking Code: ${result.enrollment_id}\n\n${result.msg}`);
       sessionStorage.clear();
       window.location.href = "enrollmentWebsite.html";
@@ -291,7 +372,9 @@ async function handleFormSubmission(e) {
     console.error("Submission error:", err);
     alert("Connection error. Could not reach server.");
   } finally {
-    submitBtn.disabled = false;
-    submitBtn.textContent = "SUBMIT ENROLLMENT FORM";
+    if (confirmBtn) {
+      confirmBtn.disabled = false;
+      confirmBtn.textContent = "CONFIRM SUBMISSION FORM";
+    }
   }
 }

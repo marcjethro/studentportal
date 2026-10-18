@@ -462,3 +462,226 @@
             }
 
         }
+
+
+        /* =========================================
+           CONFIRMATION MODAL
+        ========================================= */
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+
+            background-color: rgba(0, 0, 0, 0.45);
+
+            z-index: 1000;
+
+            justify-content: center;
+            align-items: center;
+
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+
+        .modal-card {
+            background-color: #a8d8ea;
+
+            border-radius: 20px;
+
+            padding: 30px 32px 28px;
+
+            width: 100%;
+            max-width: 620px;
+            max-height: 90vh;
+
+            overflow-y: auto;
+
+            box-shadow:
+                0 8px 30px rgba(0, 0, 0, 0.25);
+        }
+
+
+        .modal-title {
+            text-align: center;
+
+            font-size: 22px;
+            font-weight: 800;
+
+            color: #000;
+
+            margin-bottom: 14px;
+        }
+
+
+        .modal-divider {
+            border: none;
+            border-top: 1.5px solid rgba(0, 0, 0, 0.2);
+
+            margin: 14px 0;
+        }
+
+
+        /* Section label (e.g. "Enrollee Information") */
+        .modal-section-label {
+            font-size: 15px;
+            font-weight: bold;
+
+            margin-bottom: 12px;
+
+            color: #111;
+        }
+
+
+        /* Row: photo left, details right */
+        .modal-info-row {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+
+        /* Photo box */
+        .modal-photo {
+            flex-shrink: 0;
+
+            width: 110px;
+            height: 130px;
+
+            border-radius: 8px;
+            overflow: hidden;
+
+            background-color: #ccc;
+        }
+
+        .modal-photo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-photo-img.hidden {
+            display: none;
+        }
+
+        .modal-photo-placeholder {
+            width: 100%;
+            height: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background-color: #bbb;
+        }
+
+        .modal-photo-placeholder svg {
+            width: 80px;
+            height: 80px;
+        }
+
+
+        /* Detail key-value rows */
+        .modal-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .detail-row {
+            display: flex;
+            gap: 8px;
+
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .detail-label {
+            font-weight: bold;
+            white-space: nowrap;
+            min-width: 130px;
+        }
+
+        .detail-value {
+            color: #111;
+            word-break: break-word;
+        }
+
+
+        /* Confirm button */
+        .modal-confirm-btn {
+            display: block;
+
+            width: 100%;
+            height: 52px;
+
+            margin-top: 22px;
+
+            border: none;
+            border-radius: 12px;
+
+            background: linear-gradient(90deg, #1a1a7e 0%, #6b6bbf 100%);
+
+            color: #ffffff;
+
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+
+            cursor: pointer;
+
+            transition:
+                opacity 0.2s ease,
+                transform 0.1s ease;
+        }
+
+        .modal-confirm-btn:hover {
+            opacity: 0.9;
+        }
+
+        .modal-confirm-btn:active {
+            transform: scale(0.99);
+        }
+
+        .modal-confirm-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+
+        /* Modal mobile */
+        @media screen and (max-width: 600px) {
+
+            .modal-card {
+                padding: 22px 18px 20px;
+            }
+
+            .modal-title {
+                font-size: 18px;
+            }
+
+            .modal-info-row {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .modal-photo {
+                width: 90px;
+                height: 110px;
+            }
+
+            .detail-label {
+                min-width: 110px;
+            }
+
+            .detail-row {
+                font-size: 13px;
+            }
+
+        }

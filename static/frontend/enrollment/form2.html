@@ -100,6 +100,107 @@
 
     </div>
 
+    <!-- =========================================
+         CONFIRMATION MODAL
+    ========================================== -->
+    <div id="confirmModal" class="modal-overlay" aria-hidden="true">
+
+        <div class="modal-card">
+
+            <!-- Modal Header -->
+            <h2 class="modal-title">COLLEGE DEPARTMENT</h2>
+            <hr class="modal-divider">
+
+            <!-- Enrollee Information -->
+            <div class="modal-section">
+                <p class="modal-section-label">Enrollee Information</p>
+
+                <div class="modal-info-row">
+
+                    <!-- Photo placeholder -->
+                    <div class="modal-photo">
+                        <img id="confirmPhoto" src="" alt="Student Photo" class="modal-photo-img hidden">
+                        <div id="confirmPhotoPlaceholder" class="modal-photo-placeholder">
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="38" r="22" fill="#999"/>
+                                <ellipse cx="50" cy="85" rx="32" ry="22" fill="#999"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Personal details -->
+                    <div class="modal-details">
+                        <div class="detail-row">
+                            <span class="detail-label">First Name:</span>
+                            <span class="detail-value" id="confirmFirstName">—</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Middle Name:</span>
+                            <span class="detail-value" id="confirmMiddleName">—</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Last Name:</span>
+                            <span class="detail-value" id="confirmLastName">—</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Suffix:</span>
+                            <span class="detail-value" id="confirmSuffix">N/A</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Birthdate:</span>
+                            <span class="detail-value" id="confirmBirthdate">—</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Phone Number:</span>
+                            <span class="detail-value" id="confirmPhone">—</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Home Address:</span>
+                            <span class="detail-value" id="confirmAddress">—</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Email Address:</span>
+                            <span class="detail-value" id="confirmEmail">—</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <hr class="modal-divider">
+
+            <!-- Enrollee Academic Enrollment -->
+            <div class="modal-section">
+                <p class="modal-section-label">Enrollee Academic Enrollment</p>
+                <div class="modal-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Course / Program:</span>
+                        <span class="detail-value" id="confirmCourse">—</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Preferred Schedule:</span>
+                        <span class="detail-value" id="confirmSchedule">—</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Year Level:</span>
+                        <span class="detail-value" id="confirmYear">—</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Semester:</span>
+                        <span class="detail-value" id="confirmSemester">—</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Confirm Button -->
+            <button class="modal-confirm-btn" id="confirmSubmitBtn">
+                CONFIRM SUBMISSION FORM
+            </button>
+
+        </div>
+
+    </div>
+
     <!-- Single JavaScript entry point -->
     <script src="enrollment.js"></script>
 
