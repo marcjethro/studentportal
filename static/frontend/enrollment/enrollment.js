@@ -63,7 +63,7 @@ if (proceedNext) {
 }
 
 // =========================================
-// TRACK APPLICATION
+// TRACK APPLICATION & STATUS DISPLAY
 // =========================================
 async function trackApplication() {
   const trackingInput = document.getElementById("trackingNumber");
@@ -77,7 +77,6 @@ async function trackApplication() {
   }
 
   try {
-    // Send GET request to /api/enrollments/<string:enrollment_id>
     const response = await fetch(
       `${API_BASE_URL}/api/enrollments/${encodeURIComponent(trackingNumber)}`,
       {
@@ -88,44 +87,165 @@ async function trackApplication() {
       }
     );
 
-    // Safely check content type before parsing JSON
     const contentType = response.headers.get("content-type");
     if (!contentType || !contentType.includes("application/json")) {
-      const htmlText = await response.text();
-      console.error("Server returned non-JSON response:", htmlText);
-      throw new Error(
-        `Tracking record not found or server error (HTTP ${response.status})`
-      );
+      throw new Error(`Tracking record not found (HTTP ${response.status})`);
     }
 
     const data = await response.json();
 
     if (response.ok) {
-      // Unpack response matching GET /api/enrollments/<string:enrollment_id> payload structure
-      const student = data.student_info || {};
-      const fullName = `${student.first_name || ""} ${
-        student.middle_name || ""
-      } ${student.last_name || ""} ${student.suffix || ""}`.trim();
-
-      alert(
-        `📋 ENROLLMENT STATUS\n` +
-          `------------------------------------\n` +
-          `Tracking ID: ${data.enrollment_id}\n` +
-          `Status: ${data.status}\n` +
-          `Student: ${fullName}\n` +
-          `Course: ${student.course || "N/A"}\n` +
-          `Year/Sem: ${student.year || "N/A"} - ${
-            student.semester || "N/A"
-          }\n` +
-          `Enrollment Type: ${data.enrollment_type}\n` +
-          `Schedule: ${student.preferred_schedule || "N/A"}`
-      );
+      displayTrackingResult(data);
     } else {
       alert(`Error: ${data.msg || "Enrollment record not found."}`);
     }
   } catch (error) {
     console.error("Error tracking application:", error);
     alert(`Tracking Error: ${error.message}`);
+  }
+}
+
+function displayTrackingResult(data) {
+  const modal = document.getElementById("trackingModal");
+  if (!modal) return;
+
+  const student = data.student_info || {};
+
+  // Tracking ID
+  setText("trackModalEnrollmentId", data.enrollment_id || "—");
+
+  // Status Pill
+  const statusPill = document.getElementById("trackModalStatusPill");
+  if (statusPill) {
+    const statusText = data.status || "Pending";
+    statusPill.textContent = statusText;
+    statusPill.className = "track-status-pill";
+    if (statusText.toLowerCase() === "approved") {
+      statusPill.classList.add("approved");
+    } else if (statusText.toLowerCase() === "rejected" || statusText.toLowerCase() === "invalid") {
+      statusPill.classList.add("rejected");
+    }
+  }
+
+  // Personal Info
+  setText("trackFirstName", student.first_name || "—");
+  setText("trackMiddleName", student.middle_name || "—");
+  setText("trackLastName", student.last_name || "—");
+  setText("trackSuffix", student.suffix || "N/A");
+
+  // Birthdate formatting MM/DD/YY
+  let formattedBirthdate = student.birthdate || "—";
+  if (student.birthdate) {
+    try {
+      const d = new Date(student.birthdate);
+      if (!isNaN(d.getTime())) {
+        const mm = String(d.getMonth() + 1).padStart(2, "0");
+        const dd = String(d.getDate()).padStart(2, "0");
+        const yy = String(d.getFullYear()).slice(-2);
+        formattedBirthdate = `${mm}/${dd}/${yy}`;
+      }
+    } catch (_) {}
+  }
+  setText("trackBirthdate", formattedBirthdate);
+
+  setText("trackPhone", student.phone_number || "—");
+  setText("trackAddress", student.home_address || "—");
+  setText("trackEmail", student.email || "—");
+
+  // Academic Info
+  setText("trackCourse", student.course || "—");
+  setText("trackSchedule", student.preferred_schedule || "—");
+
+  const yearMap = { "1": "1st Year", "2": "2nd Year", "3": "3rd Year", "4": "4th Year" };
+  const semMap = { "1": "1st Semester", "2": "2nd Semester" };
+  setText("trackYear", yearMap[student.year] || (student.year ? `${student.year} Year` : "—"));
+  setText("trackSemester", semMap[student.semester] || (student.semester ? `${student.semester} Semester` : "—"));
+
+  // Documents in Process
+  const docsContainer = document.getElementById("trackDocumentsList");
+  if (docsContainer) {
+    docsContainer.innerHTML = "";
+
+    const isOverallEnrolled = (data.status || "").toLowerCase() === "enrolled" || (data.status || "").toLowerCase() === "approved";
+    const isOverallRejected = (data.status || "").toLowerCase() === "rejected";
+
+    if (data.documents && data.documents.length > 0) {
+      data.documents.forEach((doc) => {
+        const row = document.createElement("div");
+        row.className = "track-doc-item";
+
+        const nameSpan = document.createElement("span");
+        nameSpan.className = "track-doc-name";
+        nameSpan.textContent = `${doc.requirement_name}:`;
+
+        const statusSpan = document.createElement("span");
+        statusSpan.className = "track-doc-status";
+
+        if (isOverallEnrolled || doc.status === "Submitted") {
+          statusSpan.classList.add("approved");
+          statusSpan.textContent = "Approved";
+        } else if (isOverallRejected || doc.status === "Invalid") {
+          statusSpan.classList.add("invalid");
+          statusSpan.textContent = "Invalid";
+        } else {
+          statusSpan.classList.add("processing");
+          statusSpan.textContent = "Processing";
+        }
+
+        row.appendChild(nameSpan);
+        row.appendChild(statusSpan);
+        docsContainer.appendChild(row);
+      });
+    } else {
+      const reqs = data.requirements && data.requirements.length > 0
+        ? data.requirements
+        : [
+            "Senior High School Grades",
+            "Scholarship Documents",
+            "Good Moral",
+            "Diploma",
+            "Form 137",
+          ];
+
+      reqs.forEach((reqName) => {
+        const row = document.createElement("div");
+        row.className = "track-doc-item";
+
+        const nameSpan = document.createElement("span");
+        nameSpan.className = "track-doc-name";
+        nameSpan.textContent = `${reqName}:`;
+
+        const statusSpan = document.createElement("span");
+        statusSpan.className = "track-doc-status";
+
+        if (isOverallEnrolled) {
+          statusSpan.classList.add("approved");
+          statusSpan.textContent = "Approved";
+        } else if (isOverallRejected) {
+          statusSpan.classList.add("invalid");
+          statusSpan.textContent = "Invalid";
+        } else {
+          statusSpan.classList.add("processing");
+          statusSpan.textContent = "Processing";
+        }
+
+        row.appendChild(nameSpan);
+        row.appendChild(statusSpan);
+        docsContainer.appendChild(row);
+      });
+    }
+  }
+
+  // Show the tracking modal
+  modal.classList.add("active");
+  modal.setAttribute("aria-hidden", "false");
+}
+
+function closeTrackingModal() {
+  const modal = document.getElementById("trackingModal");
+  if (modal) {
+    modal.classList.remove("active");
+    modal.setAttribute("aria-hidden", "true");
   }
 }
 
@@ -197,6 +317,46 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (confirmSubmitBtn) {
     confirmSubmitBtn.addEventListener("click", handleFormSubmission);
   }
+
+  // 6. Wire the success modal go-back button
+  const successGoBackBtn = document.getElementById("successGoBackBtn");
+  if (successGoBackBtn) {
+    successGoBackBtn.addEventListener("click", function () {
+      sessionStorage.clear();
+      window.location.href = "enrollmentWebsite.html";
+    });
+  }
+
+  // 7. Wire tracking modal listeners (s.png modal)
+  const closeTrackModalBtn = document.getElementById("closeTrackModalBtn");
+  if (closeTrackModalBtn) {
+    closeTrackModalBtn.addEventListener("click", closeTrackingModal);
+  }
+
+  const trackingModal = document.getElementById("trackingModal");
+  if (trackingModal) {
+    trackingModal.addEventListener("click", function (e) {
+      if (e.target === trackingModal) {
+        closeTrackingModal();
+      }
+    });
+  }
+
+  const trackingInput = document.getElementById("trackingNumber");
+  if (trackingInput) {
+    trackingInput.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        trackApplication();
+      }
+    });
+  }
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      closeTrackingModal();
+    }
+  });
 });
 
 // =========================================
@@ -356,15 +516,24 @@ async function handleFormSubmission() {
     const result = await response.json();
 
     if (response.ok) {
-      // Close modal before showing success
-      const modal = document.getElementById("confirmModal");
-      if (modal) {
-        modal.classList.remove("active");
-        modal.setAttribute("aria-hidden", "true");
+      // Close the confirmation modal
+      const confirmModal = document.getElementById("confirmModal");
+      if (confirmModal) {
+        confirmModal.classList.remove("active");
+        confirmModal.setAttribute("aria-hidden", "true");
       }
-      alert(`Success! Tracking Code: ${result.enrollment_id}\n\n${result.msg}`);
-      sessionStorage.clear();
-      window.location.href = "enrollmentWebsite.html";
+
+      // Populate and open the success modal
+      const trackingEl = document.getElementById("successTrackingNumber");
+      if (trackingEl) trackingEl.textContent = result.enrollment_id || "—";
+
+      const successModal = document.getElementById("successModal");
+      if (successModal) {
+        successModal.classList.add("active");
+        successModal.setAttribute("aria-hidden", "false");
+      }
+
+      // sessionStorage is cleared when the user clicks "GO BACK LOGIN PAGE"
     } else {
       alert(`Error: ${result.msg || "Failed to submit enrollment."}`);
     }

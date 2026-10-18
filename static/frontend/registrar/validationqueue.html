@@ -6,6 +6,7 @@
     <title>CEC - Validation Queue</title>
 
     <link rel="stylesheet" href="/shared/shell.css">
+    <link rel="stylesheet" href="validationqueue.css">
 
     <link
       rel="stylesheet"
@@ -16,8 +17,6 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap"
       rel="stylesheet"
     />
-
-    
   </head>
 
   <body>
@@ -45,7 +44,6 @@
             <p class="dropdown-role" id="officerRole">Registrar</p>
             <button id="changePasswordBtn">Change Password</button>
             <button id="logoutBtn">Logout</button>
-            
           </div>
         </div>
       </div>
@@ -85,13 +83,240 @@
       <main>
         <p id="message"></p>
 
-        <!-- Content placeholder — sections not built yet -->
-        <div class="content-placeholder"></div>
+        <div class="queue-container">
+          <!-- Top Title Bar -->
+          <div class="queue-header">
+            <div class="queue-title-area">
+              <h2>Enrollment Validation Queue</h2>
+              <p>Review incoming student applications, verify submitted physical documents, and officially enroll students.</p>
+            </div>
+            <button class="refresh-btn" id="refreshQueueBtn">
+              <i class="fa-solid fa-arrows-rotate"></i> Refresh Queue
+            </button>
+          </div>
+
+          <!-- Stat Overview Cards -->
+          <div class="stat-grid">
+            <div class="stat-card active" data-filter="pending">
+              <div class="stat-icon pending">
+                <i class="fa-solid fa-clock"></i>
+              </div>
+              <div class="stat-info">
+                <span class="stat-number" id="statPending">0</span>
+                <span class="stat-label">Pending Review</span>
+              </div>
+            </div>
+
+            <div class="stat-card" data-filter="ready">
+              <div class="stat-icon ready">
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+              <div class="stat-info">
+                <span class="stat-number" id="statReady">0</span>
+                <span class="stat-label">Ready to Enroll</span>
+              </div>
+            </div>
+
+            <div class="stat-card" data-filter="missing">
+              <div class="stat-icon missing">
+                <i class="fa-solid fa-file-circle-exclamation"></i>
+              </div>
+              <div class="stat-info">
+                <span class="stat-number" id="statMissing">0</span>
+                <span class="stat-label">Incomplete Docs</span>
+              </div>
+            </div>
+
+            <div class="stat-card" data-filter="enrolled">
+              <div class="stat-icon enrolled">
+                <i class="fa-solid fa-user-graduate"></i>
+              </div>
+              <div class="stat-info">
+                <span class="stat-number" id="statEnrolled">0</span>
+                <span class="stat-label">Officially Enrolled</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filter & Search Bar -->
+          <div class="filter-search-bar">
+            <div class="filter-pills">
+              <button type="button" class="filter-pill active" data-filter="pending">Pending</button>
+              <button type="button" class="filter-pill" data-filter="ready">Ready to Enroll</button>
+              <button type="button" class="filter-pill" data-filter="missing">Missing Docs</button>
+              <button type="button" class="filter-pill" data-filter="enrolled">Enrolled</button>
+              <button type="button" class="filter-pill" data-filter="all">All Records</button>
+            </div>
+
+            <div class="search-input-wrapper">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="queueSearchInput" placeholder="Search by name, tracking ID, or course..." />
+            </div>
+          </div>
+
+          <!-- Data Table Card -->
+          <div class="table-card">
+            <table class="queue-table">
+              <thead>
+                <tr>
+                  <th>Tracking ID</th>
+                  <th>Student Info</th>
+                  <th>Program / Year</th>
+                  <th>Type</th>
+                  <th>Documents</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="queueTableBody">
+                <tr>
+                  <td colspan="7">
+                    <div class="table-empty-state">
+                      <i class="fa-solid fa-spinner fa-spin"></i>
+                      <h3>Loading validation queue...</h3>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </main>
     </div>
-    
-  <script src="/shared/app.js"></script>
-  <script src="page.js"></script>
 
+    <!-- =========================================================
+         DOCUMENT VALIDATION & ENROLLMENT MODAL
+         ========================================================= -->
+    <div id="validationModal" class="modal-backdrop" aria-hidden="true">
+      <div class="modal-card">
+        <!-- Header -->
+        <div class="modal-header">
+          <div class="modal-header-left">
+            <h3 id="modalStudentName">Student Name</h3>
+            <span class="tracking-code" id="modalTrackingId">ENR-XXXX</span>
+          </div>
+          <button type="button" class="modal-close-btn" id="closeValidationModalBtn">&times;</button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body">
+          <!-- Student Profile Snapshot -->
+          <div class="snapshot-card">
+            <div class="snapshot-grid">
+              <div class="snapshot-item">
+                <span class="lbl">Program:</span>
+                <span class="val" id="snapCourse">—</span>
+              </div>
+              <div class="snapshot-item">
+                <span class="lbl">Year & Sem:</span>
+                <span class="val" id="snapYearSem">—</span>
+              </div>
+              <div class="snapshot-item">
+                <span class="lbl">Schedule:</span>
+                <span class="val" id="snapSchedule">—</span>
+              </div>
+              <div class="snapshot-item">
+                <span class="lbl">Enrollment Type:</span>
+                <span class="val" id="snapType">—</span>
+              </div>
+              <div class="snapshot-item">
+                <span class="lbl">Email:</span>
+                <span class="val" id="snapEmail">—</span>
+              </div>
+              <div class="snapshot-item">
+                <span class="lbl">Contact Phone:</span>
+                <span class="val" id="snapPhone">—</span>
+              </div>
+              <div class="snapshot-item">
+                <span class="lbl">Home Address:</span>
+                <span class="val" id="snapAddress">—</span>
+              </div>
+              <div class="snapshot-item">
+                <span class="lbl">Birthdate:</span>
+                <span class="val" id="snapBirthdate">—</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Document Checklist Section -->
+          <div class="docs-section">
+            <div class="docs-section-header">
+              <h4 class="docs-section-title">Required Documents Verification</h4>
+              <button type="button" class="btn-confirm-all" id="confirmAllDocsBtn">
+                <i class="fa-solid fa-check-double"></i> Confirm All Documents Submitted
+              </button>
+            </div>
+
+            <!-- Notice / Status Banner -->
+            <div id="docsAlertBanner" class="docs-alert-banner warning">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              Confirm that the student has submitted the physical copy of each required document.
+            </div>
+
+            <!-- Documents List Checklist -->
+            <div class="docs-list" id="docsList">
+              <!-- Populated dynamically via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer">
+          <p class="modal-footer-msg">
+            * Once all documents are validated, you can officially enroll the student and create their portal credentials.
+          </p>
+          <div class="modal-footer-actions">
+            <button type="button" class="btn-secondary" id="cancelModalBtn">Close</button>
+            <button type="button" class="btn-enroll-primary" id="enrollStudentBtn" disabled>
+              <i class="fa-solid fa-user-check"></i> Enroll Student & Create Account
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================================
+         ENROLLMENT SUCCESS & CREDENTIALS MODAL
+         ========================================================= -->
+    <div id="enrollmentSuccessModal" class="modal-backdrop" aria-hidden="true">
+      <div class="modal-card success-modal-card">
+        <div class="success-icon-wrap">
+          <i class="fa-solid fa-check"></i>
+        </div>
+
+        <h3>Student Officially Enrolled!</h3>
+        <p class="subtitle">
+          <strong id="successStudentName">Student</strong> (<span id="successTrackingId">ENR-XXXX</span>) has been officially enrolled. A new student account has been created.
+        </p>
+
+        <!-- Credentials Box -->
+        <div class="credentials-box">
+          <div class="cred-row">
+            <span class="cred-label">Student Username:</span>
+            <span class="cred-value" id="successUsername">—</span>
+          </div>
+          <div class="cred-row">
+            <span class="cred-label">Temporary Password:</span>
+            <span class="cred-value" id="successPassword">—</span>
+          </div>
+          <div id="successEmailStatus" class="email-dispatch-status">
+            <i class="fa-solid fa-circle-check"></i> Credentials dispatched to student's email.
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; justify-content: center;">
+          <button type="button" class="btn-secondary" id="copyCredsBtn">
+            <i class="fa-regular fa-copy"></i> Copy
+          </button>
+          <button type="button" class="btn-enroll-primary" id="doneSuccessModalBtn">
+            Done
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/shared/app.js"></script>
+    <script src="validationqueue.js"></script>
   </body>
 </html>

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -26,14 +26,44 @@ class Enrollment(db.Model):
     enrollment_type = db.relationship("EnrollmentType", back_populates="enrollments", lazy="joined")
 
     status = db.Column(db.String(20), nullable=False)
+    documents = db.relationship("EnrollmentDocument", back_populates="enrollment", cascade="all, delete-orphan", lazy="select")
 
     def asdict(self):
         res = dict()
         res["enrollment_id"] = self.enrollment_id
         res["enrollment_type"] = self.enrollment_type.enrollment_type_name
+        res["enrollment_type_id"] = self.enrollment_type_id
         res["student_info"] = self.student_info.asdict()
         res["status"] = self.status
+        docs = [d.asdict() for d in (self.documents or [])]
+        res["documents"] = docs
+        res["total_documents"] = len(docs)
+        res["submitted_documents"] = sum(1 for d in docs if d["status"] == "Submitted")
+        res["all_documents_submitted"] = len(docs) > 0 and res["submitted_documents"] == len(docs)
         return res
+
+
+class EnrollmentDocument(db.Model):
+    document_id = db.Column(db.Integer, primary_key=True)
+    enrollment_id = db.Column(db.String(8), db.ForeignKey('enrollment.enrollment_id'), nullable=False)
+    requirement_id = db.Column(db.Integer, db.ForeignKey('document_requirement.requirement_id'), nullable=False)
+    status = db.Column(db.String(20), nullable=False, default="Pending")  # "Pending", "Submitted", "Invalid"
+    remarks = db.Column(db.String(255), nullable=True)
+    verified_at = db.Column(db.DateTime, nullable=True)
+
+    enrollment = db.relationship("Enrollment", back_populates="documents")
+    requirement = db.relationship("DocumentRequirement", lazy="joined")
+
+    def asdict(self):
+        return {
+            "document_id": self.document_id,
+            "enrollment_id": self.enrollment_id,
+            "requirement_id": self.requirement_id,
+            "requirement_name": self.requirement.requirement_name if self.requirement else "Document Requirement",
+            "status": self.status,
+            "remarks": self.remarks,
+            "verified_at": self.verified_at.strftime("%Y-%m-%d %H:%M:%S") if self.verified_at else None
+        }
 
 
 class StudentInfo(db.Model):
@@ -69,7 +99,7 @@ class StudentInfo(db.Model):
         res["middle_name"] = self.middle_name
         res["last_name"] = self.last_name
         res["suffix"] = self.suffix
-        res["birthdate"] = self.birthdate
+        res["birthdate"] = self.birthdate.strftime("%m/%d/%y") if isinstance(self.birthdate, (datetime, date)) else str(self.birthdate) if self.birthdate else None
         res["phone_number"] = self.phone_number
         res["email"] = self.email
         res["home_address"] = self.home_address

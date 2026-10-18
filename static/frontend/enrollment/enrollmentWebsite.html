@@ -58,12 +58,140 @@
         <p>Already submitted an enrollment form? Track your progress here.</p>
 
         <div class="track-area">
-          <input type="text" id="trackingNumber" />
+          <input type="text" id="trackingNumber" placeholder="Enter tracking code (e.g. ENR-XXXX)" />
 
           <button onclick="trackApplication()">Track</button>
         </div>
       </div>
     </main>
+
+    <!-- =========================================
+         TRACKING STATUS MODAL (matches s.png)
+    ========================================== -->
+    <div id="trackingModal" class="track-modal-overlay" aria-hidden="true">
+      <div class="track-modal-card">
+        <!-- Close button & Tracking banner -->
+        <div class="track-modal-topbar">
+          <div class="track-status-badge">
+            <span class="track-id-text">Tracking ID: <strong id="trackModalEnrollmentId">—</strong></span>
+            <span class="track-status-pill" id="trackModalStatusPill">Pending</span>
+          </div>
+          <button type="button" class="track-modal-close" id="closeTrackModalBtn" aria-label="Close modal">&times;</button>
+        </div>
+
+        <!-- Section 1: Enrollee Information -->
+        <div class="track-section">
+          <h3 class="track-section-title">Enrollee Information</h3>
+
+          <div class="track-info-layout">
+            <!-- Photo box -->
+            <div class="track-photo-box">
+              <img id="trackStudentPhoto" src="" alt="Student Photo" class="track-photo-img hidden" />
+              <div id="trackPhotoPlaceholder" class="track-photo-placeholder">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="50" cy="38" r="22" fill="#788292"/>
+                  <ellipse cx="50" cy="85" rx="33" ry="22" fill="#788292"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Personal detail fields -->
+            <div class="track-details-col">
+              <div class="track-field-row">
+                <span class="track-label">First Name:</span>
+                <span class="track-val" id="trackFirstName">—</span>
+              </div>
+              <div class="track-field-row">
+                <span class="track-label">Middle Name:</span>
+                <span class="track-val" id="trackMiddleName">—</span>
+              </div>
+              <div class="track-field-row">
+                <span class="track-label">Last Name:</span>
+                <span class="track-val" id="trackLastName">—</span>
+              </div>
+              <div class="track-field-row">
+                <span class="track-label">Suffix:</span>
+                <span class="track-val" id="trackSuffix">N/A</span>
+              </div>
+              <div class="track-field-row">
+                <span class="track-label">Birthdate:</span>
+                <span class="track-val" id="trackBirthdate">—</span>
+              </div>
+
+              <div class="track-field-spacer"></div>
+
+              <div class="track-field-row">
+                <span class="track-label">Phone Number:</span>
+                <span class="track-val" id="trackPhone">—</span>
+              </div>
+              <div class="track-field-row">
+                <span class="track-label">Home Address:</span>
+                <span class="track-val" id="trackAddress">—</span>
+              </div>
+              <div class="track-field-row">
+                <span class="track-label">Email Address:</span>
+                <span class="track-val" id="trackEmail">—</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="track-divider" />
+
+        <!-- Section 2: Academic Details -->
+        <div class="track-section">
+          <div class="track-field-row">
+            <span class="track-label">Course/ Program:</span>
+            <span class="track-val" id="trackCourse">—</span>
+          </div>
+          <div class="track-field-row">
+            <span class="track-label">Preferred Schedule:</span>
+            <span class="track-val" id="trackSchedule">—</span>
+          </div>
+          <div class="track-field-row">
+            <span class="track-label">School Year:</span>
+            <span class="track-val" id="trackSchoolYear">2026 – 2027</span>
+          </div>
+          <div class="track-field-row">
+            <span class="track-label">Year Level:</span>
+            <span class="track-val" id="trackYear">—</span>
+          </div>
+          <div class="track-field-row">
+            <span class="track-label">Semester:</span>
+            <span class="track-val" id="trackSemester">—</span>
+          </div>
+        </div>
+
+        <hr class="track-divider" />
+
+        <!-- Section 3: Documents in Process -->
+        <div class="track-section">
+          <h3 class="track-section-title">Documents in Process</h3>
+          <div id="trackDocumentsList" class="track-docs-list">
+            <!-- Loaded dynamically based on requirements and status -->
+          </div>
+        </div>
+
+        <hr class="track-divider" />
+
+        <!-- Section 4: Enrollment Fee -->
+        <div class="track-section track-fee-section">
+          <span class="track-label track-fee-label">Enrollment Fee:</span>
+          <span class="track-val track-fee-text">
+            Pay P500 in the accounting office,<br />
+            or provide an affiliated scholarship documents in the registrar to waved it off.
+          </span>
+        </div>
+
+        <hr class="track-divider" />
+
+        <!-- Section 5: Notice -->
+        <div class="track-footer-notice">
+          Once all of the documents are approved and the enrollment fee is cleared,<br />
+          you will receive an email that you are now enrolled, together with your study load.
+        </div>
+      </div>
+    </div>
 
     <script src="enrollment.js"></script>
   </body>

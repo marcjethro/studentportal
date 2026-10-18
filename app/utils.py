@@ -19,6 +19,10 @@ def generate_random_id():
     alphabet = string.ascii_letters + string.digits
     return ''.join(secrets.choice(alphabet) for _ in range(8))
 
+def generate_random_password(length=10):
+    chars = string.ascii_letters + string.digits
+    return ''.join(secrets.choice(chars) for _ in range(length))
+
 def role_required(allowed_roles):
     """
     Decorator to restrict access to specific user roles.

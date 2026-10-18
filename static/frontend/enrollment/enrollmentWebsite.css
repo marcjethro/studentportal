@@ -559,3 +559,298 @@ main h2 {
 
   }
 }
+
+/* =========================================
+   TRACKING STATUS MODAL (matches s.png)
+========================================= */
+
+.track-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.track-modal-overlay.active {
+  display: flex;
+}
+
+.track-modal-card {
+  background-color: #eef1f4;
+  border-radius: 24px;
+  border: 1px solid #d1d5db;
+  padding: 26px 32px 24px;
+  width: 100%;
+  max-width: 680px;
+  max-height: 92vh;
+  overflow-y: auto;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+  color: #000;
+  font-family: "Poppins", Arial, sans-serif;
+  position: relative;
+}
+
+/* Top bar with tracking ID & status */
+.track-modal-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.track-status-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: #1e293b;
+}
+
+.track-id-text strong {
+  color: #05058c;
+  letter-spacing: 0.5px;
+}
+
+.track-status-pill {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  background-color: #fef3c7;
+  color: #b45309;
+}
+
+.track-status-pill.approved {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.track-status-pill.rejected {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.track-modal-close {
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  line-height: 1;
+  color: #64748b;
+  cursor: pointer;
+  padding: 0 4px;
+  border-radius: 6px;
+  transition: color 0.15s ease;
+}
+
+.track-modal-close:hover {
+  color: #0f172a;
+}
+
+/* Section Titles */
+.track-section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 12px;
+}
+
+/* Photo and personal details layout */
+.track-info-layout {
+  display: flex;
+  gap: 22px;
+  align-items: flex-start;
+}
+
+.track-photo-box {
+  width: 145px;
+  height: 165px;
+  border-radius: 18px;
+  border: 1.5px solid #cbd5e1;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.track-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.track-photo-img.hidden {
+  display: none;
+}
+
+.track-photo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.track-photo-placeholder svg {
+  width: 105px;
+  height: 105px;
+}
+
+/* Personal Details Column */
+.track-details-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.track-field-spacer {
+  height: 6px;
+}
+
+/* Field Rows */
+.track-field-row {
+  display: flex;
+  gap: 8px;
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+.track-label {
+  font-weight: 700;
+  color: #000;
+  white-space: nowrap;
+  min-width: 145px;
+  flex-shrink: 0;
+}
+
+.track-val {
+  color: #1e293b;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+/* Dividers */
+.track-divider {
+  border: none;
+  border-top: 1.5px solid #64748b;
+  margin: 14px 0;
+}
+
+/* Documents List */
+.track-docs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.track-doc-item {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+.track-doc-name {
+  font-weight: 700;
+  color: #000;
+  min-width: 190px;
+  flex-shrink: 0;
+}
+
+.track-doc-status {
+  font-weight: 500;
+}
+
+.track-doc-status.approved {
+  color: #15803d;
+}
+
+.track-doc-status.processing {
+  color: #d97706;
+}
+
+.track-doc-status.invalid {
+  color: #dc2626;
+}
+
+/* Enrollment Fee Section */
+.track-fee-section {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-size: 13.5px;
+}
+
+.track-fee-label {
+  font-weight: 700;
+  color: #000;
+  min-width: 145px;
+  flex-shrink: 0;
+}
+
+.track-fee-text {
+  color: #1e293b;
+  line-height: 1.5;
+}
+
+/* Bottom Notice */
+.track-footer-notice {
+  font-size: 13px;
+  font-weight: 700;
+  color: #000;
+  text-align: center;
+  line-height: 1.6;
+  margin-top: 10px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .track-modal-card {
+    padding: 20px 16px;
+    border-radius: 18px;
+  }
+
+  .track-info-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .track-photo-box {
+    width: 120px;
+    height: 135px;
+    margin-bottom: 6px;
+  }
+
+  .track-label {
+    min-width: 125px;
+    font-size: 12.5px;
+  }
+
+  .track-val {
+    font-size: 12.5px;
+  }
+
+  .track-doc-name {
+    min-width: 140px;
+    font-size: 12.5px;
+  }
+
+  .track-doc-status {
+    font-size: 12.5px;
+  }
+
+  .track-footer-notice {
+    font-size: 12px;
+  }
+}
+
