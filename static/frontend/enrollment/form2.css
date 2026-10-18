@@ -685,3 +685,172 @@
             }
 
         }
+
+
+        /* =========================================
+           SUCCESS MODAL
+        ========================================= */
+
+        .success-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+
+            background-color: rgba(0, 0, 0, 0.45);
+
+            z-index: 2000;
+
+            justify-content: center;
+            align-items: center;
+
+            padding: 20px;
+        }
+
+        .success-overlay.active {
+            display: flex;
+        }
+
+
+        .success-card {
+            background-color: #ffffff;
+
+            border-radius: 20px;
+
+            padding: 48px 44px 40px;
+
+            width: 100%;
+            max-width: 560px;
+
+            text-align: center;
+
+            box-shadow:
+                0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+
+
+        .success-title {
+            font-size: 24px;
+            font-weight: 900;
+
+            color: #0a0d8f;
+
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+
+        .success-subtitle {
+            font-size: 17px;
+            font-weight: 600;
+
+            color: #5c5fba;
+
+            margin-bottom: 16px;
+        }
+
+
+        .success-body {
+            font-size: 15px;
+            color: #333;
+
+            line-height: 1.6;
+
+            margin-bottom: 24px;
+        }
+
+
+        /* Tracking number highlight box */
+        .success-tracking-box {
+            background-color: #f0f1ff;
+            border: 1.5px solid #c0c2ef;
+            border-radius: 12px;
+
+            padding: 14px 20px;
+
+            margin-bottom: 28px;
+        }
+
+        .success-tracking-label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+
+            margin-bottom: 6px;
+        }
+
+        .success-tracking-number {
+            font-size: 22px;
+            font-weight: 900;
+
+            color: #0a0d8f;
+
+            letter-spacing: 1px;
+            word-break: break-all;
+        }
+
+
+        /* Go back button */
+        .success-btn {
+            display: inline-block;
+
+            padding: 14px 40px;
+
+            border: none;
+            border-radius: 50px;
+
+            background-color: #0a0d8f;
+
+            color: #ffffff;
+
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+
+            cursor: pointer;
+
+            transition:
+                background-color 0.2s ease,
+                transform 0.1s ease;
+        }
+
+        .success-btn:hover {
+            background-color: #07096b;
+        }
+
+        .success-btn:active {
+            transform: scale(0.98);
+        }
+
+
+        /* Success modal mobile */
+        @media screen and (max-width: 600px) {
+
+            .success-card {
+                padding: 36px 22px 30px;
+            }
+
+            .success-title {
+                font-size: 20px;
+            }
+
+            .success-subtitle {
+                font-size: 15px;
+            }
+
+            .success-body {
+                font-size: 14px;
+            }
+
+            .success-tracking-number {
+                font-size: 18px;
+            }
+
+            .success-btn {
+                width: 100%;
+                font-size: 15px;
+            }
+
+        }
