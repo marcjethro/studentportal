@@ -1,558 +1,130 @@
-* {
-    font-family: "Poppins", sans-serif;
-    box-sizing: border-box;
-  }
-
-  html,
-  body {
-    margin: 0;
-    padding: 0;
-  }
-
-  body {
-    background-color: #eef0fa;
-    color: #111;
-    min-height: 100vh;
-  }
-
-  /* =========================================================
-     NAVBAR
-     ========================================================= */
-
-  nav {
-    position: sticky;
-    top: 0;
-
-    width: 100%;
-    height: 90px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    background-color: white;
-
-    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
-
-    padding: 0 30px;
-
-    z-index: 20;
-  }
-
-  .nav-left {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  nav img {
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-  }
-
-  nav h1 {
-    margin: 0;
-
-    color: navy;
-
-    font-size: clamp(20px, 2.4vw, 32px);
-    font-weight: 800;
-  }
-
-  .nav-right {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-  }
-
-  .notif-btn {
-    position: relative;
-
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    padding: 8px 16px;
-
-    border: 1px solid navy;
-    border-radius: 25px;
-
-    color: navy;
-
-    font-weight: 600;
-    font-size: 14px;
-  }
-
-  .notif-btn .dot {
-    position: absolute;
-    top: -3px;
-    right: -3px;
-
-    width: 9px;
-    height: 9px;
-
-    background-color: #dc2626;
-    border-radius: 50%;
-  }
-
-  .avatar-wrapper {
-    position: relative;
-  }
-
-  .avatar {
-    width: 48px;
-    height: 48px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background-color: navy;
-    color: white;
-
-    border-radius: 50%;
-
-    border: 2px solid navy;
-
-    font-size: 20px;
-
-    cursor: pointer;
-  }
-
-  .avatar-dropdown {
-    display: none;
-
-    position: absolute;
-    top: calc(100% + 12px);
-    right: 0;
-
-    width: 200px;
-
-    background-color: white;
-
-    border-radius: 10px;
-
-    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
-
-    padding: 16px;
-
-    z-index: 30;
-  }
-
-  .avatar-dropdown.open {
-    display: block;
-  }
-
-  .avatar-dropdown .dropdown-name {
-    margin: 0;
-
-    font-weight: 700;
-    font-size: 14px;
-
-    color: #111;
-  }
-
-  .avatar-dropdown .dropdown-role {
-    margin: 2px 0 12px;
-
-    font-size: 12px;
-    color: gray;
-
-    text-transform: capitalize;
-  }
-
-  .avatar-dropdown button {
-    display: block;
-    width: 100%;
-
-    padding: 8px 0;
-    margin: 0 0 8px;
-
-    border: none;
-    border-radius: 20px;
-
-    font-family: "Poppins", sans-serif;
-    font-weight: 600;
-    font-size: 13px;
-    line-height: 1.4;
-
-    cursor: pointer;
-  }
-
-  .avatar-dropdown button:last-child {
-    margin-bottom: 0;
-  }
-
-  #changePasswordBtn {
-    background-color: navy;
-    color: white;
-  }
-
-  #changePasswordBtn:hover {
-    background-color: #1d4ed8;
-  }
-
-  #logoutBtn {
-    background-color: #dc2626;
-    color: white;
-  }
-
-  #logoutBtn:hover {
-    background-color: #b91c1c;
-  }
-
-  /* =========================================================
-     PAGE BODY (sidebar + main)
-     ========================================================= */
-
-  .page-body {
-    position: relative;
-
-    display: flex;
-
-    min-height: calc(100vh - 90px);
-
-    background: radial-gradient(
-        circle at 60% 15%,
-        rgba(255, 255, 255, 0.25),
-        rgba(173, 202, 235, 0.15) 40%,
-        rgba(120, 160, 210, 0.15) 70%
-      ),
-      url("../images/CEC_BG.jpg");
-
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-
-  /* =========================================================
-     SIDEBAR
-     ========================================================= */
-
-  .sidebar {
-    width: 280px;
-    flex-shrink: 0;
-
-    background-color: #e3e6f5;
-
-    padding: 24px 18px;
-
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  .search-box {
-    position: relative;
-
-    margin-bottom: 10px;
-  }
-
-  .search-box i {
-    position: absolute;
-    left: 18px;
-    top: 50%;
-    transform: translateY(-50%);
-
-    color: navy;
-  }
-
-  .search-box input {
-    width: 100%;
-
-    padding: 14px 16px 14px 44px;
-
-    border: 1px solid #c7cce8;
-    border-radius: 30px;
-
-    font-size: 14px;
-
-    outline: none;
-
-    background-color: white;
-  }
-
-  .search-box input:focus {
-    border-color: navy;
-  }
-
-  .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-
-    width: 100%;
-
-    padding: 16px 20px;
-
-    border-radius: 30px;
-
-    background-color: white;
-    color: navy;
-
-    font-weight: 700;
-    font-size: 15px;
-
-    line-height: 1.25;
-
-    cursor: pointer;
-
-    border: none;
-    text-decoration: none;
-
-    text-align: left;
-
-    font-family: "Poppins", sans-serif;
-  }
-
-  .nav-item i {
-    width: 20px;
-    flex-shrink: 0;
-
-    text-align: center;
-  }
-
-  .nav-item.active {
-    background-color: navy;
-    color: white;
-  }
-
-  .nav-item:hover:not(.active) {
-    background-color: #f1f2fb;
-  }
-
-  /* ---------------------------------------------------------
-     ACADEMICS SUBMENU (flyout: Grades / Prospectus / Schedule)
-     --------------------------------------------------------- */
-
-  .nav-item-wrapper {
-    position: relative;
-  }
-
-  .academics-submenu {
-    display: none;
-
-    position: absolute;
-    top: 0;
-    left: calc(100% + 12px);
-
-    min-width: 170px;
-
-    background-color: navy;
-    border-radius: 12px;
-
-    padding: 16px 20px;
-
-    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.25);
-
-    flex-direction: column;
-    gap: 14px;
-
-    z-index: 25;
-  }
-
-  .academics-submenu.open {
-    display: flex;
-  }
-
-  .academics-submenu a {
-    color: white;
-    text-decoration: none;
-
-    font-weight: 600;
-    font-size: 15px;
-  }
-
-  .academics-submenu a.active {
-    text-decoration: underline;
-  }
-
-  .academics-submenu a:hover {
-    opacity: 0.8;
-  }
-
-  /* =========================================================
-     MAIN CONTENT
-     ========================================================= */
-
-  main {
-    flex: 1;
-
-    padding: 36px 40px 60px;
-
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  #message {
-    color: #b91c1c;
-    font-size: 14px;
-    min-height: 18px;
-  }
-
-  .page-header h2 {
-    margin: 0;
-
-    color: navy;
-
-    font-size: clamp(22px, 2.8vw, 32px);
-    font-weight: 800;
-  }
-
-  /* ---------------------------------------------------------
-     FILTER ROW (Select Academic Year / Select Semester / Button)
-     --------------------------------------------------------- */
-
+/* =========================================================
+   SCHEDULE — page-specific styles
+   Pairs with shared/shell.css + student.css.
+   ========================================================= */
+
+.page-header h2 {
+  margin: 0;
+  color: navy;
+  font-size: clamp(22px, 2.8vw, 32px);
+  font-weight: 800;
+}
+
+/* ---------------------------------------------------------
+   FILTER ROW (Academic Year / Semester / View button)
+   --------------------------------------------------------- */
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.filter-select {
+  min-width: 220px;
+
+  padding: 12px 18px;
+
+  border: none;
+  border-radius: 25px;
+
+  background-color: white;
+
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+
+  color: #111;
+
+  cursor: pointer;
+
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.filter-select:focus {
+  outline: 2px solid navy;
+}
+
+.view-btn {
+  padding: 12px 28px;
+
+  border: none;
+  border-radius: 25px;
+
+  background-color: navy;
+  color: white;
+
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: background-color 0.2s ease;
+}
+
+.view-btn:hover {
+  background-color: #1d4ed8;
+}
+
+/* ---------------------------------------------------------
+   RESULTS PANEL + TABLE
+   --------------------------------------------------------- */
+
+.results-panel {
+  background-color: rgba(255, 255, 255, 0.92);
+  border-radius: 14px;
+  padding: 28px;
+  min-height: 160px;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.results-panel .placeholder-text {
+  margin: 0;
+  color: gray;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.schedule-table th,
+.schedule-table td {
+  border: 1px solid #c7cce8;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.schedule-table th {
+  background-color: navy;
+  color: white;
+  font-weight: 700;
+}
+
+.schedule-table tbody tr:nth-child(even) {
+  background-color: #f1f2fb;
+}
+
+.academics-submenu a.active {
+  text-decoration: underline;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
   .filter-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
+    flex-direction: column;
   }
 
-  .filter-select {
-    min-width: 220px;
-
-    padding: 12px 18px;
-
-    border: none;
-    border-radius: 25px;
-
-    background-color: white;
-
-    font-family: "Poppins", sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-
-    color: #111;
-
-    cursor: pointer;
-
-    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.08);
-  }
-
-  .filter-select:focus {
-    outline: 2px solid navy;
-  }
-
+  .filter-select,
   .view-btn {
-    padding: 12px 28px;
-
-    border: none;
-    border-radius: 25px;
-
-    background-color: navy;
-    color: white;
-
-    font-family: "Poppins", sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-
-    cursor: pointer;
-
-    transition: background-color 0.2s ease;
-  }
-
-  .view-btn:hover {
-    background-color: #1d4ed8;
-  }
-
-  /* ---------------------------------------------------------
-     RESULTS PANEL
-     --------------------------------------------------------- */
-
-  .results-panel {
-    background-color: rgba(255, 255, 255, 0.92);
-
-    border-radius: 14px;
-
-    padding: 28px;
-
-    min-height: 160px;
-
-    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.12);
-
-    overflow-x: auto;
-  }
-
-  .results-panel .placeholder-text {
-    margin: 0;
-
-    color: gray;
-
-    font-size: 14px;
-    font-weight: 600;
-
-    text-align: center;
-  }
-
-  .schedule-table {
     width: 100%;
-    min-width: 640px;
-
-    border-collapse: collapse;
-
-    font-size: 14px;
   }
-
-  .schedule-table th,
-  .schedule-table td {
-    border: 1px solid #c7cce8;
-
-    padding: 10px 12px;
-
-    text-align: left;
-  }
-
-  .schedule-table th {
-    background-color: navy;
-    color: white;
-
-    font-weight: 700;
-  }
-
-  .schedule-table tbody tr:nth-child(even) {
-    background-color: #f1f2fb;
-  }
-
-  /* =========================================================
-     RESPONSIVE
-     ========================================================= */
-
-  @media (max-width: 768px) {
-    .page-body {
-      flex-direction: column;
-    }
-
-    .sidebar {
-      width: 100%;
-    }
-
-    .search-box {
-      width: 100%;
-    }
-
-    main {
-      padding: 24px 18px 40px;
-    }
-
-    .academics-submenu {
-      position: static;
-
-      margin-top: 4px;
-      left: auto;
-      top: auto;
-
-      width: 100%;
-    }
-
-    .filter-row {
-      flex-direction: column;
-    }
-
-    .filter-select,
-    .view-btn {
-      width: 100%;
-    }
-  }
+}

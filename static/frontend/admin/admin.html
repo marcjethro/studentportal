@@ -3,137 +3,92 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>CEC - Admin</title>
 
-    
+    <link rel="stylesheet" href="/shared/shell.css" />
+    <link rel="stylesheet" href="admin.css" />
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
-
-    <link rel="stylesheet" href="admin.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
   </head>
 
   <body>
+    <!-- ==================== NAVBAR ==================== -->
+    <nav>
+      <div class="nav-left">
+        <img src="/images/CEC_LOGO.png" alt="CEC Logo" />
+        <h1>CEC - Admin</h1>
+      </div>
 
-    <button class="menu-btn" id="menuBtn" type="button">
-      <i class="fa-solid fa-bars"></i>
-    </button>
-
-    <div class="dashboard">
-      <!-- ================= HEADER ================= -->
-
-      <header class="header">
-        <div class="logo-section">
-          <img src="/images/CEC_LOGO.png" alt="CEC Logo" class="header-logo" />
-
-          <h2>CEC - Admin</h2>
+      <div class="nav-right">
+        <div class="notif-btn">
+          <i class="fa-solid fa-bell"></i>
+          5
+          <span class="dot"></span>
         </div>
 
-        <div class="header-right">
-          <div class="notification">
-            <i class="fa-solid fa-bell"></i>
-
-            <span>5</span>
+        <div class="avatar-wrapper">
+          <div class="avatar" id="avatarBtn">
+            <i class="fa-solid fa-user"></i>
           </div>
 
-          <div class="profile-wrapper">
-
-            <button class="profile" id="profileBtn" type="button">
-              <i class="fa-solid fa-user"></i>
-            </button>
-          
-            <div class="profile-dropdown" id="profileDropdown">
-          
-              <div class="profile-info">
-                <strong>Admin</strong>
-                <small>Administrator</small>
-              </div>
-          
-              <div class="dropdown-divider"></div>
-          
-              <button
-                type="button"
-                class="dropdown-item"
-                id="changePasswordBtn"
-              >
-                <i class="fa-solid fa-key"></i>
-                <span>Change Password</span>
-              </button>
-          
-              <button
-                type="button"
-                class="dropdown-item logout-item"
-                id="logoutBtn"
-              >
-                <i class="fa-solid fa-right-from-bracket"></i>
-                <span>Logout</span>
-              </button>
-          
-            </div>
-          
+          <div class="avatar-dropdown" id="avatarDropdown">
+            <p class="dropdown-name" id="officerName">Admin</p>
+            <p class="dropdown-role" id="officerRole">Administrator</p>
+            <button id="changePasswordBtn">Change Password</button>
+            <button id="logoutBtn">Logout</button>
           </div>
         </div>
-      </header>
+      </div>
+    </nav>
 
-      <!-- ================= MAIN AREA ================= -->
+    <!-- ==================== PAGE BODY ==================== -->
+    <div class="page-body">
+      <!-- ==================== SIDEBAR ==================== -->
+      <aside class="sidebar">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Search" />
+        </div>
 
-      <div class="main-area">
-        <!-- ================= SIDEBAR ================= -->
+        <a class="nav-item active" href="#" id="dashboardBtn">
+          <i class="fa-solid fa-house"></i>
+          Dashboard
+        </a>
 
-        <aside class="sidebar" id="sidebar">
-          <!-- SEARCH -->
+        <a class="nav-item" href="#" id="announcementsBtn">
+          <i class="fa-solid fa-bullhorn"></i>
+          Announcements
+        </a>
 
-          <div class="search-box">
-            <i class="fa-solid fa-magnifying-glass"></i>
+        <a class="nav-item" href="useraccounts.html">
+          <i class="fa-solid fa-user"></i>
+          User Accounts
+        </a>
+      </aside>
 
-            <input type="text" placeholder="Search" />
-          </div>
+      <!-- ==================== MAIN ==================== -->
+      <main>
+        <p id="message"></p>
 
-          <!-- NAVIGATION -->
-
-          <nav>
-            <!-- DASHBOARD -->
-
-            <a href="#" class="nav-item active">
-              <i class="fa-solid fa-house"></i>
-
-              <span>Dashboard</span>
-            </a>
-
-            <!-- DIVIDER -->
-
-            <div class="divider"></div>
-
-            <!-- ANNOUNCEMENTS -->
-
-            <a href="#" class="nav-item" id="announcementsBtn">
-              <i class="fa-solid fa-bullhorn"></i>
-
-              <span>Announcements</span>
-            </a>
-
-            <!-- USER ACCOUNTS -->
-
-            <a href="useraccounts.html" class="nav-item">
-              <i class="fa-solid fa-user"></i>
-
-              <span>User Accounts</span>
-            </a>
-          </nav>
-        </aside>
-
-        <!-- ================= CONTENT ================= -->
-
-        <main class="content" id="content">
+        <div class="content" id="content">
           <div class="welcome-section">
             <h1>Admin Dashboard</h1>
             <p>Select an option from the sidebar.</p>
           </div>
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
+
+    <script src="/shared/app.js"></script>
+    <script src="/shared/announcements.js"></script>
     <script src="admin.js"></script>
   </body>
 </html>

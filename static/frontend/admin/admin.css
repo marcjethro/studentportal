@@ -1,807 +1,37 @@
-/* =========================
-   RESET
-========================= */
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html,
-body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
-body {
-  font-family: Arial, sans-serif;
-
-  background: #666;
-
-  color: #101010;
-}
-
-/* =========================
-   DASHBOARD
-========================= */
-
-.dashboard {
-  width: 100%;
-  height: 100vh;
-
-  margin: 0;
-  padding: 0;
-
-  background: white;
-
-  overflow: hidden;
-}
-
-/* =========================
-   HEADER
-========================= */
-
-.header {
-  height: 100px;
-
-  background: white;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  padding: 0 28px 0 55px;
-
-  border-bottom: 2px solid gray;
-}
-
-/* LOGO + TITLE */
-
-.logo-section {
-  display: flex;
-
-  align-items: center;
-
-  gap: 14px;
-}
-
-.header-logo {
-  width: 70px;
-  height: 70px;
-
-  object-fit: contain;
-}
-
-.logo-section h2 {
-  color: #071b91;
-
-  font-size: 23px;
-
-  font-weight: 700;
-}
-
-/* =========================
-   HEADER RIGHT
-========================= */
-
-.header-right {
-  display: flex;
-
-  align-items: center;
-
-  gap: 14px;
-}
-
-/* NOTIFICATION */
-
-.notification {
-  width: 50px;
-  height: 40px;
-
-  border: 1px solid #071b91;
-
-  border-radius: 20px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  position: relative;
-
-  color: #071b91;
-}
-
-.notification i {
-  font-size: 12px;
-}
-
-.notification span {
-  position: absolute;
-
-  top: -6px;
-  right: -4px;
-
-  width: 13px;
-  height: 13px;
-
-  background: red;
-
-  color: white;
-
-  font-size: 8px;
-
-  border-radius: 50%;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-}
-
-/* PROFILE */
-
-/* ================================
-   PROFILE
-================================ */
-
-.profile-wrapper {
-  position: relative;
-}
-
-.profile {
-  width: 42px;
-  height: 42px;
-
-  border: none;
-  border-radius: 50%;
-
-  background: #eeeeee;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  cursor: pointer;
-
-  font-size: 18px;
-}
-
-.profile:hover {
-  background: #dddddd;
-}
-
-
-/* ================================
-   PROFILE DROPDOWN
-================================ */
-
-.profile-dropdown {
-  position: absolute;
-
-  top: calc(100% + 10px);
-  right: 0;
-
-  width: 220px;
-
-  background: white;
-
-  border: 1px solid #dddddd;
-  border-radius: 10px;
-
-  padding: 10px;
-
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-
-  display: none;
-
-  z-index: 1000;
-}
-
-
-/* Show dropdown */
-
-.profile-dropdown.show {
-  display: block;
-}
-
-
-/* Profile information */
-
-.profile-info {
-  padding: 10px;
-}
-
-.profile-info strong {
-  display: block;
-
-  font-size: 14px;
-}
-
-.profile-info small {
-  display: block;
-
-  margin-top: 3px;
-
-  color: #777;
-
-  font-size: 12px;
-}
-
-
-/* Divider */
-
-.dropdown-divider {
-  height: 1px;
-
-  background: #eeeeee;
-
-  margin: 5px 0;
-}
-
-
-/* Dropdown buttons */
-
-.dropdown-item {
-  width: 100%;
-
-  display: flex;
-  align-items: center;
-
-  gap: 10px;
-
-  padding: 11px;
-
-  border: none;
-  border-radius: 7px;
-
-  background: transparent;
-
-  text-align: left;
-
-  cursor: pointer;
-
-  font-size: 14px;
-}
-
-.dropdown-item:hover {
-  background: #f3f4f6;
-}
-
-
-/* Logout */
-
-.logout-item {
-  color: #dc2626;
-}
-
-.logout-item:hover {
-  background: #fee2e2;
-}
-/* =========================
-   MAIN AREA
-========================= */
-
-.main-area {
-  height: calc(100vh - 90px);
-
-  display: flex;
-
-  gap: 18px;
-
-  padding: 44px 55px 30px;
-
-  background: linear-gradient(rgba(35, 70, 110, 0.48), rgba(35, 70, 110, 0.48)),
-    url("/images/CEC_BG.jpg");
-
-  background-size: cover;
-  background-position: center;
-
-  overflow: hidden;
-}
-
-/* =========================
-   SIDEBAR
-========================= */
-
-.sidebar {
-  width: 224px;
-
-  flex-shrink: 0;
-
-  padding: 26px 17px;
-
-  background: rgba(232, 234, 247, 0.93);
-
-  border-radius: 4px;
-
-  height: 100%;
-}
-
-/* =========================
-   SEARCH
-========================= */
-
-.search-box {
-  height: 25px;
-
-  width: 100%;
-
-  background: white;
-
-  border: 1px solid #183d91;
-
-  border-radius: 6px;
-
-  display: flex;
-
-  align-items: center;
-
-  padding: 0 12px;
-
-  margin-bottom: 20px;
-}
-
-.search-box i {
-  color: #071b91;
-
-  font-size: 12px;
-
-  margin-right: 15px;
-}
-
-.search-box input {
-  width: 100%;
-
-  border: none;
-
-  outline: none;
-
-  background: transparent;
-
-  font-size: 11px;
-
-  color: #555;
-}
-
-/* =========================
-   NAVIGATION
-========================= */
-
-nav {
-  width: 100%;
-}
-
-.nav-item {
-  height: 42px;
-
-  width: 100%;
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 13px;
-
-  padding: 0 20px;
-
-  margin-bottom: 8px;
-
-  border-radius: 14px;
-
-  background: white;
-
-  color: #071b91;
-
-  text-decoration: none;
-
-  font-size: 14px;
-
-  font-weight: 600;
-
-  transition: 0.2s;
-}
-
-.nav-item i {
-  width: 18px;
-
-  text-align: center;
-
-  font-size: 14px;
-}
-
-.nav-item:hover {
-  background: #dce3f5;
-}
-
-.nav-item.active {
-  background: #123ca4;
-
-  color: white;
-}
-
-/* =========================
-   DIVIDER
-========================= */
-
-.divider {
-  height: 2px;
-
-  width: 100%;
-
-  background: #aeb5cf;
-
-  margin: 12px 0 20px;
-}
-
-/* =========================
-   CONTENT
-========================= */
+/* =========================================================
+   ADMIN — page-specific styles
+   Pairs with shared/shell.css (navbar + sidebar + avatar).
+   Covers the content panel, welcome section, and the
+   announcements create/list UI injected by admin.js.
+   ========================================================= */
 
 .content {
   flex: 1;
-
   min-width: 0;
 
   background: rgba(231, 235, 246, 0.55);
+  border-radius: 12px;
 
-  border-radius: 5px;
-
-  padding: 27px 18px 17px;
+  padding: 27px 24px;
 
   overflow-y: auto;
-
   overflow-x: hidden;
 }
 
-.page-title {
+.welcome-section h1 {
   color: #071b91;
-
-  font-size: 17px;
-
-  margin-bottom: 25px;
+  font-size: 22px;
+  margin-bottom: 8px;
 }
 
-/* =========================
-   STAT CARDS
-========================= */
-
-.stats {
-  width: 100%;
-
-  display: grid;
-
-  grid-template-columns: repeat(4, 1fr);
-
-  gap: 22px;
-
-  margin-bottom: 23px;
+.welcome-section p {
+  color: #333;
+  font-size: 14px;
 }
 
-.stat-card {
-  height: 70px;
-
-  background: #123ca4;
-
-  border-radius: 7px;
-
-  color: white;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  padding: 8px 9px 8px 12px;
-}
-
-.stat-card h1 {
-  font-size: 27px;
-
-  line-height: 25px;
-
-  margin-bottom: 4px;
-}
-
-.stat-card p {
-  font-size: 10px;
-
-  font-weight: 600;
-
-  white-space: nowrap;
-}
-
-.stat-card button {
-  border: none;
-
-  background: white;
-
-  color: #111;
-
-  border-radius: 6px;
-
-  padding: 5px 8px;
-
-  font-size: 9px;
-
-  cursor: pointer;
-}
-
-/* =========================
-   MOBILE MENU
-========================= */
-
-.menu-btn {
-  display: none;
-
-  position: fixed;
-
-  top: 15px;
-
-  left: 15px;
-
-  z-index: 200;
-
-  width: 40px;
-
-  height: 40px;
-
-  border: none;
-
-  border-radius: 8px;
-
-  background: #123ca4;
-
-  color: white;
-
-  cursor: pointer;
-}
-
-/* =========================
-   TABLET
-========================= */
-
-@media (max-width: 1000px) {
-  .header {
-    padding: 0 20px;
-  }
-
-  .main-area {
-    padding: 30px;
-  }
-
-  .sidebar {
-    width: 200px;
-  }
-
-  .stats {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* =========================
-   MOBILE
-========================= */
-
-/* =========================
-   MOBILE
-========================= */
-
-@media (max-width: 700px) {
-
-  html,
-  body {
-    width: 100%;
-    height: 100%;
-
-    overflow: hidden;
-  }
-
-
-  /* =========================
-     DASHBOARD
-  ========================= */
-
-  .dashboard {
-    width: 100%;
-    height: 100vh;
-
-    margin: 0;
-    padding: 0;
-
-    overflow: hidden;
-  }
-
-
-  /* =========================
-     HEADER
-  ========================= */
-
-  .header {
-    width: 100%;
-    height: 65px;
-
-    padding: 0 15px 0 65px;
-
-    flex-shrink: 0;
-  }
-
-  .logo-section {
-    gap: 8px;
-  }
-
-  .logo-section h2 {
-    font-size: 18px;
-  }
-
-  .header-logo {
-    width: 38px;
-    height: 38px;
-  }
-
-
-  /* =========================
-     MENU BUTTON
-  ========================= */
-
-  .menu-btn {
-    display: flex;
-
-    position: fixed;
-
-    top: 12px;
-    left: 15px;
-
-    z-index: 300;
-
-    width: 40px;
-    height: 40px;
-
-    border: none;
-    border-radius: 8px;
-
-    background: #123ca4;
-    color: white;
-
-    align-items: center;
-    justify-content: center;
-
-    cursor: pointer;
-
-    font-size: 18px;
-  }
-
-  .menu-btn:hover {
-    background: #071b91;
-  }
-
-
-  /* =========================
-     MAIN AREA
-  ========================= */
-
-  .main-area {
-    width: 100%;
-    height: calc(100vh - 65px);
-
-    padding: 15px;
-
-    display: flex;
-
-    gap: 0;
-
-    overflow: hidden;
-  }
-
-
-  /* =========================
-     SIDEBAR
-  ========================= */
-
-  .sidebar {
-    position: fixed;
-
-    top: 65px;
-    left: -240px;
-
-    width: 224px;
-    height: calc(100vh - 65px);
-
-    padding: 26px 17px;
-
-    background: rgba(232, 234, 247, 0.98);
-
-    border-radius: 0 8px 8px 0;
-
-    z-index: 250;
-
-    transition: left 0.3s ease;
-
-    overflow-y: auto;
-  }
-
-
-  /* SHOW SIDEBAR */
-
-  .sidebar.show {
-    left: 0;
-  }
-
-
-  /* =========================
-     SEARCH
-  ========================= */
-
-  .search-box {
-    width: 100%;
-    height: 30px;
-
-    margin-bottom: 20px;
-  }
-
-
-  /* =========================
-     NAVIGATION
-  ========================= */
-
-  .nav-item {
-    height: 42px;
-
-    font-size: 14px;
-
-    padding: 0 20px;
-  }
-
-
-  /* =========================
-     CONTENT
-  ========================= */
-
-  .content {
-    width: 100%;
-    height: 100%;
-
-    padding: 20px;
-
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
-
-
-  /* =========================
-     STAT CARDS
-  ========================= */
-
-  .stats {
-    grid-template-columns: 1fr;
-
-    gap: 12px;
-  }
-
-
-  /* =========================
-     CHART
-  ========================= */
-
-  .chart {
-    overflow-x: auto;
-  }
-
-  .bar-chart {
-    min-width: 600px;
-  }
-}
-
-/* ================= ANNOUNCEMENTS ================= */
+/* =========================================================
+   ANNOUNCEMENTS
+   ========================================================= */
 
 .announcement-page {
   width: 100%;
@@ -821,7 +51,6 @@ nav {
   font-size: 14px;
 }
 
-
 .announcement-card {
   background: #ffffff;
   border-radius: 10px;
@@ -830,11 +59,9 @@ nav {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-
 .form-group {
   margin-bottom: 20px;
 }
-
 
 .form-group label {
   display: block;
@@ -842,7 +69,6 @@ nav {
   font-weight: 600;
   color: #333;
 }
-
 
 .form-group input,
 .form-group textarea {
@@ -852,19 +78,17 @@ nav {
   border-radius: 6px;
   font-size: 14px;
   outline: none;
+  font-family: "Poppins", sans-serif;
 }
-
 
 .form-group input:focus,
 .form-group textarea:focus {
   border-color: #05058c;
 }
 
-
 .form-group textarea {
   resize: vertical;
 }
-
 
 .post-announcement-btn {
   background: #05058c;
@@ -877,22 +101,18 @@ nav {
   font-weight: 600;
 }
 
-
 .post-announcement-btn:hover {
   background: #03036b;
 }
-
 
 .post-announcement-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-
 .announcement-message {
   margin-top: 20px;
 }
-
 
 .success-message {
   color: #198754;
@@ -901,7 +121,6 @@ nav {
   border-radius: 6px;
 }
 
-
 .error-message {
   color: #dc3545;
   background: #fdeaea;
@@ -909,83 +128,52 @@ nav {
   border-radius: 6px;
 }
 
-/* =========================
+/* =========================================================
    ANNOUNCEMENT LIST
-========================= */
+   ========================================================= */
 
 .announcements-list {
   margin-top: 30px;
-
   max-width: 800px;
 }
 
 .announcements-list h2 {
   color: #071b91;
-
   font-size: 20px;
-
   margin-bottom: 15px;
 }
-
-
-/* =========================
-   ANNOUNCEMENT ITEM
-========================= */
 
 .announcement-item {
   background: white;
-
   border-radius: 10px;
-
   padding: 20px;
-
   margin-bottom: 15px;
-
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-
 .announcement-item h3 {
   color: #071b91;
-
   font-size: 17px;
-
   margin-bottom: 10px;
 }
 
-
 .announcement-item p {
   color: #333;
-
   font-size: 14px;
-
   line-height: 1.5;
-
   margin-bottom: 12px;
 }
 
-
 .announcement-info {
   color: #777;
-
   font-size: 12px;
-
   line-height: 1.6;
 }
 
-
-/* =========================
-   NO ANNOUNCEMENTS
-========================= */
-
 .no-announcements {
   background: white;
-
   padding: 20px;
-
   border-radius: 10px;
-
   color: #777;
-
   font-size: 14px;
 }

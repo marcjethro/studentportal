@@ -523,7 +523,7 @@
     <!-- ==================== NAVBAR ==================== -->
     <nav>
       <div class="nav-left">
-        <img src="../images/CEC_LOGO.png" alt="CEC Logo" />
+        <img src="/images/CEC_LOGO.png" alt="CEC Logo" />
         <h1>CEC - EDP Portal</h1>
       </div>
 
@@ -592,120 +592,7 @@
     </div>
 
     <!-- ==================== JAVASCRIPT ==================== -->
-    <script>
-      const API_URL = "";
-
-      const message = document.getElementById("message");
-
-      function getToken() {
-        return localStorage.getItem("token");
-      }
-
-      function authHeaders() {
-        return {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getToken()}`,
-        };
-      }
-
-      function goToLogin(delay) {
-        setTimeout(() => {
-          window.location.href = "../index.html";
-        }, delay);
-      }
-
-      function requireAuth() {
-        if (!getToken()) {
-          message.textContent = "You must be logged in. Redirecting...";
-          goToLogin(1500);
-          return false;
-        }
-
-        return true;
-      }
-
-      function handleAuthFailure() {
-        message.textContent = "Session expired. Please login again.";
-        localStorage.removeItem("token");
-        localStorage.removeItem("role");
-        goToLogin(1500);
-      }
-
-      /* ---------------------------------------------------------
-         OFFICER INFO + ROLE CHECK
-
-         The role check here is only a convenience so other roles
-         don't land on this page. Real access control has to be
-         enforced by the backend on every endpoint.
-         --------------------------------------------------------- */
-
-      async function loadOfficerDetails() {
-        try {
-          const response = await fetch(`${API_URL}/api/getUserDetails`, {
-            method: "GET",
-            headers: authHeaders(),
-          });
-
-          if (response.status === 401) {
-            handleAuthFailure();
-            return;
-          }
-
-          if (!response.ok) return;
-
-          const officer = await response.json();
-
-          if ((officer.role || "").toLowerCase() !== "edp") {
-            message.textContent = "Access denied. Redirecting...";
-            goToLogin(1500);
-            return;
-          }
-
-          document.getElementById("officerName").textContent =
-            officer.username || "EDP Officer";
-
-          document.getElementById("officerRole").textContent =
-            officer.role || "EDP";
-        } catch (error) {
-          console.error(error);
-        }
-      }
-
-      /* ---------------------------------------------------------
-         AVATAR DROPDOWN
-         --------------------------------------------------------- */
-
-      const avatarBtn = document.getElementById("avatarBtn");
-      const avatarDropdown = document.getElementById("avatarDropdown");
-
-      avatarBtn.addEventListener("click", (event) => {
-        event.stopPropagation();
-        avatarDropdown.classList.toggle("open");
-      });
-
-      document.addEventListener("click", (event) => {
-        if (!avatarDropdown.contains(event.target) && event.target !== avatarBtn) {
-          avatarDropdown.classList.remove("open");
-        }
-      });
-
-      document.getElementById("changePasswordBtn").addEventListener("click", () => {
-        window.location.href = "../changepass/changepassword.html";
-      });
-
-      document.getElementById("logoutBtn").addEventListener("click", () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("role");
-        window.location.href = "../index.html";
-      });
-
-      /* ---------------------------------------------------------
-         INIT
-         --------------------------------------------------------- */
-
-      if (requireAuth()) {
-        loadOfficerDetails();
-      }
-    </script>
+    <script src="/shared/app.js"></script>
+    <script src="edp-page.js"></script>
   </body>
 </html>

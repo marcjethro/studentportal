@@ -16,7 +16,7 @@
            message.textContent = "You must be logged in. Redirecting...";
            message.style.color = "#f87171";
            setTimeout(() => {
-             window.location.href = "index.html";
+             window.location.href = "/";
            }, 1500);
          }
    
@@ -43,7 +43,7 @@
            const activeToken = localStorage.getItem("token");
    
            if (!activeToken) {
-             window.location.href = "index.html";
+             window.location.href = "/";
              return;
            }
    
@@ -70,7 +70,7 @@
                localStorage.removeItem("token");
                localStorage.removeItem("role");
                setTimeout(() => {
-                 window.location.href = "index.html";
+                 window.location.href = "/";
                }, 1500);
                return;
              }
@@ -89,7 +89,7 @@
              form.reset();
    
              setTimeout(() => {
-               window.location.href = "dashboard.html";
+               window.history.back();
              }, 1200);
            } catch (error) {
              console.error(error);

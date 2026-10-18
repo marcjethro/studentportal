@@ -2,16 +2,15 @@ const API_URL = "";
 
 function redirectForRole(role) {
   if (role === "edp") {
-    window.location.href = "../edp/edp.html";
-  } else if(role === "admin"){
-    window.location.href = "admin/admin.html";
-  } else if(role === "registrar"){
-    window.location.href = "../registrar/registrar.html"
-  } else if (role === "student"){
-    window.location.href = "../studentPortal/studentportal.html"
-  }
-  else {
-    window.location.href = "index.html"
+    window.location.href = "/edp/edp.html";
+  } else if (role === "admin") {
+    window.location.href = "/admin/admin.html";
+  } else if (role === "registrar") {
+    window.location.href = "/registrar/registrar.html";
+  } else if (role === "student") {
+    window.location.href = "/studentPortal/studentportal.html";
+  } else {
+    window.location.href = "/";
   }
 }
 
@@ -25,7 +24,7 @@ function redirectIfLoggedIn() {
 }
 
 // Run on page load: if already logged in, skip straight to the
-// right dashboard instead of always going to dashboard.html.
+// right dashboard for the user's role.
 
 // SHOW/HIDE PASSWORD — toggle the eye icon
 document
@@ -86,8 +85,6 @@ document
       message.textContent = "Login successful!";
       message.style.color = "lightgreen";
 
-      // Send EDP staff to edp-dashboard.html, everyone else to
-      // dashboard.html.
       redirectForRole(data.role);
     } catch (error) {
       console.error(error);

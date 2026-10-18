@@ -1,5 +1,3 @@
-const API_URL = "";
-
 const message = document.getElementById("message");
 const tableBody = document.getElementById("usersTableBody");
 const emptyState = document.getElementById("emptyState");
@@ -19,68 +17,12 @@ const passwordHint = document.getElementById("passwordHint");
 let allUsers = [];
 let allRoles = [];
 
-function getToken() {
-  return localStorage.getItem("token");
-}
-
-function authHeaders() {
-  return {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${getToken()}`,
-  };
-}
-
-function requireAuth() {
-  const token = getToken();
-
-  if (!token) {
-    message.textContent = "You must be logged in. Redirecting...";
-    setTimeout(() => {
-      window.location.href = "../index.html";
-    }, 1500);
-    return false;
-  }
-
-  return true;
-}
-
-function handleAuthFailure() {
-  message.textContent = "Session expired. Please login again.";
-  localStorage.removeItem("token");
-  setTimeout(() => {
-    window.location.href = "../index.html";
-  }, 1500);
-}
-
 /* ---------------------------------------------------------
-         OFFICER INFO
-         --------------------------------------------------------- */
+   OFFICER INFO
+   --------------------------------------------------------- */
 
 async function loadOfficerDetails() {
-  try {
-    const response = await fetch(`${API_URL}/api/getUserDetails`, {
-      method: "GET",
-      headers: authHeaders(),
-    });
-
-    if (response.status === 401) {
-      handleAuthFailure();
-      return;
-    }
-
-    if (!response.ok) return;
-
-    const officer = await response.json();
-
-    document.getElementById("officerName").textContent =
-      officer.username || "EDP Officer";
-
-    if (officer.role) {
-      document.getElementById("officerRole").textContent = officer.role;
-    }
-  } catch (error) {
-    console.error(error);
-  }
+  await CEC.loadUserDetails({ defaultName: "Admin" });
 }
 
 /* ---------------------------------------------------------
@@ -89,13 +31,13 @@ async function loadOfficerDetails() {
 
 async function loadRoles() {
   try {
-    const response = await fetch(`${API_URL}/api/auth/roles`, {
+    const response = await fetch(`${CEC.API_URL}/api/auth/roles`, {
       method: "GET",
-      headers: authHeaders(),
+      headers: CEC.authHeaders(),
     });
 
     if (response.status === 401) {
-      handleAuthFailure();
+      CEC.handleAuthFailure();
       return;
     }
 
@@ -127,13 +69,13 @@ function capitalize(str) {
 
 async function loadUsers() {
   try {
-    const response = await fetch(`${API_URL}/api/auth/users`, {
+    const response = await fetch(`${CEC.API_URL}/api/auth/users`, {
       method: "GET",
-      headers: authHeaders(),
+      headers: CEC.authHeaders(),
     });
 
     if (response.status === 401) {
-      handleAuthFailure();
+      CEC.handleAuthFailure();
       return;
     }
 
@@ -216,13 +158,13 @@ tableBody.addEventListener("click", async (event) => {
 
 async function deleteUser(id) {
   try {
-    const response = await fetch(`${API_URL}/api/auth/users/${id}`, {
+    const response = await fetch(`${CEC.API_URL}/api/auth/users/${id}`, {
       method: "DELETE",
-      headers: authHeaders(),
+      headers: CEC.authHeaders(),
     });
 
     if (response.status === 401) {
-      handleAuthFailure();
+      CEC.handleAuthFailure();
       return;
     }
 
@@ -328,17 +270,17 @@ userForm.addEventListener("submit", async (event) => {
   try {
     const response = await fetch(
       isEdit
-        ? `${API_URL}/api/auth/users/${formId.value}`
-        : `${API_URL}/api/auth/users`,
+        ? `${CEC.API_URL}/api/auth/users/${formId.value}`
+        : `${CEC.API_URL}/api/auth/users`,
       {
         method: isEdit ? "PATCH" : "POST",
-        headers: authHeaders(),
+        headers: CEC.authHeaders(),
         body: JSON.stringify(payload),
       }
     );
 
     if (response.status === 401) {
-      handleAuthFailure();
+      CEC.handleAuthFailure();
       return;
     }
 
@@ -376,7 +318,7 @@ document.getElementById("backBtn").addEventListener("click", () => {
          INIT
          --------------------------------------------------------- */
 
-if (requireAuth()) {
+if (CEC.requireAuth()) {
   loadOfficerDetails();
   loadRoles();
   loadUsers();
