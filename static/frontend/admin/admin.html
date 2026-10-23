@@ -62,7 +62,7 @@
           Announcements
         </a>
 
-        <a class="nav-item" href="useraccounts.html">
+        <a class="nav-item" href="#" id="userAccountsBtn">
           <i class="fa-solid fa-user"></i>
           User Accounts
         </a>
@@ -79,6 +79,38 @@
           </div>
         </div>
       </main>
+    </div>
+
+    <!-- ==================== ADD / EDIT USER MODAL ==================== -->
+    <div class="modal-overlay" id="userModal" style="display: none">
+      <div class="modal">
+        <h3 id="modalTitle">Add New User</h3>
+
+        <form id="userForm">
+          <input type="hidden" id="formId" />
+
+          <label for="formUsername">Username</label>
+          <input type="text" id="formUsername" required />
+
+          <label for="formEmail">Email</label>
+          <input type="email" id="formEmail" required />
+
+          <label for="formRole">Role</label>
+          <select id="formRole"></select>
+          <p class="hint" id="roleDisplay" style="display: none"></p>
+
+          <label for="formPassword">Password</label>
+          <input type="password" id="formPassword" />
+          <p class="hint" id="passwordHint">Required for new accounts.</p>
+
+          <div class="modal-actions">
+            <button type="button" class="btn-secondary" id="cancelBtn">
+              Cancel
+            </button>
+            <button type="submit" class="btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <script src="/shared/app.js"></script>

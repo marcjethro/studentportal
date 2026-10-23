@@ -2,104 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EDP Dashboard - Cebu Eastern College</title>
-
-    <link rel="stylesheet" href="useraccounts.css" />
-
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <meta http-equiv="refresh" content="0; url=admin.html#useraccounts" />
+    <title>Redirecting to User Accounts...</title>
+    <script>
+      window.location.replace("admin.html#useraccounts");
+    </script>
   </head>
-
   <body>
-    <!-- ==================== NAVBAR ==================== -->
-    <nav>
-      <div class="nav-left">
-        <img src="/images/CEC_LOGO.png" alt="CEC Logo" />
-        <h1>Cebu Eastern College, Inc.</h1>
-      </div>
-
-      <div class="nav-right">
-        <div class="officer-info">
-          <div class="officer-name" id="officerName">&nbsp;</div>
-          <div class="officer-role" id="officerRole"></div>
-        </div>
-        <button id="backBtn">Back</button>
-      </div>
-    </nav>
-
-    <!-- ==================== MAIN ==================== -->
-    <main>
-      <h1 class="edp-title">User Accounts</h1>
-
-      <div class="edp-panel">
-        <div class="panel-header">
-          <h2>User Accounts:</h2>
-          <button class="add-link" id="addUserBtn">+ Add New User</button>
-        </div>
-
-        <p id="message"></p>
-
-        <div class="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="usersTableBody"></tbody>
-          </table>
-
-          <p class="empty-state" id="emptyState" style="display: none">
-            No user accounts found.
-          </p>
-        </div>
-      </div>
-    </main>
-
-    <!-- ==================== ADD / EDIT MODAL ==================== -->
-    <div class="modal-overlay" id="userModal" style="display: none">
-      <div class="modal">
-        <h3 id="modalTitle">Add New User</h3>
-
-        <form id="userForm">
-          <input type="hidden" id="formId" />
-
-          <label for="formUsername">Username</label>
-          <input type="text" id="formUsername" required />
-
-          <label for="formEmail">Email</label>
-          <input type="email" id="formEmail" required />
-
-          <label for="formRole">Role</label>
-          <select id="formRole"></select>
-          <p class="hint" id="roleDisplay" style="display: none"></p>
-
-          <label for="formPassword">Password</label>
-          <input type="password" id="formPassword" />
-          <p class="hint" id="passwordHint">Required for new accounts.</p>
-
-          <div class="modal-actions">
-            <button type="button" class="btn-secondary" id="cancelBtn">
-              Cancel
-            </button>
-            <button type="submit" class="btn-primary">Save</button>
-          </div>
-        </form>
-      </div>
-    </div>
-    <script src="/shared/app.js"></script>
-    <script src="useraccounts.js"></script>
+    <p>Redirecting to <a href="admin.html#useraccounts">Admin - User Accounts</a>...</p>
   </body>
 </html>

@@ -177,3 +177,239 @@
   color: #777;
   font-size: 14px;
 }
+
+/* =========================================================
+   USER ACCOUNTS
+   ========================================================= */
+
+.useraccounts-page {
+  width: 100%;
+}
+
+.useraccounts-panel,
+.edp-panel {
+  background-color: white;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #071b91;
+}
+
+.add-link {
+  color: #05058c;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: underline;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.add-link:hover {
+  color: #1d4ed8;
+}
+
+.user-message {
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: #b91c1c;
+}
+
+.table-wrapper {
+  border: 1px solid #d5d5e5;
+  border-radius: 8px;
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+.useraccounts-page table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.useraccounts-page thead tr {
+  background-color: #05058c;
+}
+
+.useraccounts-page thead th {
+  text-align: left;
+  padding: 12px 16px;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.useraccounts-page tbody tr {
+  border-bottom: 1px solid #eee;
+}
+
+.useraccounts-page tbody tr:last-child {
+  border-bottom: none;
+}
+
+.useraccounts-page tbody tr:hover {
+  background-color: #f8f8fc;
+}
+
+.useraccounts-page tbody td {
+  padding: 12px 16px;
+  font-size: 14px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.cell-id {
+  color: #777;
+  font-weight: 600;
+}
+
+.cell-username {
+  font-weight: 600;
+  color: #111;
+}
+
+.cell-role {
+  font-weight: 700;
+  color: #05058c;
+  text-transform: capitalize;
+}
+
+.row-actions a {
+  color: #05058c;
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.row-actions a:hover {
+  color: #1d4ed8;
+}
+
+.row-actions .divider {
+  margin: 0 4px;
+  color: gray;
+}
+
+.empty-state {
+  padding: 40px 20px;
+  text-align: center;
+  color: gray;
+  font-size: 14px;
+}
+
+/* =========================================================
+   USER ACCOUNTS MODAL
+   ========================================================= */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(10, 10, 40, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+}
+
+.modal {
+  width: 100%;
+  max-width: 420px;
+  background-color: white;
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal h3 {
+  margin: 0 0 18px;
+  color: #05058c;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.modal label {
+  display: block;
+  margin-top: 14px;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+}
+
+.modal input,
+.modal select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #d5d5e5;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: "Poppins", sans-serif;
+  outline: none;
+}
+
+.modal input:focus,
+.modal select:focus {
+  border-color: #05058c;
+}
+
+.modal .hint {
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: gray;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.btn-primary {
+  padding: 10px 22px;
+  background-color: #05058c;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-secondary {
+  padding: 10px 22px;
+  background-color: white;
+  color: #05058c;
+  border: 1px solid #05058c;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.btn-secondary:hover {
+  background-color: #f0f0fa;
+}
