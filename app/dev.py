@@ -95,7 +95,6 @@ def reset_database():
         db.session.flush()
 
         sample_enrollment = Enrollment(
-            enrollment_id="CEC-849201",
             student_info_id=sample_student.student_info_id,
             enrollment_type_id=returnee_type.enrollment_type_id,
             status="Enrolled",
