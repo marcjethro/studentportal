@@ -67,11 +67,17 @@ def reset_database():
         course_names = ["Bachelor of Elementary Education", "Bachelor of Secondary Education", "BS in Information Technology", "BS in Tourism Management", "BS in Criminology"]
         courses = [Course(course_name=name) for name in course_names]
         db.session.add_all(courses)
-        db.session.flush()
+        db.session.flush()
+
+        # Resolve IDs by lookup instead of assuming auto-increment values,
+        # so seeding is robust across databases (SQLite vs PostgreSQL).
+        student_user = db.session.scalars(db.select(User).filter_by(username="studentUser")).first()
+        it_course = db.session.scalars(db.select(Course).filter_by(course_name="BS in Information Technology")).first()
+        returnee_type = db.session.scalars(db.select(EnrollmentType).filter_by(enrollment_type_name="Old/Returnee Student")).first()
 
         # Seed sample StudentInfo and Enrollment for studentUser (user_id=1)
         sample_student = StudentInfo(
-            user_id=1,
+            user_id=student_user.user_id if student_user else None,
             first_name="Juan",
             middle_name="Protacio",
             last_name="Rizal",
@@ -80,7 +86,7 @@ def reset_database():
             phone_number="0917-555-0142",
             email="student@school.com",
             home_address="123 Colon St., Cebu City, 6000",
-            course_id=3,  # BS in Information Technology
+            course_id=it_course.course_id,
             year_level="3rd Year",
             semester="1st Semester",
             preferred_schedule="Day (8:00 AM - 12:00 PM)",
@@ -91,14 +97,15 @@ def reset_database():
         sample_enrollment = Enrollment(
             enrollment_id="CEC-849201",
             student_info_id=sample_student.student_info_id,
-            enrollment_type_id=1,
+            enrollment_type_id=returnee_type.enrollment_type_id,
             status="Enrolled",
         )
         db.session.add(sample_enrollment)
         db.session.flush()
 
-        # Add sample submitted documents
-        for req in document_requirements[:2]:
+        # Add sample submitted documents (requirements for the returnee type)
+        returnee_requirements = db.session.scalars(db.select(DocumentRequirement).filter_by(enrollment_type_id=returnee_type.enrollment_type_id)).all()
+        for req in returnee_requirements[:2]:
             db.session.add(
                 EnrollmentDocument(
                     enrollment_id=sample_enrollment.enrollment_id,
