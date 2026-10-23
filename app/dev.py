@@ -26,7 +26,7 @@ def reset_database():
         role_names = ["student", "teacher", "edp", "accounting", "registrar", "admin"]
         roles = [UserRole(role_name=x) for x in role_names]
         db.session.add_all(roles)
-        users = [[1, "studentUser", "student@school.com@mailshan.com", "studentPassword"],
+        users = [[1, "studentUser", "student@school.com", "studentPassword"],
                  [2, "teacherUser", "teacher@school.com", "teacherPassword"],
                  [3, "edpUser", "edp@school.com", "edpPassword"],
                  [4, "accountingUser", "accounting@school.com", "accountingPassword"],
