@@ -28,9 +28,11 @@ from app.routes.main import main_bp
 from app.routes.announcements import announcements_bp
 from app.routes.enrollment import enrollment_bp
 from app.routes.documents import documents_bp
+from app.routes.student import student_bp
 
 app.register_blueprint(main_bp)
 app.register_blueprint(announcements_bp, url_prefix="/api")
 app.register_blueprint(enrollment_bp, url_prefix="/api")
 app.register_blueprint(auth_bp, url_prefix="/api/auth")
 app.register_blueprint(documents_bp, url_prefix="/api/documents")
+app.register_blueprint(student_bp, url_prefix="/api/student")

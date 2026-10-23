@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CEC - Student Profile</title>
+
+    <link rel="stylesheet" href="/shared/shell.css" />
+    <link rel="stylesheet" href="student.css" />
+    <link rel="stylesheet" href="profile.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <!-- NAVBAR -->
+    <nav>
+      <div class="nav-left">
+        <img src="/images/CEC_LOGO.png" alt="CEC Logo" />
+        <h1>CEC - Student Portal</h1>
+      </div>
+
+      <div class="nav-right">
+        <div class="avatar-wrapper">
+          <div class="avatar" id="avatarBtn">
+            <i class="fa-solid fa-user"></i>
+          </div>
+
+          <div class="avatar-dropdown" id="avatarDropdown">
+            <p class="dropdown-name" id="userName">&nbsp;</p>
+            <p class="dropdown-role" id="userRole">Student</p>
+            <button id="changePasswordBtn">Change Password</button>
+            <button id="logoutBtn">Logout</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- PAGE BODY -->
+    <div class="page-body">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Search" />
+        </div>
+
+        <a class="nav-item" href="studentportal.html">
+          <i class="fa-solid fa-house"></i>
+          Dashboard
+        </a>
+
+        <div class="nav-item-wrapper">
+          <button class="nav-item" id="academicsBtn" type="button">
+            <i class="fa-solid fa-graduation-cap"></i>
+            Academics
+          </button>
+
+          <div class="academics-submenu" id="academicsSubmenu">
+            <a href="grades.html">Grades</a>
+            <a href="prospectus.html">Prospectus</a>
+            <a href="schedule.html">Schedule</a>
+          </div>
+        </div>
+
+        <a class="nav-item" href="enrollment.html">
+          <i class="fa-solid fa-file-signature"></i>
+          Enrollment
+        </a>
+
+        <a class="nav-item" href="documentprocess.html">
+          <i class="fa-solid fa-file-lines"></i>
+          Document Process
+        </a>
+
+        <a class="nav-item active" href="profile.html">
+          <i class="fa-solid fa-id-card"></i>
+          Student Profile
+        </a>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main>
+        <p id="message"></p>
+
+        <!-- Header -->
+        <div class="welcome-header">
+          <h2 id="welcomeName">Student Profile</h2>
+          <p id="programSubtitle">Loading...</p>
+        </div>
+
+        <!-- Profile card -->
+        <div class="profile-container">
+
+          <!-- ===== LEFT PANEL: Avatar + quick info + enrollment history ===== -->
+          <aside class="profile-sidebar-panel">
+            <!-- Avatar block -->
+            <div class="profile-avatar-block">
+              <div class="profile-avatar-circle">
+                <i class="fa-solid fa-user-graduate"></i>
+              </div>
+              <h3 id="profileFullName">—</h3>
+              <span class="profile-badge" id="profileEnrollmentStatus">Loading...</span>
+              <p id="profileCourse" class="profile-course-label">—</p>
+            </div>
+
+            <!-- Quick info pills -->
+            <div class="profile-quick-info">
+              <div class="quick-info-item">
+                <i class="fa-solid fa-calendar-days"></i>
+                <div>
+                  <span class="qi-label">Year Level</span>
+                  <span class="qi-value" id="qiYear">—</span>
+                </div>
+              </div>
+              <div class="quick-info-item">
+                <i class="fa-solid fa-book-open"></i>
+                <div>
+                  <span class="qi-label">Semester</span>
+                  <span class="qi-value" id="qiSemester">—</span>
+                </div>
+              </div>
+              <div class="quick-info-item">
+                <i class="fa-solid fa-clock"></i>
+                <div>
+                  <span class="qi-label">Schedule</span>
+                  <span class="qi-value" id="qiSchedule">—</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Enrollment history -->
+            <div class="profile-history-block">
+              <h4><i class="fa-solid fa-timeline"></i> Enrollment History</h4>
+              <div id="enrollmentHistoryList" class="enrollment-history-list">
+                <p class="history-loading">Loading...</p>
+              </div>
+            </div>
+          </aside>
+
+          <!-- ===== RIGHT PANEL: Edit form ===== -->
+          <div class="profile-main-panel">
+            <!-- Tabs -->
+            <div class="profile-tabs">
+              <button class="profile-tab active" data-tab="personal">
+                <i class="fa-solid fa-user"></i> Personal Info
+              </button>
+              <button class="profile-tab" data-tab="academic">
+                <i class="fa-solid fa-graduation-cap"></i> Academic Info
+              </button>
+            </div>
+
+            <div id="profileAlert" class="profile-alert" style="display:none;"></div>
+
+            <form id="profileForm">
+              <!-- ---- PERSONAL INFO TAB ---- -->
+              <div class="tab-panel active" id="tab-personal">
+                <div class="form-section-title">Personal Information</div>
+
+                <div class="profile-form-row">
+                  <div class="profile-form-group">
+                    <label for="pFirstName">First Name <span class="req">*</span></label>
+                    <input type="text" id="pFirstName" placeholder="First name" required />
+                  </div>
+                  <div class="profile-form-group">
+                    <label for="pMiddleName">Middle Name</label>
+                    <input type="text" id="pMiddleName" placeholder="Middle name" />
+                  </div>
+                </div>
+
+                <div class="profile-form-row">
+                  <div class="profile-form-group">
+                    <label for="pLastName">Last Name <span class="req">*</span></label>
+                    <input type="text" id="pLastName" placeholder="Last name" required />
+                  </div>
+                  <div class="profile-form-group narrow">
+                    <label for="pSuffix">Suffix</label>
+                    <input type="text" id="pSuffix" placeholder="Jr., Sr., III…" />
+                  </div>
+                </div>
+
+                <div class="profile-form-row">
+                  <div class="profile-form-group">
+                    <label for="pBirthdate">Date of Birth <span class="req">*</span></label>
+                    <input type="date" id="pBirthdate" required />
+                  </div>
+                  <div class="profile-form-group">
+                    <label for="pPhone">Contact Number <span class="req">*</span></label>
+                    <input type="tel" id="pPhone" placeholder="e.g. 0917-555-1234" required />
+                  </div>
+                </div>
+
+                <div class="profile-form-group full-width">
+                  <label for="pEmail">Email Address <span class="req">*</span></label>
+                  <input type="email" id="pEmail" placeholder="your@email.com" required />
+                </div>
+
+                <div class="profile-form-group full-width">
+                  <label for="pAddress">Home Address <span class="req">*</span></label>
+                  <textarea id="pAddress" rows="3" placeholder="Complete home address" required></textarea>
+                </div>
+              </div>
+
+              <!-- ---- ACADEMIC INFO TAB ---- -->
+              <div class="tab-panel" id="tab-academic">
+                <div class="form-section-title">Academic Information</div>
+
+                <div class="profile-form-group full-width">
+                  <label for="pCourse">Course / Program <span class="req">*</span></label>
+                  <select id="pCourse" required>
+                    <option value="">Loading courses...</option>
+                  </select>
+                </div>
+
+                <div class="profile-form-row">
+                  <div class="profile-form-group">
+                    <label for="pYearLevel">Year Level <span class="req">*</span></label>
+                    <select id="pYearLevel" required>
+                      <option value="1st Year">1st Year</option>
+                      <option value="2nd Year">2nd Year</option>
+                      <option value="3rd Year">3rd Year</option>
+                      <option value="4th Year">4th Year</option>
+                      <option value="5th Year">5th Year</option>
+                      <option value="Alumnus / Graduate">Alumnus / Graduate</option>
+                    </select>
+                  </div>
+                  <div class="profile-form-group">
+                    <label for="pSemester">Semester <span class="req">*</span></label>
+                    <select id="pSemester" required>
+                      <option value="1st Semester">1st Semester</option>
+                      <option value="2nd Semester">2nd Semester</option>
+                      <option value="Summer">Summer</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="profile-form-group full-width">
+                  <label for="pSchedule">Preferred Schedule <span class="req">*</span></label>
+                  <select id="pSchedule" required>
+                    <option value="Day (8:00 AM - 12:00 PM)">Day (8:00 AM – 12:00 PM)</option>
+                    <option value="Afternoon (1:00 PM - 5:00 PM)">Afternoon (1:00 PM – 5:00 PM)</option>
+                    <option value="Evening (5:30 PM - 9:30 PM)">Evening (5:30 PM – 9:30 PM)</option>
+                    <option value="Morning (8:00 AM - 12:00 PM)">Morning (8:00 AM – 12:00 PM)</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                  </select>
+                </div>
+
+                <div class="profile-info-note">
+                  <i class="fa-solid fa-circle-info"></i>
+                  Changes to academic info are for reference only and do not alter official enrollment records.
+                </div>
+              </div>
+
+              <!-- Save button (always visible) -->
+              <div class="profile-form-actions">
+                <button type="submit" id="saveProfileBtn" class="btn-primary">
+                  <i class="fa-solid fa-floppy-disk"></i> Save Changes
+                </button>
+                <button type="button" id="cancelProfileBtn" class="btn-secondary">
+                  <i class="fa-solid fa-rotate-left"></i> Reset
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="/shared/app.js"></script>
+    <script src="student-page.js"></script>
+    <script src="profile.js"></script>
+  </body>
+</html>

@@ -37,6 +37,7 @@
   function clearSession() {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
+    localStorage.removeItem("student_info");
   }
 
   function authHeaders() {
@@ -84,6 +85,7 @@
        opts.nameId     - element id for the username (default "officerName")
        opts.roleId     - element id for the role (default "officerRole")
        opts.welcomeId  - optional element id, gets "Welcome, <name>"
+       opts.subtitleId - optional element id, gets "Course · Year · Semester"
        opts.defaultName- fallback label when username is missing
      Returns the user object (or null on failure).
      --------------------------------------------------------- */
@@ -108,13 +110,34 @@
 
       var user = await response.json();
 
+      // Cache student_info for other pages to reuse
+      if (user.student_info) {
+        try { localStorage.setItem("student_info", JSON.stringify(user.student_info)); } catch(e) {}
+      }
+
+      // Display name – prefer full_name from profile, fallback to username
+      var displayName = (user.full_name && user.full_name.trim()) || user.username || defaultName;
+
       var nameEl = document.getElementById(nameId);
-      if (nameEl) nameEl.textContent = user.username || defaultName;
+      if (nameEl) nameEl.textContent = displayName;
 
       if (opts.welcomeId) {
         var welcomeEl = document.getElementById(opts.welcomeId);
         if (welcomeEl)
-          welcomeEl.textContent = "Welcome, " + (user.username || defaultName);
+          welcomeEl.textContent = "Welcome, " + (displayName || defaultName);
+      }
+
+      // Show program / year / semester subtitle
+      var subtitleEl = document.getElementById(opts.subtitleId || "programSubtitle");
+      if (subtitleEl) {
+        if (user.course_name) {
+          var parts = [user.course_name];
+          if (user.year_level) parts.push(user.year_level);
+          if (user.semester)   parts.push(user.semester);
+          subtitleEl.textContent = parts.join(" · ");
+        } else {
+          subtitleEl.textContent = "Program / Year not yet available";
+        }
       }
 
       if (user.role) {

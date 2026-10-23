@@ -8,6 +8,7 @@ if (CEC.requireAuth()) {
     nameId: "userName",
     roleId: "userRole",
     welcomeId: "welcomeName",
+    subtitleId: "programSubtitle",
     defaultName: "Student",
   });
 

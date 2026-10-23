@@ -16,16 +16,36 @@
     nameId: "userName",
     roleId: "userRole",
     welcomeId: "welcomeName",
+    subtitleId: "programSubtitle",
     defaultName: "Student",
   }).then(function (user) {
     if (user) {
+      // Pre-fill the request form from student profile if available
+      var info = user.student_info;
       var nameInput = document.getElementById("studentName");
       if (nameInput && !nameInput.value) {
-        nameInput.value = user.username || "";
+        nameInput.value = (info && info.full_name) || user.full_name || user.username || "";
       }
       var emailInput = document.getElementById("studentEmail");
       if (emailInput && !emailInput.value) {
-        emailInput.value = user.email || "";
+        emailInput.value = (info && info.email) || user.email || "";
+      }
+      var contactInput = document.getElementById("studentContact");
+      if (contactInput && !contactInput.value && info) {
+        contactInput.value = info.phone_number || "";
+      }
+      var courseInput = document.getElementById("studentCourse");
+      if (courseInput && !courseInput.value && info) {
+        courseInput.value = info.course || "";
+      }
+      var yearSelect = document.getElementById("studentYear");
+      if (yearSelect && info && info.year) {
+        for (var i = 0; i < yearSelect.options.length; i++) {
+          if (yearSelect.options[i].value === info.year) {
+            yearSelect.value = info.year;
+            break;
+          }
+        }
       }
     }
   });
