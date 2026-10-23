@@ -87,32 +87,121 @@
       <main>
         <p id="message"></p>
 
-        <div class="welcome-header">
-          <h2 id="welcomeName">Welcome</h2>
-          <p id="programSubtitle">Loading...</p>
-        </div>
-
-        <!-- Announcements -->
-        <section class="student-announcements">
-          <div class="announcement-header">
-            <h2>
-              <i class="fa-solid fa-bullhorn"></i>
-              Announcements
-            </h2>
+        <!-- ===== Welcome hero ===== -->
+        <section class="welcome-hero">
+          <div class="welcome-hero-text">
+            <span class="welcome-eyebrow">
+              <i class="fa-solid fa-hand-sparkles"></i> Student Dashboard
+            </span>
+            <h2 id="welcomeName">Welcome</h2>
+            <p id="programSubtitle">Loading...</p>
           </div>
-
-          <div id="announcementsList" class="announcements-list">
-            <p class="loading-announcements">Loading announcements...</p>
+          <div class="welcome-hero-badge" id="enrollmentBadge">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+            <span>Checking status…</span>
           </div>
         </section>
 
-        <div class="stat-row">
-          <div class="stat-placeholder"></div>
-          <div class="stat-placeholder"></div>
-        </div>
+        <!-- ===== Stat cards ===== -->
+        <section class="dash-stats" id="dashStats">
+          <div class="s-card">
+            <div class="s-icon enroll"><i class="fa-solid fa-file-signature"></i></div>
+            <div class="s-body">
+              <span class="s-value" id="statEnrollStatus">—</span>
+              <span class="s-label">Enrollment Status</span>
+            </div>
+          </div>
 
-        <div class="content-placeholder"></div>
-        <div class="content-placeholder"></div>
+          <div class="s-card">
+            <div class="s-icon docs"><i class="fa-solid fa-folder-open"></i></div>
+            <div class="s-body">
+              <span class="s-value" id="statDocTotal">—</span>
+              <span class="s-label">Document Requests</span>
+            </div>
+          </div>
+
+          <div class="s-card">
+            <div class="s-icon pending"><i class="fa-solid fa-clock"></i></div>
+            <div class="s-body">
+              <span class="s-value" id="statDocPending">—</span>
+              <span class="s-label">Requests in Progress</span>
+            </div>
+          </div>
+
+          <div class="s-card">
+            <div class="s-icon ready"><i class="fa-solid fa-box-open"></i></div>
+            <div class="s-body">
+              <span class="s-value" id="statDocReady">—</span>
+              <span class="s-label">Ready / Released</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== Lower grid: quick links + announcements ===== -->
+        <div class="dash-grid">
+          <!-- Quick links -->
+          <section class="quick-panel">
+            <h3 class="panel-title"><i class="fa-solid fa-compass"></i> Quick Access</h3>
+            <div class="quick-links">
+              <a class="quick-link" href="profile.html">
+                <span class="q-icon"><i class="fa-solid fa-id-card"></i></span>
+                <span class="q-text">
+                  <strong>Student Profile</strong>
+                  <small>View &amp; update your info</small>
+                </span>
+                <i class="fa-solid fa-chevron-right q-arrow"></i>
+              </a>
+              <a class="quick-link" href="grades.html">
+                <span class="q-icon"><i class="fa-solid fa-chart-line"></i></span>
+                <span class="q-text">
+                  <strong>Grades</strong>
+                  <small>Check your academic record</small>
+                </span>
+                <i class="fa-solid fa-chevron-right q-arrow"></i>
+              </a>
+              <a class="quick-link" href="schedule.html">
+                <span class="q-icon"><i class="fa-solid fa-calendar-days"></i></span>
+                <span class="q-text">
+                  <strong>Schedule</strong>
+                  <small>Your class timetable</small>
+                </span>
+                <i class="fa-solid fa-chevron-right q-arrow"></i>
+              </a>
+              <a class="quick-link" href="enrollment.html">
+                <span class="q-icon"><i class="fa-solid fa-file-signature"></i></span>
+                <span class="q-text">
+                  <strong>Enrollment</strong>
+                  <small>Enroll or re-enroll</small>
+                </span>
+                <i class="fa-solid fa-chevron-right q-arrow"></i>
+              </a>
+              <a class="quick-link" href="documentprocess.html">
+                <span class="q-icon"><i class="fa-solid fa-file-lines"></i></span>
+                <span class="q-text">
+                  <strong>Document Process</strong>
+                  <small>Request official documents</small>
+                </span>
+                <i class="fa-solid fa-chevron-right q-arrow"></i>
+              </a>
+              <a class="quick-link" href="prospectus.html">
+                <span class="q-icon"><i class="fa-solid fa-book-open"></i></span>
+                <span class="q-text">
+                  <strong>Prospectus</strong>
+                  <small>Program curriculum</small>
+                </span>
+                <i class="fa-solid fa-chevron-right q-arrow"></i>
+              </a>
+            </div>
+          </section>
+
+          <!-- Announcements (kept) -->
+          <section class="student-announcements">
+            <h3 class="panel-title"><i class="fa-solid fa-bullhorn"></i> Announcements</h3>
+            <div id="announcementsList" class="announcements-list">
+              <p class="loading-announcements">Loading announcements...</p>
+            </div>
+          </section>
+        </div>
       </main>
     </div>
 

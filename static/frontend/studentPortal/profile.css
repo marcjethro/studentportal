@@ -64,11 +64,11 @@
 
 .profile-badge.pending  { background: #fef9c3; color: #854d0e; }
 .profile-badge.enrolled { background: #dcfce7; color: #166534; }
-.profile-badge.no-profile { background: #f1f5f9; color: #64748b; }
+.profile-badge.no-profile { background: #f1f5f9; color: #334155; }
 
 .profile-course-label {
   font-size: 13px;
-  color: #555;
+  color: #2a2a2a;
   margin: 4px 0 0;
   line-height: 1.4;
 }
@@ -106,7 +106,7 @@
 .qi-label {
   font-size: 11px;
   font-weight: 600;
-  color: #94a3b8;
+  color: #334155;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -158,7 +158,7 @@
 
 .enrollment-history-item .enroll-type {
   font-size: 12px;
-  color: #555;
+  color: #2a2a2a;
 }
 
 .enroll-status-badge {
@@ -179,7 +179,7 @@
 .history-loading,
 .history-empty {
   font-size: 13px;
-  color: #94a3b8;
+  color: #334155;
   padding: 8px 0;
 }
 
@@ -207,7 +207,7 @@
   padding: 10px 20px;
   font-size: 14px;
   font-weight: 600;
-  color: #64748b;
+  color: #334155;
   cursor: pointer;
   border-bottom: 3px solid transparent;
   margin-bottom: -2px;
@@ -236,7 +236,7 @@
 .form-section-title {
   font-size: 13px;
   font-weight: 700;
-  color: #94a3b8;
+  color: #334155;
   text-transform: uppercase;
   letter-spacing: 0.6px;
   margin-bottom: 16px;

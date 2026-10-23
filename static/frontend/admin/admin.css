@@ -30,6 +30,309 @@
 }
 
 /* =========================================================
+   DASHBOARD (overview)
+   ========================================================= */
+
+.admin-dash {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.admin-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+
+  padding: 28px 32px;
+  border-radius: 20px;
+  color: #fff;
+
+  background: linear-gradient(135deg, #03036b 0%, #05058c 55%, #1d4ed8 100%);
+  box-shadow: 0 14px 30px rgba(5, 5, 140, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-hero::after {
+  content: "";
+  position: absolute;
+  right: -40px;
+  top: -40px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.16), transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.admin-hero-text {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.admin-hero .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.admin-hero h1 {
+  margin: 10px 0 4px;
+  font-size: clamp(22px, 2.8vw, 32px);
+  font-weight: 800;
+  line-height: 1.1;
+  color: #fff;
+}
+
+.admin-hero p {
+  margin: 0;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.admin-refresh {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border-radius: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s ease;
+  position: relative;
+  z-index: 1;
+  font-family: "Poppins", sans-serif;
+}
+
+.admin-refresh:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.admin-refresh:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.admin-section-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 2px 0 -8px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #334155;
+}
+
+.admin-section-label i {
+  color: #05058c;
+}
+
+.admin-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 18px;
+}
+
+.admin-stat {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 18px 20px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-stat.clickable {
+  cursor: pointer;
+}
+
+.admin-stat.clickable:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.09);
+}
+
+.admin-stat .ic {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.admin-stat .ic.indigo { background: #e0e7ff; color: #4338ca; }
+.admin-stat .ic.blue   { background: #dbeafe; color: #1d4ed8; }
+.admin-stat .ic.green  { background: #dcfce7; color: #16a34a; }
+.admin-stat .ic.amber  { background: #fef3c7; color: #d97706; }
+.admin-stat .ic.purple { background: #ede9fe; color: #7c3aed; }
+.admin-stat .ic.cyan   { background: #e0f2fe; color: #0284c7; }
+
+.admin-stat .v {
+  font-size: 26px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.1;
+}
+
+.admin-stat .l {
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  margin-top: 2px;
+}
+
+.admin-dash-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.admin-panel {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.admin-panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 22px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.admin-panel-head h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  color: #05058c;
+}
+
+.admin-panel-head button.link {
+  background: none;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1d4ed8;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+}
+
+.admin-panel-head button.link:hover {
+  text-decoration: underline;
+}
+
+.admin-mini-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-mini-table th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #334155;
+  padding: 12px 22px;
+  background: #f8fafc;
+}
+
+.admin-mini-table td {
+  padding: 12px 22px;
+  font-size: 14px;
+  color: #1e293b;
+  border-top: 1px solid #f1f5f9;
+}
+
+.admin-mini-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.role-chip {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: capitalize;
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+/* Role distribution bars */
+.role-dist {
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.role-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.role-row .top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e293b;
+  text-transform: capitalize;
+}
+
+.role-row .bar {
+  height: 10px;
+  border-radius: 999px;
+  background: #eef2ff;
+  overflow: hidden;
+}
+
+.role-row .fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #4338ca, #1d4ed8);
+}
+
+.admin-empty {
+  padding: 30px 22px;
+  text-align: center;
+  color: #334155;
+  font-size: 14px;
+}
+
+@media (max-width: 992px) {
+  .admin-dash-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
    ANNOUNCEMENTS
    ========================================================= */
 
@@ -47,7 +350,7 @@
 }
 
 .page-header p {
-  color: #666;
+  color: #333333;
   font-size: 14px;
 }
 
@@ -165,7 +468,7 @@
 }
 
 .announcement-info {
-  color: #777;
+  color: #3a3a3a;
   font-size: 12px;
   line-height: 1.6;
 }
@@ -174,7 +477,7 @@
   background: white;
   padding: 20px;
   border-radius: 10px;
-  color: #777;
+  color: #3a3a3a;
   font-size: 14px;
 }
 
@@ -276,7 +579,7 @@
 }
 
 .cell-id {
-  color: #777;
+  color: #3a3a3a;
   font-weight: 600;
 }
 

@@ -316,7 +316,7 @@
     if (!allEnrollments || allEnrollments.length === 0) {
       enrollmentHistoryBody.innerHTML = `
         <tr>
-          <td colspan="6" style="text-align: center; color: #64748b; padding: 24px;">
+          <td colspan="6" style="text-align: center; color: #334155; padding: 24px;">
             No past enrollment records found.
           </td>
         </tr>

@@ -46,14 +46,238 @@ function setActiveNav(activeItem) {
    DASHBOARD
    ========================================================= */
 
+async function fetchJSON(url) {
+  const res = await fetch(`${CEC.API_URL}${url}`, { headers: CEC.authHeaders() });
+  if (res.status === 401) {
+    CEC.handleAuthFailure();
+    return null;
+  }
+  if (!res.ok) throw new Error(`Request failed: ${url} (${res.status})`);
+  return res.json();
+}
+
+function setStat(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
+}
+
+async function loadDashboardStats() {
+  // Users + roles distribution
+  try {
+    const users = await fetchJSON("/api/auth/users");
+    if (users) {
+      allUsers = users;
+      setStat("adStatUsers", users.length);
+
+      const counts = {};
+      users.forEach((u) => {
+        const r = (u.role || "unknown").toLowerCase();
+        counts[r] = (counts[r] || 0) + 1;
+      });
+
+      setStat("adStatStudents", counts["student"] || 0);
+      setStat("adStatStaff", users.length - (counts["student"] || 0));
+
+      renderRoleDistribution(counts, users.length);
+      renderRecentUsers(users);
+    }
+  } catch (e) {
+    console.error(e);
+    ["adStatUsers", "adStatStudents", "adStatStaff"].forEach((id) => setStat(id, "—"));
+  }
+
+  // Courses
+  try {
+    const courses = await fetchJSON("/api/student/courses");
+    setStat("adStatCourses", Array.isArray(courses) ? courses.length : 0);
+  } catch (e) {
+    console.error(e);
+    setStat("adStatCourses", "—");
+  }
+
+  // Enrollments
+  try {
+    const data = await fetchJSON("/api/enrollments?status=all");
+    const list = Array.isArray(data) ? data : (data && data.enrollments) || [];
+    let enrolled = 0, pending = 0;
+    list.forEach((e) => {
+      const s = (e.status || "").toLowerCase();
+      if (s === "enrolled") enrolled++;
+      else if (s === "pending") pending++;
+    });
+    setStat("adStatEnrolled", enrolled);
+    setStat("adStatPending", pending);
+  } catch (e) {
+    console.error(e);
+    setStat("adStatEnrolled", "—");
+    setStat("adStatPending", "—");
+  }
+}
+
+function renderRoleDistribution(counts, total) {
+  const wrap = document.getElementById("roleDist");
+  if (!wrap) return;
+
+  const entries = Object.keys(counts)
+    .map((k) => ({ role: k, n: counts[k] }))
+    .sort((a, b) => b.n - a.n);
+
+  if (entries.length === 0 || total === 0) {
+    wrap.innerHTML = '<p class="admin-empty">No accounts yet.</p>';
+    return;
+  }
+
+  wrap.innerHTML = entries
+    .map((e) => {
+      const pct = total ? Math.round((e.n / total) * 100) : 0;
+      return `
+        <div class="role-row">
+          <div class="top"><span>${escapeHtml(e.role)}</span><span>${e.n}</span></div>
+          <div class="bar"><div class="fill" style="width:${pct}%"></div></div>
+        </div>`;
+    })
+    .join("");
+}
+
+function renderRecentUsers(users) {
+  const body = document.getElementById("recentUsersBody");
+  if (!body) return;
+
+  if (!users || users.length === 0) {
+    body.innerHTML = '<tr><td colspan="3" class="admin-empty">No accounts found.</td></tr>';
+    return;
+  }
+
+  // Most recently created = highest user_id first
+  const recent = users
+    .slice()
+    .sort((a, b) => (b.user_id || 0) - (a.user_id || 0))
+    .slice(0, 6);
+
+  body.innerHTML = recent
+    .map(
+      (u) => `
+      <tr>
+        <td class="cell-username">${escapeHtml(u.username || "")}</td>
+        <td>${escapeHtml(u.email || "")}</td>
+        <td><span class="role-chip">${escapeHtml(u.role || "")}</span></td>
+      </tr>`
+    )
+    .join("");
+}
+
 function showDashboard() {
   setActiveNav(dashboardBtn);
   content.innerHTML = `
-    <div class="welcome-section">
-      <h1>Admin Dashboard</h1>
-      <p>Select an option from the sidebar.</p>
+    <div class="admin-dash">
+      <section class="admin-hero">
+        <div class="admin-hero-text">
+          <span class="eyebrow"><i class="fa-solid fa-shield-halved"></i> Administration</span>
+          <h1 id="adminGreeting">Admin Dashboard</h1>
+          <p>Overview of accounts, programs, and enrollment activity across the portal.</p>
+        </div>
+        <button class="admin-refresh" id="adminRefreshBtn" type="button">
+          <i class="fa-solid fa-arrows-rotate"></i> Refresh
+        </button>
+      </section>
+
+      <div class="admin-section-label"><i class="fa-solid fa-users"></i> Accounts</div>
+      <section class="admin-stat-grid">
+        <div class="admin-stat clickable" id="statCardUsers">
+          <div class="ic indigo"><i class="fa-solid fa-users"></i></div>
+          <div><div class="v" id="adStatUsers">—</div><div class="l">Total Accounts</div></div>
+        </div>
+        <div class="admin-stat">
+          <div class="ic green"><i class="fa-solid fa-user-graduate"></i></div>
+          <div><div class="v" id="adStatStudents">—</div><div class="l">Student Accounts</div></div>
+        </div>
+        <div class="admin-stat">
+          <div class="ic blue"><i class="fa-solid fa-user-tie"></i></div>
+          <div><div class="v" id="adStatStaff">—</div><div class="l">Staff Accounts</div></div>
+        </div>
+        <div class="admin-stat">
+          <div class="ic purple"><i class="fa-solid fa-book"></i></div>
+          <div><div class="v" id="adStatCourses">—</div><div class="l">Programs Offered</div></div>
+        </div>
+      </section>
+
+      <div class="admin-section-label"><i class="fa-solid fa-file-signature"></i> Enrollment</div>
+      <section class="admin-stat-grid">
+        <div class="admin-stat">
+          <div class="ic green"><i class="fa-solid fa-circle-check"></i></div>
+          <div><div class="v" id="adStatEnrolled">—</div><div class="l">Officially Enrolled</div></div>
+        </div>
+        <div class="admin-stat">
+          <div class="ic amber"><i class="fa-solid fa-clock"></i></div>
+          <div><div class="v" id="adStatPending">—</div><div class="l">Pending Enrollment</div></div>
+        </div>
+      </section>
+
+      <div class="admin-dash-grid">
+        <section class="admin-panel">
+          <div class="admin-panel-head">
+            <h3>Recent Accounts</h3>
+            <button class="link" id="goUsersBtn" type="button">Manage users &rarr;</button>
+          </div>
+          <table class="admin-mini-table">
+            <thead>
+              <tr><th>Username</th><th>Email</th><th>Role</th></tr>
+            </thead>
+            <tbody id="recentUsersBody">
+              <tr><td colspan="3" class="admin-empty">Loading accounts...</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="admin-panel">
+          <div class="admin-panel-head">
+            <h3>Accounts by Role</h3>
+          </div>
+          <div class="role-dist" id="roleDist">
+            <p class="admin-empty">Loading distribution...</p>
+          </div>
+        </section>
+      </div>
     </div>
   `;
+
+  // Greeting name (reuse cached navbar name if present)
+  const navName = document.getElementById("officerName");
+  const greet = document.getElementById("adminGreeting");
+  if (greet && navName && navName.textContent.trim() && navName.textContent.trim() !== "Admin") {
+    greet.textContent = "Welcome, " + navName.textContent.trim();
+  }
+
+  const refreshBtn = document.getElementById("adminRefreshBtn");
+  if (refreshBtn) {
+    refreshBtn.addEventListener("click", function () {
+      refreshBtn.disabled = true;
+      const original = refreshBtn.innerHTML;
+      refreshBtn.innerHTML = '<i class="fa-solid fa-arrows-rotate fa-spin"></i> Refreshing...';
+      loadDashboardStats();
+      setTimeout(function () {
+        refreshBtn.disabled = false;
+        refreshBtn.innerHTML = original;
+      }, 800);
+    });
+  }
+
+  const goUsersBtn = document.getElementById("goUsersBtn");
+  if (goUsersBtn) {
+    goUsersBtn.addEventListener("click", function () {
+      window.location.hash = "useraccounts";
+      showUserAccounts();
+    });
+  }
+  const statCardUsers = document.getElementById("statCardUsers");
+  if (statCardUsers) {
+    statCardUsers.addEventListener("click", function () {
+      window.location.hash = "useraccounts";
+      showUserAccounts();
+    });
+  }
+
+  loadDashboardStats();
 }
 
 /* =========================================================

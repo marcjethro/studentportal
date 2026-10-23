@@ -106,7 +106,7 @@
       docTypeInfo.style.display = "block";
       docTypeInfo.innerHTML =
         "<strong>" + dt.name + "</strong><br>" +
-        "<span style='color:#64748b; font-size:12px;'>" + dt.description + "</span><br>" +
+        "<span style='color:#334155; font-size:12px;'>" + dt.description + "</span><br>" +
         "<div style='margin-top:6px; display:flex; gap:16px; font-weight:600;'>" +
         "<span>⏱ Est. Processing: " + dt.processing_days + " working days</span>" +
         "<span>💰 Processing Fee: " + (dt.fee > 0 ? "₱" + dt.fee.toFixed(2) : "Free") + "</span>" +
@@ -223,7 +223,7 @@
       tr.innerHTML =
         "<td><span class='tracking-code'>" + r.request_id + "</span></td>" +
         "<td><strong>" + r.document_name + "</strong></td>" +
-        "<td>" + r.copies + " copy/copies<br><span style='font-size:12px; color:#64748b;'>" + r.purpose + "</span></td>" +
+        "<td>" + r.copies + " copy/copies<br><span style='font-size:12px; color:#334155;'>" + r.purpose + "</span></td>" +
         "<td>" + submittedDate + "</td>" +
         "<td><span class='badge " + badgeClass + "'>" + icon + " " + r.status + "</span></td>" +
         "<td>" + actionBtnsHtml + "</td>";
@@ -362,14 +362,14 @@
           item.innerHTML =
             "<div class='timeline-dot'></div>" +
             "<div class='timeline-content'>" +
-            "<div style='font-weight:700; color:#1e293b;'>" + log.action + " <span style='font-size:12px; color:#64748b; font-weight:normal;'>by " + (log.actor_name || "Staff") + " (" + (log.actor_role || "") + ")</span></div>" +
-            "<div style='color:#475569; font-size:12px; margin-top:2px;'>" + log.notes + "</div>" +
+            "<div style='font-weight:700; color:#1e293b;'>" + log.action + " <span style='font-size:12px; color:#334155; font-weight:normal;'>by " + (log.actor_name || "Staff") + " (" + (log.actor_role || "") + ")</span></div>" +
+            "<div style='color:#334155; font-size:12px; margin-top:2px;'>" + log.notes + "</div>" +
             "<div class='timeline-time'>" + (log.created_at || "") + "</div>" +
             "</div>";
           timelineContainer.appendChild(item);
         });
       } else {
-        timelineContainer.innerHTML = "<p style='color:#94a3b8; font-size:12px;'>No log entries yet.</p>";
+        timelineContainer.innerHTML = "<p style='color:#334155; font-size:12px;'>No log entries yet.</p>";
       }
 
       detailModal.classList.add("open");

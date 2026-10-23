@@ -77,72 +77,153 @@
       <main>
         <p id="message"></p>
 
-        <div class="content-header">
-          <h2>Dashboard</h2>
+        <div class="dash-container">
+          <!-- ===== Hero ===== -->
+          <section class="hero">
+            <div class="hero-text">
+              <span class="hero-eyebrow">
+                <i class="fa-solid fa-gauge-high"></i> EDP Portal
+              </span>
+              <h2 id="heroGreeting">EDP Dashboard</h2>
+              <p>Manage document releases, schedules, and institutional master data.</p>
+            </div>
+            <button class="refresh-btn" id="refreshBtn" type="button">
+              <i class="fa-solid fa-arrows-rotate"></i> Refresh
+            </button>
+          </section>
 
-          <button class="filter-btn" type="button">
-            Filter
-            <i class="fa-solid fa-bars"></i>
-          </button>
+          <!-- ===== Document Release Stats ===== -->
+          <div class="section-label">
+            <i class="fa-solid fa-clipboard-list"></i> Document Release Pipeline
+          </div>
+          <section class="stat-grid">
+            <a class="stat-card" href="recordreleasequeue.html">
+              <div class="stat-icon amber"><i class="fa-solid fa-hourglass-half"></i></div>
+              <div class="stat-body">
+                <span class="stat-number" id="statPendingRegistrar">—</span>
+                <span class="stat-label">Awaiting Registrar</span>
+              </div>
+            </a>
+            <a class="stat-card" href="recordreleasequeue.html">
+              <div class="stat-icon blue"><i class="fa-solid fa-print"></i></div>
+              <div class="stat-body">
+                <span class="stat-number" id="statAwaitingPrep">—</span>
+                <span class="stat-label">To Prepare</span>
+              </div>
+            </a>
+            <a class="stat-card" href="recordreleasequeue.html">
+              <div class="stat-icon cyan"><i class="fa-solid fa-box"></i></div>
+              <div class="stat-body">
+                <span class="stat-number" id="statReady">—</span>
+                <span class="stat-label">Ready for Pickup</span>
+              </div>
+            </a>
+            <a class="stat-card" href="recordreleasequeue.html">
+              <div class="stat-icon green"><i class="fa-solid fa-box-open"></i></div>
+              <div class="stat-body">
+                <span class="stat-number" id="statReleased">—</span>
+                <span class="stat-label">Released (Total)</span>
+              </div>
+            </a>
+          </section>
+
+          <!-- ===== Institution Stats ===== -->
+          <div class="section-label">
+            <i class="fa-solid fa-building-columns"></i> Institution Overview
+          </div>
+          <section class="stat-grid">
+            <a class="stat-card" href="masterdata.html">
+              <div class="stat-icon purple"><i class="fa-solid fa-book"></i></div>
+              <div class="stat-body">
+                <span class="stat-number" id="statCourses">—</span>
+                <span class="stat-label">Programs Offered</span>
+              </div>
+            </a>
+            <a class="stat-card" href="schedulebuilder.html">
+              <div class="stat-icon green"><i class="fa-solid fa-user-graduate"></i></div>
+              <div class="stat-body">
+                <span class="stat-number" id="statEnrolled">—</span>
+                <span class="stat-label">Enrolled Students</span>
+              </div>
+            </a>
+            <a class="stat-card" href="schedulebuilder.html">
+              <div class="stat-icon amber"><i class="fa-solid fa-clock"></i></div>
+              <div class="stat-body">
+                <span class="stat-number" id="statPendingEnroll">—</span>
+                <span class="stat-label">Pending Enrollment</span>
+              </div>
+            </a>
+            <a class="stat-card" href="recordreleasequeue.html">
+              <div class="stat-icon cyan"><i class="fa-solid fa-file-lines"></i></div>
+              <div class="stat-body">
+                <span class="stat-number" id="statTotalRequests">—</span>
+                <span class="stat-label">Total Doc Requests</span>
+              </div>
+            </a>
+          </section>
+
+          <!-- ===== Lower grid ===== -->
+          <div class="dash-grid">
+            <!-- Release queue preview -->
+            <section class="panel">
+              <div class="panel-head">
+                <h3>Document Release Queue</h3>
+                <a href="recordreleasequeue.html">Open queue &rarr;</a>
+              </div>
+              <table class="dash-table">
+                <thead>
+                  <tr>
+                    <th>Tracking</th>
+                    <th>Student</th>
+                    <th>Document</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="queuePreviewBody">
+                  <tr>
+                    <td colspan="4">
+                      <div class="table-empty">
+                        <i class="fa-solid fa-spinner fa-spin"></i>
+                        <h3>Loading queue...</h3>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <!-- Quick links -->
+            <section class="panel quick-panel">
+              <h3 class="panel-title"><i class="fa-solid fa-compass"></i> Quick Access</h3>
+              <div class="quick-links">
+                <a class="quick-link" href="recordreleasequeue.html">
+                  <span class="q-icon"><i class="fa-solid fa-clipboard-list"></i></span>
+                  <span class="q-text">
+                    <strong>Record Release Queue</strong>
+                    <small>Prepare &amp; release documents</small>
+                  </span>
+                  <i class="fa-solid fa-chevron-right q-arrow"></i>
+                </a>
+                <a class="quick-link" href="schedulebuilder.html">
+                  <span class="q-icon"><i class="fa-solid fa-calendar-days"></i></span>
+                  <span class="q-text">
+                    <strong>Schedule &amp; Sections</strong>
+                    <small>Build class schedules</small>
+                  </span>
+                  <i class="fa-solid fa-chevron-right q-arrow"></i>
+                </a>
+                <a class="quick-link" href="masterdata.html">
+                  <span class="q-icon"><i class="fa-solid fa-database"></i></span>
+                  <span class="q-text">
+                    <strong>Master Data</strong>
+                    <small>Manage courses &amp; programs</small>
+                  </span>
+                  <i class="fa-solid fa-chevron-right q-arrow"></i>
+                </a>
+              </div>
+            </section>
+          </div>
         </div>
-
-        <!--
-          SAMPLE DATA: the numbers and list below are hardcoded to match
-          the mockup. The backend docs don't include endpoints for
-          sections, schedules, or record batches yet, so nothing here is
-          live. Only the officer name/role in the navbar comes from the API.
-        -->
-
-        <!-- STAT CARDS -->
-        <div class="stat-grid">
-          <div class="stat-card">
-            <div class="stat-number">6</div>
-            <div class="stat-label">Sections needing room assignment</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-number">2</div>
-            <div class="stat-label">Schedule conflicts flagged</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-number">3</div>
-            <div class="stat-label">Records batches pending release</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-number">58</div>
-            <div class="stat-label">Students enrolled awaiting schedule</div>
-          </div>
-        </div>
-
-        <!-- NEEDS ATTENTION -->
-        <section class="attention-panel">
-          <h3>Needs Attention</h3>
-
-          <div class="attention-list">
-            <div class="attention-row">
-              <span class="attention-text">
-                BSIT 3 - SEC 1 — Room conflict, IAS31 vs SPI31
-              </span>
-              <span class="pill conflict">Conflict</span>
-            </div>
-
-            <div class="attention-row">
-              <span class="attention-text">
-                BSIT 1 - SEC 5 — No Assigned Room Yet
-              </span>
-              <span class="pill unassigned">Unassigned</span>
-            </div>
-
-            <div class="attention-row">
-              <span class="attention-text">
-                Grade Batch — HTM Dept, Midterm
-              </span>
-              <span class="pill ready">Ready to Release</span>
-            </div>
-          </div>
-        </section>
       </main>
     </div>
 
