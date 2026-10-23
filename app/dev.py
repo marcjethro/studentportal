@@ -121,10 +121,34 @@ def resetDB():
     if not password:
         return jsonify({"msg": "Missing password"}), 400
 
-    if not check_password_hash(getenv("DEV_SECRET"), password):
-        return jsonify({"msg": "Wrong password"}), 401
-
-    if reset_database():
-        return jsonify({"msg": "Database reset successful!"}), 200
-    else:
-        return jsonify({"msg": "Failed to reset database..."}), 200
+    dev_secret = getenv("DEV_SECRET")
+
+    if not dev_secret:
+
+        return jsonify({"msg": "DEV_SECRET is not configured on the server"}), 503
+
+    try:
+
+        password_ok = check_password_hash(dev_secret, password)
+
+    except (ValueError, TypeError):
+
+        return jsonify({"msg": "DEV_SECRET is misconfigured (must be a password hash)"}), 503
+
+    if not password_ok:
+
+        return jsonify({"msg": "Wrong password"}), 401
+
+    try:
+
+        if reset_database():
+
+            return jsonify({"msg": "Database reset successful!"}), 200
+
+        return jsonify({"msg": "Failed to reset database..."}), 500
+
+    except Exception as e:
+
+        db.session.rollback()
+
+        return jsonify({"msg": "Failed to reset database", "error": str(e)}), 500
