@@ -191,8 +191,11 @@
     /* Width changes with available height, but has limits */
     width: clamp(230px, 44vh, 350px);
   
-    /* Keep the same proportions as your original 350 x 400 box */
-    aspect-ratio: 350 / 400;
+    /* Preserve the original 350 x 400 proportions as a minimum
+       height, but let the box grow taller when content (e.g. an
+       error message) needs more room instead of clipping it.
+       (width clamp is 230-350px, so height floor = width * 400/350.) */
+    min-height: clamp(263px, 50vh, 400px);
   
     /* Keep it above the lavender part */
     z-index: 5;
@@ -209,7 +212,9 @@
     /* Makes cqw work */
     container-type: inline-size;
   
-    overflow: hidden;
+    padding-bottom: 4cqw;
+  
+    overflow: visible;
   }
   
   
