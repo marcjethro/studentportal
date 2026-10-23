@@ -3,9 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CEC - Processing</title>
+    <title>CEC - Document Processing &amp; Approval</title>
 
-    <link rel="stylesheet" href="/shared/shell.css">
+    <link rel="stylesheet" href="/shared/shell.css" />
+    <link rel="stylesheet" href="processing.css" />
 
     <link
       rel="stylesheet"
@@ -16,7 +17,6 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap"
       rel="stylesheet"
     />
-
   </head>
 
   <body>
@@ -24,7 +24,7 @@
     <nav>
       <div class="nav-left">
         <img src="/images/CEC_LOGO.png" alt="CEC Logo" />
-        <h1>CEC - Registrar</h1>
+        <h1>CEC - Registrar Portal</h1>
       </div>
 
       <div class="nav-right">
@@ -32,13 +32,12 @@
           <div class="avatar" id="avatarBtn">
             <i class="fa-solid fa-user"></i>
           </div>
-          
+
           <div class="avatar-dropdown" id="avatarDropdown">
             <p class="dropdown-name" id="officerName">&nbsp;</p>
             <p class="dropdown-role" id="officerRole">Registrar</p>
             <button id="changePasswordBtn">Change Password</button>
             <button id="logoutBtn">Logout</button>
-
           </div>
         </div>
       </div>
@@ -46,7 +45,7 @@
 
     <!-- ==================== PAGE BODY ==================== -->
     <div class="page-body">
-      <!-- ==================== SIDEBAR ==================== -->
+      <!-- SIDEBAR -->
       <aside class="sidebar">
         <div class="search-box">
           <i class="fa-solid fa-magnifying-glass"></i>
@@ -74,17 +73,250 @@
         </a>
       </aside>
 
-      <!-- ==================== MAIN ==================== -->
+      <!-- MAIN CONTENT -->
       <main>
         <p id="message"></p>
 
-        <!-- Content placeholder — sections not built yet -->
-        <div class="content-placeholder"></div>
+        <div class="processing-container">
+          <!-- Header -->
+          <div class="processing-header">
+            <div class="processing-title-area">
+              <h2>Document Processing &amp; Approval</h2>
+              <p>Evaluate incoming student document requests, verify clearances, and approve requests for EDP physical printing.</p>
+            </div>
+
+            <button class="btn-secondary" id="refreshBtn">
+              <i class="fa-solid fa-arrows-rotate"></i> Refresh Queue
+            </button>
+          </div>
+
+          <!-- Quick Stats Cards -->
+          <div class="stat-grid">
+            <div class="stat-card" data-filter="Pending">
+              <div class="stat-icon pending">
+                <i class="fa-solid fa-clock"></i>
+              </div>
+              <div class="stat-info">
+                <span class="stat-number" id="statPending">0</span>
+                <span class="stat-label">Pending Approval</span>
+              </div>
+            </div>
+
+            <div class="stat-card" data-filter="Approved">
+              <div class="stat-icon approved">
+                <i class="fa-solid fa-thumbs-up"></i>
+              </div>
+              <div class="stat-info">
+                <span class="stat-number" id="statApproved">0</span>
+                <span class="stat-label">Approved for EDP</span>
+              </div>
+            </div>
+
+            <div class="stat-card" data-filter="Rejected">
+              <div class="stat-icon rejected">
+                <i class="fa-solid fa-circle-xmark"></i>
+              </div>
+              <div class="stat-info">
+                <span class="stat-number" id="statRejected">0</span>
+                <span class="stat-label">Rejected Requests</span>
+              </div>
+            </div>
+
+            <div class="stat-card" data-filter="All">
+              <div class="stat-icon total">
+                <i class="fa-solid fa-list-check"></i>
+              </div>
+              <div class="stat-info">
+                <span class="stat-number" id="statTotal">0</span>
+                <span class="stat-label">Total Logged</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filter & Search Controls -->
+          <div class="controls-bar">
+            <div class="search-field">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="searchQueue" placeholder="Search by student name, ID, or tracking code..." />
+            </div>
+
+            <div class="filter-pills">
+              <button class="pill-btn active" data-filter="Pending">Pending Review</button>
+              <button class="pill-btn" data-filter="Approved">Approved Requests</button>
+              <button class="pill-btn" data-filter="Rejected">Rejected</button>
+              <button class="pill-btn" data-filter="All">All Requests</button>
+            </div>
+          </div>
+
+          <!-- Queue Table -->
+          <div class="queue-wrapper">
+            <table class="queue-table">
+              <thead>
+                <tr>
+                  <th>Tracking Code</th>
+                  <th>Student Info</th>
+                  <th>Document &amp; Copies</th>
+                  <th>Purpose</th>
+                  <th>Date Submitted</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="queueTableBody">
+                <!-- Dynamically rendered -->
+              </tbody>
+            </table>
+
+            <div class="empty-state" id="emptyState" style="display: none;">
+              <i class="fa-solid fa-clipboard-check"></i>
+              <h3>No Requests Found</h3>
+              <p>There are no document requests matching the current filter criteria.</p>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
-    
-    <script src="/shared/app.js"></script>
-    <script src="page.js"></script>
 
+    <!-- ==================== REVIEW MODAL ==================== -->
+    <div class="modal-backdrop" id="reviewModal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3><i class="fa-solid fa-file-signature"></i> Evaluate Document Request</h3>
+          <button class="modal-close-btn" id="closeReviewModalBtn" type="button">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <!-- Student & Request Overview -->
+          <div class="review-section">
+            <h4><i class="fa-solid fa-user-graduate"></i> Student Profile</h4>
+            <div class="review-grid">
+              <div class="review-field">
+                <span>Student Full Name</span>
+                <strong id="reviewStudentName">-</strong>
+              </div>
+              <div class="review-field">
+                <span>Student ID Number</span>
+                <strong id="reviewStudentId">-</strong>
+              </div>
+              <div class="review-field">
+                <span>Program &amp; Year Level</span>
+                <strong id="reviewCourse">-</strong>
+              </div>
+              <div class="review-field">
+                <span>Contact Details</span>
+                <strong id="reviewContact">-</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="review-section">
+            <h4><i class="fa-solid fa-file-lines"></i> Request Details</h4>
+            <div class="review-grid">
+              <div class="review-field">
+                <span>Tracking Reference</span>
+                <strong class="tracking-code" id="reviewTrackingCode">-</strong>
+              </div>
+              <div class="review-field">
+                <span>Document Requested</span>
+                <strong id="reviewDocType">-</strong>
+              </div>
+              <div class="review-field">
+                <span>Number of Copies</span>
+                <strong id="reviewCopies">-</strong>
+              </div>
+              <div class="review-field">
+                <span>Purpose of Request</span>
+                <strong id="reviewPurpose">-</strong>
+              </div>
+              <div class="review-field">
+                <span>Submitted Date</span>
+                <strong id="reviewDate">-</strong>
+              </div>
+              <div class="review-field">
+                <span>Current Status</span>
+                <strong id="reviewStatus">-</strong>
+              </div>
+              <div class="review-field" style="grid-column: 1 / -1;">
+                <span>Student Special Instructions</span>
+                <strong id="reviewInstructions">-</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Action Box for Pending Requests -->
+          <div class="action-box" id="interactiveActionBox">
+            <div class="action-tabs">
+              <button class="tab-btn active approve-tab" id="tabApproveBtn" type="button">
+                <i class="fa-solid fa-check"></i> Approve for EDP Printing
+              </button>
+              <button class="tab-btn" id="tabRejectBtn" type="button">
+                <i class="fa-solid fa-xmark"></i> Reject Request
+              </button>
+            </div>
+
+            <!-- Approve Section -->
+            <div id="approveSection">
+              <div style="font-size: 13px; color: #166534; margin-bottom: 8px;">
+                <i class="fa-solid fa-circle-info"></i> Approving this request will forward it to the <strong>EDP Releasing Queue</strong> for physical document printing, dry sealing, and student pickup release.
+              </div>
+              <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">
+                Registrar Verification Remarks / Instructions for EDP:
+              </label>
+              <textarea
+                id="registrarRemarks"
+                rows="2"
+                style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 13px; font-family: inherit; box-sizing: border-box;"
+                placeholder="e.g. Scholastic records verified and clearances cleared. Approved for EDP printing."
+              ></textarea>
+              <div style="margin-top: 12px; text-align: right;">
+                <button class="btn-primary" id="submitApproveBtn" style="background-color: #16a34a;" type="button">
+                  <i class="fa-solid fa-thumbs-up"></i> Approve for EDP Release
+                </button>
+              </div>
+            </div>
+
+            <!-- Reject Section -->
+            <div id="rejectSection" style="display: none;">
+              <div style="font-size: 13px; color: #991b1b; margin-bottom: 8px;">
+                <i class="fa-solid fa-triangle-exclamation"></i> State the official reason for rejection. This explanation will be displayed to the student.
+              </div>
+              <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">
+                Reason for Rejection *:
+              </label>
+              <textarea
+                id="rejectionReason"
+                rows="2"
+                style="width: 100%; padding: 10px; border: 1px solid #ef4444; border-radius: 8px; font-size: 13px; font-family: inherit; box-sizing: border-box;"
+                placeholder="e.g. Unsettled clearance in Accounting / Library; Please settle first."
+              ></textarea>
+              <div style="margin-top: 12px; text-align: right;">
+                <button class="btn-primary" id="submitRejectBtn" style="background-color: #dc2626;" type="button">
+                  <i class="fa-solid fa-ban"></i> Confirm Rejection
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Completed Status Info Box -->
+          <div class="review-section" id="reviewCompletedBox" style="display: none; background-color: #f1f5f9;"></div>
+
+          <!-- Audit Timeline -->
+          <div>
+            <h5 style="margin: 8px 0 6px; font-size: 13px; color: #334155;">Request History &amp; Audit Trail</h5>
+            <div id="reviewTimeline"></div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-secondary" id="closeReviewFooterBtn" type="button">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/shared/app.js"></script>
+    <script src="processing.js"></script>
   </body>
 </html>

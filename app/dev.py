@@ -6,7 +6,16 @@ from flask import jsonify, request
 from sqlalchemy import text
 
 from app import app, db
-from app.models import User, UserRole, EnrollmentType, DocumentRequirement, Course
+from app.models import (
+    User,
+    UserRole,
+    EnrollmentType,
+    DocumentRequirement,
+    Course,
+    DocumentType,
+    DocumentRequest,
+    DocumentRequestLog,
+)
 
 def reset_database():
     with app.app_context():

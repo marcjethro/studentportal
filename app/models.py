@@ -186,3 +186,144 @@ class User(db.Model):
         res["username"] = self.username
         res["email"] = self.email
         return res
+
+
+class DocumentType(db.Model):
+    __tablename__ = "document_type"
+    document_type_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    code = db.Column(db.String(30), unique=True, nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    processing_days = db.Column(db.Integer, default=3)
+    fee = db.Column(db.Float, default=0.0)
+    requires_clearance = db.Column(db.Boolean, default=False)
+    is_active = db.Column(db.Boolean, default=True)
+
+    requests = db.relationship("DocumentRequest", back_populates="document_type")
+
+    def asdict(self):
+        return {
+            "document_type_id": self.document_type_id,
+            "name": self.name,
+            "code": self.code,
+            "description": self.description or "",
+            "processing_days": self.processing_days,
+            "fee": float(self.fee) if self.fee is not None else 0.0,
+            "requires_clearance": bool(self.requires_clearance),
+            "is_active": bool(self.is_active)
+        }
+
+
+class DocumentRequest(db.Model):
+    __tablename__ = "document_request"
+    request_id = db.Column(db.String(20), primary_key=True)
+    student_user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+
+    student_name = db.Column(db.String(120), nullable=False)
+    student_number = db.Column(db.String(50), nullable=True)
+    course_name = db.Column(db.String(120), nullable=True)
+    year_level = db.Column(db.String(30), nullable=True)
+    contact_number = db.Column(db.String(30), nullable=True)
+    email = db.Column(db.String(120), nullable=True)
+
+    document_type_id = db.Column(db.Integer, db.ForeignKey('document_type.document_type_id'), nullable=False)
+    copies = db.Column(db.Integer, default=1, nullable=False)
+    purpose = db.Column(db.String(200), nullable=False)
+    special_instructions = db.Column(db.Text, nullable=True)
+
+    # Statuses: 'Pending', 'Approved', 'Rejected', 'Ready for Pickup', 'Released', 'Cancelled'
+    status = db.Column(db.String(30), default="Pending", nullable=False)
+
+    # Registrar Review
+    registrar_user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=True)
+    registrar_reviewed_at = db.Column(db.DateTime, nullable=True)
+    registrar_remarks = db.Column(db.Text, nullable=True)
+    rejection_reason = db.Column(db.Text, nullable=True)
+
+    # EDP Release
+    edp_user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=True)
+    edp_prepared_at = db.Column(db.DateTime, nullable=True)
+    pickup_location = db.Column(db.String(120), nullable=True)
+    released_at = db.Column(db.DateTime, nullable=True)
+    released_to = db.Column(db.String(120), nullable=True)
+    release_notes = db.Column(db.Text, nullable=True)
+
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+
+    # Relationships
+    student_user = db.relationship("User", foreign_keys=[student_user_id], backref="document_requests", lazy="joined")
+    registrar_user = db.relationship("User", foreign_keys=[registrar_user_id], lazy="joined")
+    edp_user = db.relationship("User", foreign_keys=[edp_user_id], lazy="joined")
+    document_type = db.relationship("DocumentType", back_populates="requests", lazy="joined")
+    logs = db.relationship("DocumentRequestLog", back_populates="request", cascade="all, delete-orphan", order_by="DocumentRequestLog.created_at.asc()", lazy="select")
+
+    def asdict(self, include_logs=True):
+        res = {
+            "request_id": self.request_id,
+            "student_user_id": self.student_user_id,
+            "student_username": self.student_user.username if self.student_user else None,
+            "student_name": self.student_name,
+            "student_number": self.student_number or "",
+            "course_name": self.course_name or "",
+            "year_level": self.year_level or "",
+            "contact_number": self.contact_number or "",
+            "email": self.email or (self.student_user.email if self.student_user else ""),
+            "document_type_id": self.document_type_id,
+            "document_name": self.document_type.name if self.document_type else "Document",
+            "document_code": self.document_type.code if self.document_type else "",
+            "processing_days": self.document_type.processing_days if self.document_type else 3,
+            "fee": float(self.document_type.fee) if self.document_type and self.document_type.fee else 0.0,
+            "copies": self.copies,
+            "purpose": self.purpose,
+            "special_instructions": self.special_instructions or "",
+            "status": self.status,
+            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S") if self.created_at else None,
+            "updated_at": self.updated_at.strftime("%Y-%m-%d %H:%M:%S") if self.updated_at else None,
+
+            # Registrar
+            "registrar_user_id": self.registrar_user_id,
+            "registrar_name": self.registrar_user.username if self.registrar_user else None,
+            "registrar_reviewed_at": self.registrar_reviewed_at.strftime("%Y-%m-%d %H:%M:%S") if self.registrar_reviewed_at else None,
+            "registrar_remarks": self.registrar_remarks or "",
+            "rejection_reason": self.rejection_reason or "",
+
+            # EDP
+            "edp_user_id": self.edp_user_id,
+            "edp_name": self.edp_user.username if self.edp_user else None,
+            "edp_prepared_at": self.edp_prepared_at.strftime("%Y-%m-%d %H:%M:%S") if self.edp_prepared_at else None,
+            "pickup_location": self.pickup_location or "EDP / Registrar Counter",
+            "released_at": self.released_at.strftime("%Y-%m-%d %H:%M:%S") if self.released_at else None,
+            "released_to": self.released_to or "",
+            "release_notes": self.release_notes or ""
+        }
+        if include_logs:
+            res["logs"] = [log.asdict() for log in (self.logs or [])]
+        return res
+
+
+class DocumentRequestLog(db.Model):
+    __tablename__ = "document_request_log"
+    log_id = db.Column(db.Integer, primary_key=True)
+    request_id = db.Column(db.String(20), db.ForeignKey('document_request.request_id'), nullable=False)
+    action = db.Column(db.String(50), nullable=False)
+    status = db.Column(db.String(30), nullable=False)
+    actor_user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=True)
+    actor_name = db.Column(db.String(100), nullable=True)
+    actor_role = db.Column(db.String(30), nullable=True)
+    notes = db.Column(db.Text, nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+
+    request = db.relationship("DocumentRequest", back_populates="logs")
+
+    def asdict(self):
+        return {
+            "log_id": self.log_id,
+            "request_id": self.request_id,
+            "action": self.action,
+            "status": self.status,
+            "actor_name": self.actor_name or "System",
+            "actor_role": self.actor_role or "",
+            "notes": self.notes or "",
+            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S") if self.created_at else None
+        }
