@@ -436,7 +436,7 @@
 
     // Render Checklist
     if (docs.length === 0) {
-      docsListEl.innerHTML = `<p style="color:#64748b; font-size:13px;">No document requirements defined for this student type.</p>`;
+      docsListEl.innerHTML = `<p style="color:#334155; font-size:13px;">No document requirements defined for this student type.</p>`;
       return;
     }
 

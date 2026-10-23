@@ -137,8 +137,8 @@
 
       tr.innerHTML =
         "<td><span class='tracking-code'>" + r.request_id + "</span></td>" +
-        "<td><strong>" + r.student_name + "</strong><br><span style='font-size:12px; color:#64748b;'>ID: " + (r.student_number || "N/A") + " (" + (r.course_name || "General") + ")</span></td>" +
-        "<td><strong>" + r.document_name + "</strong><br><span style='font-size:12px; color:#64748b;'>" + r.copies + " copy/copies</span></td>" +
+        "<td><strong>" + r.student_name + "</strong><br><span style='font-size:12px; color:#334155;'>ID: " + (r.student_number || "N/A") + " (" + (r.course_name || "General") + ")</span></td>" +
+        "<td><strong>" + r.document_name + "</strong><br><span style='font-size:12px; color:#334155;'>" + r.copies + " copy/copies</span></td>" +
         "<td>" + r.purpose + "</td>" +
         "<td>" + submittedDate + "</td>" +
         "<td><span class='badge " + badgeClass + "'>" + icon + " " + r.status + "</span></td>" +
@@ -225,8 +225,8 @@
           item.style.padding = "6px 0";
           item.style.borderBottom = "1px solid #f1f5f9";
           item.innerHTML =
-            "<div style='font-size:12px; font-weight:700; color:#1e293b;'>" + log.action + " &bull; <span style='font-weight:normal; color:#64748b;'>" + (log.created_at || "") + "</span></div>" +
-            "<div style='font-size:12px; color:#475569;'>" + log.notes + "</div>";
+            "<div style='font-size:12px; font-weight:700; color:#1e293b;'>" + log.action + " &bull; <span style='font-weight:normal; color:#334155;'>" + (log.created_at || "") + "</span></div>" +
+            "<div style='font-size:12px; color:#334155;'>" + log.notes + "</div>";
           timelineContainer.appendChild(item);
         });
       }

@@ -249,7 +249,7 @@
         </td>
         <td>
           <span style="font-weight: 600;">${escapeHtml(student.year || "—")}</span>
-          <div style="font-size: 12px; color: #64748b;">${escapeHtml(student.semester || "—")}</div>
+          <div style="font-size: 12px; color: #334155;">${escapeHtml(student.semester || "—")}</div>
         </td>
         <td>
           <span style="font-size: 12.5px; font-weight: 600; color: #334155;">${escapeHtml(student.preferred_schedule || "Regular")}</span>
@@ -258,7 +258,7 @@
           ${statusBadge}
           ${
             latestEnr && latestEnr.enrollment_id
-              ? `<div style="font-size: 11px; font-family: monospace; color: #64748b; margin-top: 3px;">ID: ${escapeHtml(latestEnr.enrollment_id)}</div>`
+              ? `<div style="font-size: 11px; font-family: monospace; color: #334155; margin-top: 3px;">ID: ${escapeHtml(latestEnr.enrollment_id)}</div>`
               : ""
           }
         </td>
@@ -351,7 +351,7 @@
               })
               .join("");
           } else {
-            docsHtml = `<p style="font-size: 12px; color: #64748b; margin: 4px 0 0;">No document checklist attached.</p>`;
+            docsHtml = `<p style="font-size: 12px; color: #334155; margin: 4px 0 0;">No document checklist attached.</p>`;
           }
 
           card.innerHTML = `
@@ -362,7 +362,7 @@
               </div>
               <span class="status-badge ${isEnrDone ? "enrolled" : "pending"}">${escapeHtml(enr.status)}</span>
             </div>
-            <div style="font-size: 12.5px; color: #475569;">
+            <div style="font-size: 12.5px; color: #334155;">
               Clearance &amp; Physical Documents (${enr.submitted_documents || 0}/${enr.total_documents || docs.length} Verified):
             </div>
             <div style="background: white; border-radius: 8px; padding: 8px 12px; border: 1px solid #e2e8f0;">
@@ -373,7 +373,7 @@
         });
       } else {
         enrollListContainer.innerHTML = `
-          <div style="text-align: center; color: #64748b; padding: 20px;">
+          <div style="text-align: center; color: #334155; padding: 20px;">
             No enrollment records on file for this student.
           </div>
         `;
@@ -391,13 +391,13 @@
             <div class="history-item-header">
               <div>
                 <strong style="color: navy;">${escapeHtml(req.document_name || "Document Request")}</strong>
-                <span style="font-family: monospace; font-size: 12px; color: #64748b; margin-left: 6px;">(${escapeHtml(req.request_id)})</span>
+                <span style="font-family: monospace; font-size: 12px; color: #334155; margin-left: 6px;">(${escapeHtml(req.request_id)})</span>
               </div>
               <span class="status-badge ${req.status === "Released" ? "enrolled" : req.status === "Pending" ? "pending" : "enrolled"}">
                 ${escapeHtml(req.status)}
               </span>
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12.5px; color: #475569;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12.5px; color: #334155;">
               <div>Purpose: <strong>${escapeHtml(req.purpose || "—")}</strong></div>
               <div>Copies: <strong>${req.copies || 1}</strong></div>
               <div>Submitted: <strong>${escapeHtml(req.created_at || "—")}</strong></div>
@@ -408,7 +408,7 @@
         });
       } else {
         requestsContainer.innerHTML = `
-          <div style="text-align: center; color: #64748b; padding: 20px;">
+          <div style="text-align: center; color: #334155; padding: 20px;">
             No official document requests recorded for this student.
           </div>
         `;

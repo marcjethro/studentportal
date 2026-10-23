@@ -6,6 +6,7 @@
     <title>CEC - Registrar</title>
 
     <link rel="stylesheet" href="/shared/shell.css">
+    <link rel="stylesheet" href="registrar.css">
 
     <link
       rel="stylesheet"
@@ -79,12 +80,131 @@
       <main>
         <p id="message"></p>
 
-        <!-- Content placeholder — sections not built yet -->
-        <div class="content-placeholder"></div>
+        <div class="dashboard-container">
+          <!-- ===== Header ===== -->
+          <div class="dash-header">
+            <div class="dash-title-area">
+              <h2 id="dashGreeting">Registrar Dashboard</h2>
+              <p>Overview of enrollment activity, student records, and document requests.</p>
+            </div>
+            <button class="refresh-btn" id="refreshDashBtn">
+              <i class="fa-solid fa-arrows-rotate"></i> Refresh
+            </button>
+          </div>
+
+          <!-- ===== Enrollment / Student Stats ===== -->
+          <div class="section-label">
+            <i class="fa-solid fa-user-graduate"></i> Enrollment &amp; Students
+          </div>
+          <div class="stat-grid">
+            <a class="stat-card" href="studentrecords.html">
+              <div class="stat-icon total"><i class="fa-solid fa-users"></i></div>
+              <div class="stat-info">
+                <span class="stat-number" id="statTotalStudents">—</span>
+                <span class="stat-label">Total Students</span>
+              </div>
+            </a>
+            <a class="stat-card" href="validationqueue.html">
+              <div class="stat-icon enrolled"><i class="fa-solid fa-circle-check"></i></div>
+              <div class="stat-info">
+                <span class="stat-number" id="statEnrolled">—</span>
+                <span class="stat-label">Officially Enrolled</span>
+              </div>
+            </a>
+            <a class="stat-card" href="validationqueue.html">
+              <div class="stat-icon pending"><i class="fa-solid fa-clock"></i></div>
+              <div class="stat-info">
+                <span class="stat-number" id="statPending">—</span>
+                <span class="stat-label">Pending Enrollment</span>
+              </div>
+            </a>
+            <div class="stat-card">
+              <div class="stat-icon programs"><i class="fa-solid fa-book"></i></div>
+              <div class="stat-info">
+                <span class="stat-number" id="statPrograms">—</span>
+                <span class="stat-label">Programs Offered</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== Document Request Stats ===== -->
+          <div class="section-label">
+            <i class="fa-solid fa-file-lines"></i> Document Requests
+          </div>
+          <div class="stat-grid">
+            <a class="stat-card" href="processing.html">
+              <div class="stat-icon review"><i class="fa-solid fa-hourglass-half"></i></div>
+              <div class="stat-info">
+                <span class="stat-number" id="statDocPending">—</span>
+                <span class="stat-label">Awaiting Review</span>
+              </div>
+            </a>
+            <a class="stat-card" href="processing.html">
+              <div class="stat-icon approved"><i class="fa-solid fa-thumbs-up"></i></div>
+              <div class="stat-info">
+                <span class="stat-number" id="statDocApproved">—</span>
+                <span class="stat-label">Approved</span>
+              </div>
+            </a>
+            <a class="stat-card" href="processing.html">
+              <div class="stat-icon released"><i class="fa-solid fa-box-open"></i></div>
+              <div class="stat-info">
+                <span class="stat-number" id="statDocReleased">—</span>
+                <span class="stat-label">Released</span>
+              </div>
+            </a>
+            <a class="stat-card" href="processing.html">
+              <div class="stat-icon rejected"><i class="fa-solid fa-circle-xmark"></i></div>
+              <div class="stat-info">
+                <span class="stat-number" id="statDocRejected">—</span>
+                <span class="stat-label">Rejected</span>
+              </div>
+            </a>
+          </div>
+
+          <!-- ===== Lower grid: recent enrollments + announcements ===== -->
+          <div class="dash-columns">
+            <div class="table-card">
+              <div class="table-card-head">
+                <h3>Recent Enrollment Applications</h3>
+                <a href="validationqueue.html">View queue &rarr;</a>
+              </div>
+              <table class="dash-table">
+                <thead>
+                  <tr>
+                    <th>Tracking ID</th>
+                    <th>Student</th>
+                    <th>Program / Year</th>
+                    <th>Documents</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="recentEnrollmentsBody">
+                  <tr>
+                    <td colspan="5">
+                      <div class="table-empty-state">
+                        <i class="fa-solid fa-spinner fa-spin"></i>
+                        <h3>Loading recent applications...</h3>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="panel-card">
+              <h3>Recent Announcements</h3>
+              <div class="announcements-scroll" id="announcementsList">
+                <p class="no-announcements">Loading announcements...</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
 
     <script src="/shared/app.js"></script>
+    <script src="/shared/announcements.js"></script>
     <script src="registrar.js"></script>
   </body>
 </html>

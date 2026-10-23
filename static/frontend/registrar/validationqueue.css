@@ -53,7 +53,7 @@ main {
 .queue-title-area p {
   margin: 4px 0 0;
   font-size: 14px;
-  color: #475569;
+  color: #1e293b;
 }
 
 .refresh-btn {
@@ -156,7 +156,7 @@ main {
 .stat-label {
   font-size: 13px;
   font-weight: 600;
-  color: #64748b;
+  color: #334155;
   margin-top: 2px;
   white-space: nowrap;
   overflow: hidden;
@@ -220,7 +220,7 @@ main {
   left: 14px;
   top: 50%;
   transform: translateY(-50%);
-  color: #94a3b8;
+  color: #334155;
   font-size: 14px;
 }
 
@@ -299,7 +299,7 @@ main {
 
 .queue-table th {
   background-color: #f8fafc;
-  color: #475569;
+  color: #334155;
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
@@ -361,7 +361,7 @@ main {
 
 .student-meta {
   font-size: 11px;
-  color: #64748b;
+  color: #334155;
   margin-top: 2px;
   white-space: nowrap;
   overflow: hidden;
@@ -390,7 +390,7 @@ main {
 
 .course-meta {
   font-size: 11px;
-  color: #64748b;
+  color: #334155;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -406,7 +406,7 @@ main {
   font-size: 10.5px;
   font-weight: 600;
   background-color: #f1f5f9;
-  color: #475569;
+  color: #334155;
   white-space: nowrap;
   text-align: center;
 }
@@ -526,13 +526,13 @@ main {
 .table-empty-state {
   text-align: center;
   padding: 48px 20px;
-  color: #64748b;
+  color: #334155;
 }
 
 .table-empty-state i {
   font-size: 38px;
   margin-bottom: 12px;
-  color: #94a3b8;
+  color: #334155;
 }
 
 .table-empty-state h3 {
@@ -620,7 +620,7 @@ main {
   background: transparent;
   border: none;
   font-size: 26px;
-  color: #64748b;
+  color: #334155;
   cursor: pointer;
   line-height: 1;
   border-radius: 6px;
@@ -662,7 +662,7 @@ main {
 
 .snapshot-item .lbl {
   font-weight: 700;
-  color: #475569;
+  color: #334155;
   min-width: 110px;
   flex-shrink: 0;
 }
@@ -769,7 +769,7 @@ main {
 
 .doc-icon {
   font-size: 16px;
-  color: #64748b;
+  color: #334155;
   flex-shrink: 0;
 }
 
@@ -849,7 +849,7 @@ main {
 
 .modal-footer-msg {
   font-size: 12.5px;
-  color: #64748b;
+  color: #334155;
   margin: 0;
   line-height: 1.4;
 }
@@ -932,7 +932,7 @@ main {
 
 .success-modal-card p.subtitle {
   font-size: 13.5px;
-  color: #475569;
+  color: #334155;
   margin: 0 0 18px;
   line-height: 1.5;
 }
