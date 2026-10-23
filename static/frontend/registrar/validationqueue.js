@@ -576,9 +576,11 @@
 
     const student = activeEnrollment.student_info || {};
     const fullName = `${student.first_name || ""} ${student.last_name || ""}`.trim();
-    const confirmed = confirm(
-      `Are you sure you want to officially enroll ${fullName} and create their Student Portal account?`
-    );
+    const isReEnrollment = activeEnrollment.enrollment_type_id === 1 || !!(student && student.user_id);
+    const confirmPrompt = isReEnrollment
+      ? `Are you sure you want to officially enroll ${fullName}? Student data connected with their existing account will be updated (no new account will be created).`
+      : `Are you sure you want to officially enroll ${fullName} and create their Student Portal account?`;
+    const confirmed = confirm(confirmPrompt);
     if (!confirmed) return;
 
     try {
@@ -635,14 +637,32 @@
     setText("successUsername", data.username);
     setText("successPassword", data.password);
 
+    const titleEl = successModal.querySelector("h3");
+    if (titleEl) {
+      titleEl.textContent = data.is_reenrollment
+        ? "Student Re-Enrollment Confirmed!"
+        : "Student Officially Enrolled!";
+    }
+
+    const subtitleEl = successModal.querySelector(".subtitle");
+    if (subtitleEl) {
+      if (data.is_reenrollment) {
+        subtitleEl.innerHTML = `<strong>${studentName}</strong> (<span>${data.enrollment_id}</span>) has been officially re-enrolled. Student data connected with their existing account has been updated (no new account created).`;
+      } else {
+        subtitleEl.innerHTML = `<strong>${studentName}</strong> (<span>${data.enrollment_id}</span>) has been officially enrolled. A new student account has been created.`;
+      }
+    }
+
     const emailStatusEl = document.getElementById("successEmailStatus");
     if (emailStatusEl) {
       if (data.email_sent) {
         emailStatusEl.className = "email-dispatch-status";
-        emailStatusEl.innerHTML = `<i class="fa-solid fa-circle-check"></i> Login credentials dispatched to student's email.`;
+        emailStatusEl.innerHTML = data.is_reenrollment
+          ? `<i class="fa-solid fa-circle-check"></i> Re-enrollment confirmation dispatched to student's email. Existing login maintained.`
+          : `<i class="fa-solid fa-circle-check"></i> Login credentials dispatched to student's email.`;
       } else {
         emailStatusEl.className = "email-dispatch-status warn";
-        emailStatusEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Email notification skipped or pending credentials dispatch. Provide credentials above to student.`;
+        emailStatusEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Email notification skipped or pending dispatch.`;
       }
     }
 

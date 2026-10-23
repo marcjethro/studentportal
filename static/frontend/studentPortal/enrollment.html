@@ -3,10 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CEC - Enrollment</title>
+    <title>CEC - Student Enrollment</title>
 
-    <link rel="stylesheet" href="/shared/shell.css">
-    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="/shared/shell.css" />
+    <link rel="stylesheet" href="student.css" />
+    <link rel="stylesheet" href="enrollment.css" />
 
     <link
       rel="stylesheet"
@@ -14,13 +15,13 @@
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-
   </head>
 
   <body>
+    <!-- ==================== NAVBAR ==================== -->
     <nav>
       <div class="nav-left">
         <img src="/images/CEC_LOGO.png" alt="CEC Logo" />
@@ -43,7 +44,9 @@
       </div>
     </nav>
 
+    <!-- ==================== PAGE BODY ==================== -->
     <div class="page-body">
+      <!-- SIDEBAR -->
       <aside class="sidebar">
         <div class="search-box">
           <i class="fa-solid fa-magnifying-glass"></i>
@@ -81,28 +84,397 @@
           <i class="fa-solid fa-file-lines"></i>
           Document Process
         </a>
-
       </aside>
 
+      <!-- MAIN CONTENT -->
       <main>
         <p id="message"></p>
 
-        <div class="welcome-header">
-          <h2 id="welcomeName">Welcome</h2>
-          <p id="programSubtitle">Loading...</p>
-        </div>
+        <div class="enrollment-container">
+          <!-- Top Title Bar -->
+          <div class="enrollment-header">
+            <div class="enrollment-title-area">
+              <h2 id="welcomeName">Student Enrollment</h2>
+              <p id="programSubtitle">Loading academic status...</p>
+            </div>
 
-        <div class="stat-row">
-          <div class="stat-placeholder"></div>
-          <div class="stat-placeholder"></div>
-        </div>
+            <div>
+              <button class="btn-enroll-secondary" id="refreshEnrollmentBtn">
+                <i class="fa-solid fa-arrows-rotate"></i> Refresh
+              </button>
+            </div>
+          </div>
 
-        <div class="content-placeholder"></div>
-        <div class="content-placeholder"></div>
+          <!-- Alert message banner -->
+          <div id="enrollmentAlert" class="enrollment-alert" role="alert"></div>
+
+          <!-- Explanatory Notice Card -->
+          <div class="notice-card">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <div class="notice-card-body">
+              <h4>Old / Returnee Student Re-enrollment</h4>
+              <p>
+                Continuing students can re-enroll for upcoming semesters directly from this tab. Submitting your re-enrollment will update your student records connected with your existing account. <strong>No new account will be created</strong>; you will continue using your current login credentials upon registrar clearance verification.
+              </p>
+            </div>
+          </div>
+
+          <!-- Stat Row Cards -->
+          <div class="enroll-stat-grid">
+            <div class="stat-card">
+              <div class="stat-icon status">
+                <i class="fa-solid fa-id-badge"></i>
+              </div>
+              <div class="stat-info">
+                <span class="stat-label">Enrollment Status</span>
+                <span class="stat-value" id="statStatusVal">Loading...</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon tracking">
+                <i class="fa-solid fa-barcode"></i>
+              </div>
+              <div class="stat-info">
+                <span class="stat-label">Active Tracking ID</span>
+                <span class="stat-value" id="statTrackingVal" style="font-family: monospace;">—</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon program">
+                <i class="fa-solid fa-book-bookmark"></i>
+              </div>
+              <div class="stat-info">
+                <span class="stat-label">Current Program</span>
+                <span class="stat-value" id="statProgramVal">Loading...</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon docs">
+                <i class="fa-solid fa-file-shield"></i>
+              </div>
+              <div class="stat-info">
+                <span class="stat-label">Clearance Documents</span>
+                <span class="stat-value" id="statDocsVal">Loading...</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Split Layout -->
+          <div class="enrollment-main-layout">
+            <!-- LEFT COLUMN: Active Enrollment & Documents Tracking -->
+            <div class="enroll-card">
+              <div class="card-title-bar">
+                <h3>
+                  <i class="fa-solid fa-file-circle-check"></i>
+                  Active Enrollment &amp; Clearance
+                </h3>
+                <span class="card-badge type-badge" id="activeTypeBadge">Old/Returnee</span>
+              </div>
+
+              <!-- When active enrollment exists -->
+              <div id="activeEnrollmentBox" class="active-tracking-box">
+                <div class="tracking-header-row">
+                  <div class="tracking-id-wrap">
+                    <span class="tracking-id-text" id="activeTrackingId">—</span>
+                    <button type="button" class="btn-copy-sm" id="copyTrackingBtn" title="Copy tracking code">
+                      <i class="fa-regular fa-copy"></i>
+                    </button>
+                  </div>
+                  <span class="card-badge pending" id="activeStatusBadge">Pending</span>
+                </div>
+
+                <div class="tracking-meta-grid">
+                  <div class="meta-item">
+                    <span class="meta-label">Program &amp; Term</span>
+                    <span class="meta-val" id="activeCourseTerm">—</span>
+                  </div>
+                  <div class="meta-item">
+                    <span class="meta-label">Class Schedule</span>
+                    <span class="meta-val" id="activeSchedule">—</span>
+                  </div>
+                </div>
+
+                <!-- Document Requirements Checklist -->
+                <div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 0 8px;">
+                    <strong style="font-size: 13px; color: #334155;">Required Documents (Old / Returnee):</strong>
+                    <span style="font-size: 11.5px; font-weight: 700; color: #0284c7;" id="activeDocsProgress">0 of 2 Verified</span>
+                  </div>
+
+                  <div class="docs-checklist" id="activeDocsList">
+                    <!-- Populated dynamically via JS -->
+                  </div>
+                </div>
+
+                <div class="office-notice-box">
+                  <i class="fa-solid fa-triangle-exclamation"></i>
+                  <div>
+                    <strong>Physical Office Submission Required:</strong> In accordance with registrar policies, your <strong>Study Load</strong> and <strong>Complete Clearance Form</strong> must be submitted physically to the Office of the Registrar. Once validated, your re-enrollment status will be confirmed.
+                  </div>
+                </div>
+              </div>
+
+              <!-- When no active enrollment exists -->
+              <div id="noActiveEnrollmentBox" class="active-tracking-box" style="display: none; text-align: center; padding: 32px 20px;">
+                <i class="fa-regular fa-folder-open" style="font-size: 38px; color: #94a3b8; margin-bottom: 10px;"></i>
+                <h4 style="margin: 0 0 6px; color: #334155;">No Active Enrollment</h4>
+                <p style="margin: 0; font-size: 13px; color: #64748b;">
+                  You currently have no active or pending enrollment. Fill out the re-enrollment form to register for the next semester.
+                </p>
+              </div>
+            </div>
+
+            <!-- RIGHT COLUMN: Re-enroll as Old/Returnee Student Form -->
+            <div class="enroll-card">
+              <div class="card-title-bar">
+                <h3>
+                  <i class="fa-solid fa-rotate-right"></i>
+                  Re-enroll as Old / Returnee Student
+                </h3>
+                <span class="card-badge type-badge">Type 1: Returnee</span>
+              </div>
+
+              <!-- Connected Account Notice -->
+              <div class="account-link-badge">
+                <i class="fa-solid fa-user-shield"></i>
+                <div>
+                  <div>Connected Account: <strong id="accountUsername">—</strong> (<span id="accountEmail">—</span>)</div>
+                  <div style="font-size: 11.5px; color: #64748b; margin-top: 2px;">
+                    No new account will be created. Re-enrolling updates student data on this account.
+                  </div>
+                </div>
+                <span class="account-notice-pill">Connected</span>
+              </div>
+
+              <!-- Notice when pending application exists -->
+              <div id="formStatusNotice" class="office-notice-box" style="display: none;"></div>
+
+              <!-- Re-enrollment Form -->
+              <form id="reenrollForm" class="reenroll-form">
+                <div class="form-group-grid">
+                  <!-- Full Name (read-only) -->
+                  <div class="form-field full-width">
+                    <label for="studentFullName">
+                      Student Full Name
+                    </label>
+                    <input type="text" id="studentFullName" readonly />
+                    <p class="field-help-text">Name is permanently linked to your student credentials.</p>
+                  </div>
+
+                  <!-- Course / Degree Program -->
+                  <div class="form-field full-width">
+                    <label for="reEnrollCourse">
+                      Degree Program / Course <span class="req-star">*</span>
+                    </label>
+                    <select id="reEnrollCourse" required>
+                      <option value="">Loading courses...</option>
+                    </select>
+                  </div>
+
+                  <!-- Year Level -->
+                  <div class="form-field">
+                    <label for="reEnrollYear">
+                      Year Level <span class="req-star">*</span>
+                    </label>
+                    <select id="reEnrollYear" required>
+                      <option value="">-- Select Year Level --</option>
+                      <option value="1st Year">1st Year</option>
+                      <option value="2nd Year">2nd Year</option>
+                      <option value="3rd Year">3rd Year</option>
+                      <option value="4th Year">4th Year</option>
+                    </select>
+                  </div>
+
+                  <!-- Semester -->
+                  <div class="form-field">
+                    <label for="reEnrollSemester">
+                      Semester <span class="req-star">*</span>
+                    </label>
+                    <select id="reEnrollSemester" required>
+                      <option value="">-- Select Semester --</option>
+                      <option value="1st Semester">1st Semester</option>
+                      <option value="2nd Semester">2nd Semester</option>
+                      <option value="Summer">Summer</option>
+                    </select>
+                  </div>
+
+                  <!-- Preferred Schedule -->
+                  <div class="form-field full-width">
+                    <label for="reEnrollSchedule">
+                      Preferred Schedule <span class="req-star">*</span>
+                    </label>
+                    <select id="reEnrollSchedule" required>
+                      <option value="Day (8:00 AM - 12:00 PM)">Day (8:00 AM - 12:00 PM)</option>
+                      <option value="Evening (5:30 PM - 9:30 PM)">Evening (5:30 PM - 9:30 PM)</option>
+                    </select>
+                  </div>
+
+                  <!-- Contact Phone -->
+                  <div class="form-field">
+                    <label for="reEnrollPhone">
+                      Contact Phone Number
+                    </label>
+                    <input type="tel" id="reEnrollPhone" placeholder="09XX-XXX-XXXX" />
+                  </div>
+
+                  <!-- Home Address -->
+                  <div class="form-field">
+                    <label for="reEnrollAddress">
+                      Home Address
+                    </label>
+                    <input type="text" id="reEnrollAddress" placeholder="Street, Barangay, City" />
+                  </div>
+                </div>
+
+                <div style="margin-top: 8px;">
+                  <button type="submit" class="btn-enroll-primary" id="reEnrollSubmitBtn" style="width: 100%;">
+                    <i class="fa-solid fa-paper-plane"></i> Submit Re-enrollment Application
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- BOTTOM SECTION: Enrollment History -->
+          <div class="enroll-card">
+            <div class="card-title-bar">
+              <h3>
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                Enrollment History &amp; Records
+              </h3>
+            </div>
+
+            <div class="history-table-wrapper">
+              <table class="enroll-table">
+                <thead>
+                  <tr>
+                    <th>Tracking ID</th>
+                    <th>Enrollee Type</th>
+                    <th>Program</th>
+                    <th>Term &amp; Level</th>
+                    <th>Status</th>
+                    <th>Documents</th>
+                  </tr>
+                </thead>
+                <tbody id="enrollmentHistoryBody">
+                  <tr>
+                    <td colspan="6" style="text-align: center; color: #64748b; padding: 24px;">
+                      Loading enrollment history...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
 
+    <!-- ==================== CONFIRMATION MODAL ==================== -->
+    <div id="confirmReenrollModal" class="enroll-modal-backdrop" aria-hidden="true">
+      <div class="enroll-modal-card">
+        <div class="modal-header">
+          <h3><i class="fa-solid fa-circle-question"></i> Confirm Re-enrollment</h3>
+          <button type="button" class="modal-close-btn" id="closeConfirmModalBtn">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <p style="margin: 0; color: #475569; font-size: 14px;">
+            Please review your re-enrollment details for the upcoming semester.
+          </p>
+
+          <div class="modal-review-list">
+            <div class="review-item">
+              <span class="review-label">Enrollee Type</span>
+              <span class="review-val">Old / Returnee Student</span>
+            </div>
+            <div class="review-item">
+              <span class="review-label">Program</span>
+              <span class="review-val" id="reviewProgram">—</span>
+            </div>
+            <div class="review-item">
+              <span class="review-label">Year &amp; Semester</span>
+              <span class="review-val" id="reviewYearSem">—</span>
+            </div>
+            <div class="review-item">
+              <span class="review-label">Preferred Schedule</span>
+              <span class="review-val" id="reviewSchedule">—</span>
+            </div>
+            <div class="review-item">
+              <span class="review-label">Contact Details</span>
+              <span class="review-val" id="reviewContact">—</span>
+            </div>
+          </div>
+
+          <div class="notice-card" style="padding: 12px 14px; border-left-width: 4px;">
+            <i class="fa-solid fa-circle-info" style="font-size: 18px;"></i>
+            <div class="notice-card-body">
+              <h4 style="font-size: 13.5px;">Account Preservation Notice</h4>
+              <p style="font-size: 12.5px;">
+                No new account will be created. Your current Student Portal account and login password will remain active. Your student profile data will be updated upon submission.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-enroll-secondary" id="cancelConfirmModalBtn">Cancel</button>
+          <button type="button" class="btn-enroll-primary" id="proceedSubmitBtn">
+            <i class="fa-solid fa-check"></i> Confirm Re-enrollment
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SUCCESS MODAL ==================== -->
+    <div id="successReenrollModal" class="enroll-modal-backdrop" aria-hidden="true">
+      <div class="enroll-modal-card">
+        <div class="success-card-content">
+          <div class="success-icon-badge">
+            <i class="fa-solid fa-check"></i>
+          </div>
+
+          <h3>Re-enrollment Submitted!</h3>
+          <p>
+            Your application to re-enroll as an <strong>Old / Returnee Student</strong> has been registered. Your student profile data connected with this account has been updated.
+          </p>
+
+          <div class="success-code-card">
+            <span class="success-code-label">Tracking Number</span>
+            <span class="success-code-val" id="successTrackingCode">—</span>
+            <button type="button" class="btn-copy-sm" id="copySuccessCodeBtn">
+              <i class="fa-regular fa-copy"></i> Copy Tracking Code
+            </button>
+          </div>
+
+          <p id="successProgram" style="font-weight: 700; color: navy; font-size: 13.5px;">
+            —
+          </p>
+
+          <div class="success-steps-box">
+            <h5><i class="fa-solid fa-list-check"></i> Next Steps to Finalize Enrollment:</h5>
+            <ol>
+              <li>Prepare your physical <strong>Study Load</strong> and <strong>Complete Clearance Form</strong>.</li>
+              <li>Present your Tracking Number and documents to the <strong>Office of the Registrar</strong>.</li>
+              <li>Once verified by the registrar, your enrollment will be officially confirmed.</li>
+              <li>No new login is needed—continue using your current portal account.</li>
+            </ol>
+          </div>
+
+          <div style="margin-top: 8px; width: 100%;">
+            <button type="button" class="btn-enroll-primary" id="doneSuccessModalBtn" style="width: 100%;">
+              Got it, Done!
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
     <script src="/shared/app.js"></script>
-    <script src="student-page.js"></script>
+    <script src="enrollment.js"></script>
   </body>
 </html>
