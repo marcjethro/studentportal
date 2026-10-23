@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CEC - Student Records</title>
 
-    <link rel="stylesheet" href="/shared/shell.css">
+    <link rel="stylesheet" href="/shared/shell.css" />
+    <link rel="stylesheet" href="studentrecords.css" />
 
     <link
       rel="stylesheet"
@@ -13,7 +14,7 @@
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
   </head>
@@ -37,7 +38,6 @@
             <p class="dropdown-role" id="officerRole">Registrar</p>
             <button id="changePasswordBtn">Change Password</button>
             <button id="logoutBtn">Logout</button>
-
           </div>
         </div>
       </div>
@@ -77,12 +77,450 @@
       <main>
         <p id="message"></p>
 
-        <!-- Content placeholder — sections not built yet -->
-        <div class="content-placeholder"></div>
+        <!-- Official Print Header (Visible during printing only) -->
+        <div class="print-only-header">
+          <h2>Cebu Eastern College, Inc.</h2>
+          <p>Office of the Registrar · Official Student Masterlist</p>
+          <p id="printTimestamp" style="font-size: 11px; color: #555;"></p>
+        </div>
+
+        <div class="records-container">
+          <!-- Top Title Bar -->
+          <div class="records-header">
+            <div class="records-title-area">
+              <h2>Student Records Directory</h2>
+              <p>Search, view, evaluate, and manage official student academic profiles, enrollment status, and records.</p>
+            </div>
+
+            <div class="header-actions">
+              <button class="btn-reg-secondary" id="refreshRecordsBtn">
+                <i class="fa-solid fa-arrows-rotate"></i> Refresh
+              </button>
+              <button class="btn-reg-secondary" id="printMasterListBtn">
+                <i class="fa-solid fa-print"></i> Print Masterlist
+              </button>
+              <button class="btn-reg-primary" id="newStudentRecordBtn">
+                <i class="fa-solid fa-user-plus"></i> New Student Record
+              </button>
+            </div>
+          </div>
+
+          <!-- Alert message banner -->
+          <div id="recordsAlert" class="records-alert" role="alert"></div>
+
+          <!-- Stat Overview Cards -->
+          <div class="stat-grid">
+            <div class="stat-card active" data-filter="all">
+              <div class="stat-icon total">
+                <i class="fa-solid fa-users"></i>
+              </div>
+              <div class="stat-info">
+                <span class="stat-number" id="statTotal">0</span>
+                <span class="stat-label">Total Registered</span>
+              </div>
+            </div>
+
+            <div class="stat-card" data-filter="enrolled">
+              <div class="stat-icon enrolled">
+                <i class="fa-solid fa-user-graduate"></i>
+              </div>
+              <div class="stat-info">
+                <span class="stat-number" id="statEnrolled">0</span>
+                <span class="stat-label">Officially Enrolled</span>
+              </div>
+            </div>
+
+            <div class="stat-card" data-filter="pending">
+              <div class="stat-icon pending">
+                <i class="fa-solid fa-clock"></i>
+              </div>
+              <div class="stat-info">
+                <span class="stat-number" id="statPending">0</span>
+                <span class="stat-label">Pending Clearance</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon programs">
+                <i class="fa-solid fa-book-bookmark"></i>
+              </div>
+              <div class="stat-info">
+                <span class="stat-number" id="statPrograms">0</span>
+                <span class="stat-label">Degree Programs</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filter & Search Bar -->
+          <div class="filter-search-bar">
+            <div class="filter-row-top">
+              <div class="filter-pills">
+                <button type="button" class="filter-pill active" data-filter="all">All Records</button>
+                <button type="button" class="filter-pill" data-filter="enrolled">Officially Enrolled</button>
+                <button type="button" class="filter-pill" data-filter="pending">Pending Clearance</button>
+                <button type="button" class="filter-pill" data-filter="returnee">Old/Returnee</button>
+                <button type="button" class="filter-pill" data-filter="new">New Enrollees</button>
+              </div>
+
+              <div class="search-input-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input
+                  type="text"
+                  id="recordSearchInput"
+                  placeholder="Search by student name, ID, username, email..."
+                />
+              </div>
+            </div>
+
+            <div class="filter-row-selects">
+              <div class="select-filter-group">
+                <label for="courseFilterSelect">Program:</label>
+                <select id="courseFilterSelect">
+                  <option value="">All Programs</option>
+                </select>
+              </div>
+
+              <div class="select-filter-group">
+                <label for="yearFilterSelect">Year Level:</label>
+                <select id="yearFilterSelect">
+                  <option value="">All Years</option>
+                  <option value="1st Year">1st Year</option>
+                  <option value="2nd Year">2nd Year</option>
+                  <option value="3rd Year">3rd Year</option>
+                  <option value="4th Year">4th Year</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Data Table Card -->
+          <div class="table-card">
+            <div class="table-responsive">
+              <table class="records-table">
+                <thead>
+                  <tr>
+                    <th>Student ID</th>
+                    <th>Student Profile</th>
+                    <th>Program</th>
+                    <th>Year &amp; Term</th>
+                    <th>Schedule</th>
+                    <th>Enrollment Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="recordsTableBody">
+                  <tr>
+                    <td colspan="7">
+                      <div class="table-empty-state">
+                        <i class="fa-solid fa-spinner fa-spin"></i>
+                        <h3>Loading student records...</h3>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
 
+    <!-- ==================== VIEW DETAILED RECORD MODAL ==================== -->
+    <div id="viewRecordModal" class="modal-backdrop" aria-hidden="true">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3><i class="fa-solid fa-address-card"></i> Student Master File</h3>
+          <button type="button" class="modal-close-btn" id="closeViewModalBtn">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <!-- Student Banner -->
+          <div class="student-banner-header">
+            <div class="student-avatar-lg">
+              <i class="fa-solid fa-user-graduate"></i>
+            </div>
+            <div class="student-banner-details" style="flex: 1;">
+              <h4 id="viewStudentName">Student Name</h4>
+              <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <span class="id-badge" id="viewStudentId">STU-0000</span>
+                <span style="font-size: 13px; color: #475569;" id="viewStudentProgram">—</span>
+                <span class="status-badge" id="viewStudentStatus">—</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal Tabs -->
+          <div class="modal-tabs">
+            <button type="button" class="modal-tab-btn active" data-tab="vTabProfile">
+              <i class="fa-solid fa-id-card"></i> Profile &amp; Contact
+            </button>
+            <button type="button" class="modal-tab-btn" data-tab="vTabEnrollments">
+              <i class="fa-solid fa-clock-rotate-left"></i> Enrollment History
+            </button>
+            <button type="button" class="modal-tab-btn" data-tab="vTabRequests">
+              <i class="fa-solid fa-file-signature"></i> Document Requests
+            </button>
+          </div>
+
+          <!-- Tab 1: Profile -->
+          <div id="vTabProfile" class="modal-tab-panel active">
+            <div class="info-grid">
+              <div class="info-field">
+                <span class="info-label">Full Name</span>
+                <span class="info-val" id="vFullName">—</span>
+              </div>
+              <div class="info-field">
+                <span class="info-label">Date of Birth</span>
+                <span class="info-val" id="vBirthdate">—</span>
+              </div>
+              <div class="info-field">
+                <span class="info-label">Contact Phone</span>
+                <span class="info-val" id="vPhone">—</span>
+              </div>
+              <div class="info-field">
+                <span class="info-label">Official Email</span>
+                <span class="info-val" id="vEmail">—</span>
+              </div>
+              <div class="info-field" style="grid-column: 1 / -1;">
+                <span class="info-label">Home / Permanent Address</span>
+                <span class="info-val" id="vAddress">—</span>
+              </div>
+              <div class="info-field">
+                <span class="info-label">Degree Program</span>
+                <span class="info-val" id="vCourse">—</span>
+              </div>
+              <div class="info-field">
+                <span class="info-label">Year &amp; Semester</span>
+                <span class="info-val" id="vYearSem">—</span>
+              </div>
+              <div class="info-field">
+                <span class="info-label">Preferred Schedule</span>
+                <span class="info-val" id="vSchedule">—</span>
+              </div>
+              <div class="info-field">
+                <span class="info-label">Portal Account Username</span>
+                <span class="info-val" id="vPortalUser">—</span>
+              </div>
+              <div class="info-field">
+                <span class="info-label">Portal Account Role</span>
+                <span class="info-val" id="vPortalRole">—</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 2: Enrollments -->
+          <div id="vTabEnrollments" class="modal-tab-panel">
+            <div id="vEnrollmentsList" style="display: flex; flex-direction: column; gap: 14px;">
+              <!-- Populated dynamically via JS -->
+            </div>
+          </div>
+
+          <!-- Tab 3: Document Requests -->
+          <div id="vTabRequests" class="modal-tab-panel">
+            <div id="vRequestsList" style="display: flex; flex-direction: column; gap: 12px;">
+              <!-- Populated dynamically via JS -->
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-reg-secondary" id="printRecordBtn">
+            <i class="fa-solid fa-print"></i> Print Record
+          </button>
+          <button type="button" class="btn-reg-primary" id="editFromViewBtn">
+            <i class="fa-solid fa-pen-to-square"></i> Edit Record
+          </button>
+          <button type="button" class="btn-reg-secondary" id="closeViewModalFooterBtn">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== EDIT RECORD MODAL ==================== -->
+    <div id="editRecordModal" class="modal-backdrop" aria-hidden="true">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3><i class="fa-solid fa-pen-to-square"></i> Edit Student Record</h3>
+          <button type="button" class="modal-close-btn" id="closeEditModalBtn">&times;</button>
+        </div>
+
+        <form id="editRecordForm">
+          <div class="modal-body">
+            <input type="hidden" id="editStudentInfoId" />
+
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="editFirstName">First Name *</label>
+                <input type="text" id="editFirstName" required />
+              </div>
+              <div class="form-field">
+                <label for="editMiddleName">Middle Name</label>
+                <input type="text" id="editMiddleName" />
+              </div>
+              <div class="form-field">
+                <label for="editLastName">Last Name *</label>
+                <input type="text" id="editLastName" required />
+              </div>
+              <div class="form-field">
+                <label for="editSuffix">Suffix (e.g. Jr, III)</label>
+                <input type="text" id="editSuffix" />
+              </div>
+              <div class="form-field">
+                <label for="editBirthdate">Date of Birth *</label>
+                <input type="date" id="editBirthdate" required />
+              </div>
+              <div class="form-field">
+                <label for="editPhone">Contact Phone *</label>
+                <input type="tel" id="editPhone" required />
+              </div>
+              <div class="form-field full">
+                <label for="editEmail">Email Address *</label>
+                <input type="email" id="editEmail" required />
+              </div>
+              <div class="form-field full">
+                <label for="editAddress">Home Address *</label>
+                <textarea id="editAddress" rows="2" required></textarea>
+              </div>
+
+              <!-- Academic -->
+              <div class="form-field full">
+                <label for="editCourse">Degree Program *</label>
+                <select id="editCourse" required></select>
+              </div>
+              <div class="form-field">
+                <label for="editYearLevel">Year Level *</label>
+                <select id="editYearLevel" required>
+                  <option value="1st Year">1st Year</option>
+                  <option value="2nd Year">2nd Year</option>
+                  <option value="3rd Year">3rd Year</option>
+                  <option value="4th Year">4th Year</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="editSemester">Semester *</label>
+                <select id="editSemester" required>
+                  <option value="1st Semester">1st Semester</option>
+                  <option value="2nd Semester">2nd Semester</option>
+                  <option value="Summer">Summer</option>
+                </select>
+              </div>
+              <div class="form-field full">
+                <label for="editSchedule">Preferred Schedule *</label>
+                <select id="editSchedule" required>
+                  <option value="Day (8:00 AM - 12:00 PM)">Day (8:00 AM - 12:00 PM)</option>
+                  <option value="Evening (5:30 PM - 9:30 PM)">Evening (5:30 PM - 9:30 PM)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn-reg-secondary" id="cancelEditBtn">Cancel</button>
+            <button type="submit" class="btn-reg-primary" id="saveEditBtn">
+              <i class="fa-solid fa-check"></i> Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ==================== NEW RECORD MODAL ==================== -->
+    <div id="newRecordModal" class="modal-backdrop" aria-hidden="true">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3><i class="fa-solid fa-user-plus"></i> Register Student Record</h3>
+          <button type="button" class="modal-close-btn" id="closeNewModalBtn">&times;</button>
+        </div>
+
+        <form id="newRecordForm">
+          <div class="modal-body">
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="newFirstName">First Name *</label>
+                <input type="text" id="newFirstName" required />
+              </div>
+              <div class="form-field">
+                <label for="newMiddleName">Middle Name</label>
+                <input type="text" id="newMiddleName" />
+              </div>
+              <div class="form-field">
+                <label for="newLastName">Last Name *</label>
+                <input type="text" id="newLastName" required />
+              </div>
+              <div class="form-field">
+                <label for="newSuffix">Suffix</label>
+                <input type="text" id="newSuffix" placeholder="e.g. Jr, III" />
+              </div>
+              <div class="form-field">
+                <label for="newBirthdate">Date of Birth *</label>
+                <input type="date" id="newBirthdate" required />
+              </div>
+              <div class="form-field">
+                <label for="newPhone">Contact Phone *</label>
+                <input type="tel" id="newPhone" placeholder="09XX-XXX-XXXX" required />
+              </div>
+              <div class="form-field full">
+                <label for="newEmail">Email Address *</label>
+                <input type="email" id="newEmail" placeholder="student@example.com" required />
+              </div>
+              <div class="form-field full">
+                <label for="newAddress">Permanent Home Address *</label>
+                <textarea id="newAddress" rows="2" placeholder="Street, Barangay, City, Province" required></textarea>
+              </div>
+
+              <!-- Academic Details -->
+              <div class="form-field full">
+                <label for="newCourse">Degree Program *</label>
+                <select id="newCourse" required></select>
+              </div>
+              <div class="form-field">
+                <label for="newYearLevel">Year Level *</label>
+                <select id="newYearLevel" required>
+                  <option value="1st Year">1st Year</option>
+                  <option value="2nd Year">2nd Year</option>
+                  <option value="3rd Year">3rd Year</option>
+                  <option value="4th Year">4th Year</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="newSemester">Semester *</label>
+                <select id="newSemester" required>
+                  <option value="1st Semester">1st Semester</option>
+                  <option value="2nd Semester">2nd Semester</option>
+                  <option value="Summer">Summer</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="newSchedule">Preferred Schedule *</label>
+                <select id="newSchedule" required>
+                  <option value="Day (8:00 AM - 12:00 PM)">Day (8:00 AM - 12:00 PM)</option>
+                  <option value="Evening (5:30 PM - 9:30 PM)">Evening (5:30 PM - 9:30 PM)</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="newEnrollmentType">Enrollee Type *</label>
+                <select id="newEnrollmentType" required>
+                  <option value="2">New Student</option>
+                  <option value="1">Old/Returnee Student</option>
+                  <option value="3">Transferee Student</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn-reg-secondary" id="cancelNewBtn">Cancel</button>
+            <button type="submit" class="btn-reg-primary" id="saveNewBtn">
+              <i class="fa-solid fa-check"></i> Register Student Record
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Scripts -->
     <script src="/shared/app.js"></script>
-    <script src="page.js"></script>
+    <script src="studentrecords.js"></script>
   </body>
 </html>
